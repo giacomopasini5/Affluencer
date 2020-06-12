@@ -1,3 +1,37 @@
 # Affluencer
 
-Sistema per la gestione degli accessi nei negozi. Ogni attività commerciale può registrarsi sul sito per aprire una propria pagina, fornendo i dati rilevati periodicamente sull'affluenza (persone in coda e persone all'interno) e sullo stato del negozio. Nella pagina si potranno consultare i dati aggiornati in tempo reale in base a quanto dichiarato dal negozio (e dagli utenti, in una sezione apposita); oltre ai dati recenti si potrà osservare l'andamento dell'affluenza in un certo periodo di tempo. È inoltre presente una bacheca per postare aggiornamenti di ogni tipo. Gli utenti possono controllare lo stato di un negozio sul sito, attraverso una funzione di ricerca oppure selezionandolo dalla mappa. Registrando un account potranno eventualmente prenotare un posto per un dato orario, scrivere una recensione sulla bacheca, comunicare una propria stima dell'affluenza (verificando la posizione dell'utente tramite geolocalizzazione) e salvare dei negozi in una lista di preferiti.
+Componenti gruppo:
+
+Michele Durante (michele.durante3@studio.unibo.it)
+Daniele Gambaletta (daniele.gambaletta@studio.unibo.it)
+Giacomo Pasini (giacomo.pasini5@studio.unibo.it)
+
+Progetto:
+
+Sistema per la gestione degli accessi, comprendente recensioni e avvisi tra negozi e clienti.
+
+Negozio:
+
+Il negozio si registra sul sito e fornisce periodicamente i dati sull'affluenza (persone all'interno e in coda), comunicati tramite un apposito sensore simulato.
+La pagina del negozio comprende grafici che mostrano l'affluenza in tempo reale ricevuta dal sensore, insieme a statistiche relative ad un periodo di tempo selezionabile.
+Il grafico sull'affluenza integra anche le segnalazioni fatte dagli utenti, opportunamente distinte dai dati sensoriali.
+Il negozio ha anche la possibilità di gestire una propria pagina personale sul sito comprensiva di bacheca per annunci al pubblico.
+La pagina del negozio comprende anche una sezione per le recensioni dei clienti, a cui il negozio può rispondere.
+
+Cliente:
+
+Un cliente può visitare il sito e ricercare un negozio, sia tramite una funzione di ricerca che attraverso una mappa, e visualizzarne la pagina.
+Registrando un proprio account con informazioni di base, un utente può salvare i propri negozi preferiti in una lista per facilitarne la ricerca.
+Un utente può scegliere di prenotare l'accesso ad un negozio per un dato orario.
+Un utente riceve notifiche per i reminder delle prenotazioni effettuate, oppure se si trova nelle vicinanze di un negozio preferito che è in una situazione di bassa/alta affluenza.
+Un utente può inviare una propria segnalazione sull'affluenza, che viene accettata se si trova nelle vicinanze del negozio.
+Un utente può eventualmente lasciare una recensione sulla pagina del negozio.
+
+Features real-time:
+
+Ricezione dei dati in real-time relativi all'affluenza, dai sensori e dagli utenti.
+Sistema di notifiche relative alle prenotazioni effettuate e alla situazione dei negozi.
+
+Tecnologie utilizzate:
+
+Solution stack MEVN
