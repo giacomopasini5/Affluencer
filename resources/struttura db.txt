@@ -1,0 +1,24 @@
+UTENTI(_id, username, password, tipoutente, email, stato)
+
+COORD(_id, idnegozio, longitudine, latitudine)
+
+TIPOUTENTE(_id, nome) // accorpabile come testo in UTENTE?
+
+REGISTRAZIONI(_id, idnegozio, quantita, dataora) // ogni 5 minuti
+
+SEGNALAZIONI(_id, idcliente, idnegozio, quantita, dataora)
+
+ANNUNCI(_id, idnegozio, titolo, testo, dataora)
+
+PREFERITI(_id, idcliente, idnegozio)
+
+PRENOTAZIONI(_id, idcliente, idnegozio, dataora, numpersone)
+
+RECENSIONI(_id, idcliente, idnegozio, titolo, testo, voto, dataora)
+
+NOTIFICHE(_id, idutente, titolo, descrizione, dataora, letto)
+
+
+
+
+
