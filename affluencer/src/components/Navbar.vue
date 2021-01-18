@@ -1,8 +1,7 @@
 <template>
 	<nav>
-		<div id="logo">
-			Affluencer
-			<img alt="Affluencer logo" src="../assets/images/logo.png">
+		<div id="name">
+			<router-link to="/">Affluencer</router-link>
 		</div>
 		<ul class="nav-links">
 			<li v-for="list in navLinks" :key="list.key">
@@ -31,6 +30,46 @@
 <script>
 export default {
   name: 'navbar',
-	props: 'navLinks'
+	
+	props: ['navLinks'],
+	
+	methods: {
+		openMobileNav() {
+			const burger = document.getElementById('burger')
+			const nav = document.querySelector('.nav-links')
+			const navLinks = document.querySelectorAll('.nav-links li')
+			
+			nav.classList.toggle('nav-active')
+			
+			burger.classList.toggle('toggle')
+			
+			navLinks.forEach((link, index) => {
+        if (link.style.animation || link.style.webkitAnimation) {
+            link.style.animation = ''
+            link.style.webkitAnimation = ''
+        } else {
+            link.style.webkitAnimation = `navLinkFade 0.5s ease forwards ${
+            index / 7
+          }s`
+            link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7}s`
+        }
+			})
+		},
+		
+		openDropdownNav() {
+			const dropdownLink = document.querySelectorAll('.dropdown-link')
+			
+			dropdownLink.forEach((dropdown) => {
+        dropdown.addEventListener('mouseover', () => {
+          dropdown.children[1].style.display = 'block'
+        })
+        dropdown.addEventListener('mouseleave', () => {
+          dropdown.children[1].style.display = 'none'
+        })
+			})
+		}
+	},
+	
+	mounted() {}
 }
 </script>
