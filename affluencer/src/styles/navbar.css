@@ -19,7 +19,7 @@ ul#nav-links {
 	display: flex;
 	justify-content: space-between;
 	width: 40%;
-	line-height: 75px;
+	line-height: 40px;
 }
 
 ul#nav-links li {
@@ -51,15 +51,15 @@ ul#nav-links a {
   transform: translateX(0) !important;
 }
 
-.toggle#line1 {
+.toggle #line1 {
   transform: rotate(-45deg) translate(-9px, 10px);
 }
 
-.toggle#line2 {
+.toggle #line2 {
   opacity: 0;
 }
 
-.toggle#line3 {
+.toggle #line3 {
   transform: rotate(45deg) translate(-5px, -6px);
 }
 
