@@ -46,34 +46,6 @@ ul.nav-links a {
 	transition: all 0.3s ease-in;
 }
 
-ul.dropdown-menu {
-	position: absolute;
-	top: 8vh;
-	background-color: #0e0b16;
-	min-width: 140px;
-	cursor: pointer;
-	display: none;
-}
-
-ul.dropdown-menu li:first-child {
-	margin: 0 0 10px 0;
-}
-
-ul.dropdown-menu li {
-	margin: 10px 0;
-}
-
-ul.dropdown-menu li:last-child {
-	margin: 10px 0 0 0;
-}
-
-ul.dropdown-menu a {
-	line-height: 8vh;
-	padding: 5px 15px;
-	background-color: #e7dfdd;
-	line-height: 50px;
-}
-
 .nav-active {
   transform: translateX(0) !important;
 }
@@ -135,10 +107,5 @@ ul.dropdown-menu a {
 	
 	div#burger {
     display: block;
-  }
-	
-	ul.dropdown-menu {
-    position: relative;
-    top: 0;
   }
 }

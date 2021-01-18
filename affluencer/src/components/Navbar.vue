@@ -4,19 +4,8 @@
 			<router-link to="/">Affluencer</router-link>
 		</div>
 		<ul class="nav-links">
-			<li v-for="list in navLinks" :key="list.key">
-				<a v-if="list.dropdown === false" :href="list.link">{{ list.name }}</a>
-				<div class="dropdown-link" v-else>
-					<a :href="list.link">
-						{{ list.name }}
-						<span>&#x2193;</span>
-					</a>
-					<ul class="dropdown-menu">
-						<li v-for="item in list.dropdownLinks" :key="item.key">
-							<a :href="item.link">{{ item.name }}</a>
-						</li>
-					</ul>
-				</div>
+			<li v-for="item in navLinks" :key="item.key">
+				<a :href="item.link">{{ item.name }}</a>
 			</li>
 		</ul>
 		<div @click="openMobileNav()" id="burger">
@@ -52,46 +41,9 @@ export default {
           link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7}s`
         }
 			})
-		},
-		
-		openDropdownNav() {
-			const dropdownLink = document.querySelectorAll('.dropdown-link')
-			
-			dropdownLink.forEach((dropdown) => {
-        dropdown.addEventListener('mouseover', () => {
-          dropdown.children[1].style.display = 'block'
-        })
-        dropdown.addEventListener('mouseleave', () => {
-          dropdown.children[1].style.display = 'none'
-        })
-			})
-		},
-		
-		countClicksOnMobileDropdown() {
-			const dropdownLink = document.querySelectorAll('.dropdown-link')
-			
-			dropdownLink.forEach((dropdown) => {
-        let counts = dropdown.clicks || 0
-        dropdown.addEventListener('click', () => {
-          counts++
-          if (counts % 2 == 0) {
-            window.location.href = dropdown.children[0].getAttribute('href')
-          } else {
-            event.preventDefault()
-            dropdown.children[1].style.display = 'block'
-            setTimeout(() => {dropdown.children[1].style.display = 'none'}, 5000)
-          }
-        })
-        setTimeout(() => {counts = 0}, 8000)
-			})
 		}
 	},
 	
-	mounted() {
-    this.openDropdownNav()
-    if (window.innerWidth < 768) {
-      this.countClicksOnMobileDropdown()
-    }
-	}
+	mounted() {}
 }
 </script>
