@@ -29,7 +29,6 @@ export default {
 			const navLinks = document.querySelectorAll('.nav-links li')
 			
 			nav.classList.toggle('nav-active')
-			
 			burger.classList.toggle('toggle')
 			
 			navLinks.forEach((link, index) => {
