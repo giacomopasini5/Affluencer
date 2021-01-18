@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-		<navbar/>
+		<navbar :navLinks="[]"/>
   </div>
 </template>
 
