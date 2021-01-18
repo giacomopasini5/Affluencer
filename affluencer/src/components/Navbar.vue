@@ -4,8 +4,8 @@
 			<router-link to="/">Affluencer</router-link>
 		</div>
 		<ul id="nav-links">
-			<li v-for="item in navLinks" :key="item.key">
-				<a :href="item.link">{{ item.name }}</a>
+			<li v-for="item in navLinks">
+				<router-link :to="item.link">{{ item.name }}</router-link>
 			</li>
 		</ul>
 		<div @click="openMobileNav()" id="burger">
@@ -26,7 +26,7 @@ export default {
 		openMobileNav() {
 			const burger = document.getElementById('burger')
 			const nav = document.getElementById('nav-links')
-			const navLinks = document.querySelectorAll('.nav-links li')
+			const navLinks = document.querySelectorAll('#nav-links li')
 			
 			nav.classList.toggle('nav-active')
 			burger.classList.toggle('toggle')

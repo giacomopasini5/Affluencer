@@ -15,17 +15,18 @@ div#name a {
 	font-size: 2rem;
 }
 
-ul.nav-links {
+ul#nav-links {
 	display: flex;
 	justify-content: space-between;
 	width: 40%;
 	line-height: 75px;
 }
-ul.nav-links li {
+
+ul#nav-links li {
 	list-style: none;
 }
 
-ul.nav-links a {
+ul#nav-links a {
 	text-decoration: none;
 	color: #e7dfdd;
 	font-size: 1.2rem;
@@ -50,15 +51,15 @@ ul.nav-links a {
   transform: translateX(0) !important;
 }
 
-.toggle .line1 {
+.toggle#line1 {
   transform: rotate(-45deg) translate(-9px, 10px);
 }
 
-.toggle .line2 {
+.toggle#line2 {
   opacity: 0;
 }
 
-.toggle .line3 {
+.toggle#line3 {
   transform: rotate(45deg) translate(-5px, -6px);
 }
 
@@ -75,13 +76,13 @@ ul.nav-links a {
 }
 
 @media screen and (max-width: 1024px) {
-  ul.nav-links {
+  ul#nav-links {
     width: 50%;
   }
 }
 
 @media screen and (max-width: 768px) {
-  ul.nav-links {
+  ul#nav-links {
     position: absolute;
     flex-direction: column;
     width: 100%;
@@ -97,11 +98,11 @@ ul.nav-links a {
     transition: transform 0.5s ease-in;
   }
 	
-	ul.nav-links li {
+	ul#nav-links li {
     opacity: 0;
   }
 	
-	ul.nav-links a {
+	ul#nav-links a {
     width: 100%;
   }
 	
