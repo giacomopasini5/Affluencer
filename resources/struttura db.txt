@@ -1,3 +1,5 @@
+-- db relazionale
+
 UTENTI(_id, username, password, tipoutente, email, stato)
 
 COORD(_id, idnegozio, longitudine, latitudine)
@@ -18,7 +20,28 @@ RECENSIONI(_id, idcliente, idnegozio, titolo, testo, voto, dataora)
 
 NOTIFICHE(_id, idutente, titolo, descrizione, dataora, letto)
 
+-- db nosql
 
+UTENTI (
+    _id,
+    username,
+    password,
+    email,
+    prenotazioni[],
+    segnalazioni[],
+    recensioni[],
+    notifiche[],
+    stato
+)
 
-
-
+NEGOZI (
+    _id,
+    username,
+    password,
+    email,
+    coord{},
+    registrazioni[],
+    annunci[],
+    notifiche[],
+    stato
+)
