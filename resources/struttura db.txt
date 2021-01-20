@@ -22,26 +22,50 @@ NOTIFICHE(_id, idutente, titolo, descrizione, dataora, letto)
 
 -- db nosql
 
-UTENTI (
-    _id,
-    username,
-    password,
-    email,
-    prenotazioni[],
-    segnalazioni[],
-    recensioni[],
-    notifiche[],
-    stato
+CLIENTE (
+  _id,
+  nome,
+  email,
+	password,
+	città,
+  notifiche[] (
+		dataora,
+		testo,
+		attiva
+	),
+  stato
 )
 
-NEGOZI (
-    _id,
-    username,
-    password,
-    email,
-    coord{},
-    registrazioni[],
-    annunci[],
-    notifiche[],
-    stato
+NEGOZIO (
+  _id,
+  nome,
+  email,
+  password,
+  indirizzo,
+	coordinate,
+	capienza,
+  annunci[] (
+		dataora,
+		testo
+	),
+	prenotazioni[] (
+		cliente_id,
+		dataora
+	),
+	commenti[] (
+		cliente_id,
+		dataora
+	),
+	segnalazioni[] ( //no cliente_id perchè anonime
+		dataora,
+		persone_interno,
+		persone_coda
+	),
+  dati_sensori[] (
+		dataora,
+		persone_interno,
+		persone_coda
+	),
+  notifiche[],
+  stato
 )
