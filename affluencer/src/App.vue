@@ -1,38 +1,50 @@
 <template>
   <div id="app">
 		<navbar
-			:navLinks="[
-				{
-					name: 'Informazioni',
-					link: '/info'
-				},
-				{
-					name: 'Profilo',
-					link: '/profile'
-				},
-				{
-					name: 'Accedi/Registrati',
-					link: '/login'
-				},
-				{
-					name: 'Esci',
-					link: '/login'
-				}
-			]"
+			:navLinks="navLinks"
 		/>
     <router-view/>
   </div>
 </template>
 
 <script>
-import navbar from '@/components/Navbar.vue'
+	import navbar from '@/components/Navbar.vue'
 
-export default {
-  name: 'app',
-  components: {
-    navbar
-  }
-}
+	export default {
+		name: 'app',
+		
+		components: {
+			navbar
+		},
+		
+		computed: {
+			navLinks: function() {
+				return this.logged ? [
+					{
+						name: 'Informazioni',
+						link: '/info'
+					},
+					{
+						name: 'Profilo',
+						link: '/profile'
+					},
+					{
+						name: 'Esci',
+						link: '/'
+					}
+				] : [
+					{
+						name: 'Informazioni',
+						link: '/info'
+					},
+					{
+						name: 'Accedi/Registrati',
+						link: '/login'
+					}
+				]
+			}
+		}
+	}
 </script>
 
 <style>
