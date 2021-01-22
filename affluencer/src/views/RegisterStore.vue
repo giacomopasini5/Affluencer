@@ -1,7 +1,7 @@
 <template>
   <div id="registerStore">
     <h1>Registrati</h1>
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent="handleSubmit" novalidate>
         <div class="form-item">
 					<label for="name">Nome</label>
 					<input type="text" v-model="store.name" id="name" name="name" :class="{'is-invalid': $v.store.name.$error}">
@@ -50,7 +50,7 @@
           <input type="email" v-model="store.email" id="email" name="email" :class="{'is-invalid':$v.store.email.$error}">
           <div v-if="$v.store.email.$error" class="invalid-feedback">
 						<span v-if="!$v.store.email.required">L'email è obbligatoria</span>
-						<span v-if="!$v.store.email.email">L'Email non è valida</span>
+						<span v-if="!$v.store.email.email">L'email non è valida</span>
           </div>
         </div>
         <div class="form-item">
@@ -85,30 +85,30 @@
 		data: function() {
       return {
         store: {
-					name: "",
-					address: "",
-					city: "",
-					capacity: "",
-					openTime: "",
-					closeTime: "",
-					email: "",
-					password: "",
-					confirmPassword: ""
+					name: '',
+					address: '',
+					city: '',
+					capacity: '',
+					openTime: '',
+					closeTime: '',
+					email: '',
+					password: '',
+					confirmPassword: ''
 				}
       }
     },
 		
 		validations: {
 			store: {
-				name: {required, $autoDirty: true},
-				address: {required, $autoDirty: true},
-				city: {required, $autoDirty: true},
-				capacity: {required, minValue: minValue(1), $autoDirty: true},
-				openTime: {required, $autoDirty: true},
-				closeTime: {required, $autoDirty: true},
-				email: {required, email, $autoDirty: true},
-				password: {required, minLength: minLength(6), $autoDirty: true},
-        confirmPassword: {required, sameAsPassword: sameAs('password'), $autoDirty: true}
+				name: {required},
+				address: {required},
+				city: {required},
+				capacity: {required, minValue: minValue(1)},
+				openTime: {required},
+				closeTime: {required},
+				email: {required, email},
+				password: {required, minLength: minLength(6)},
+        confirmPassword: {required, sameAsPassword: sameAs('password')}
 			}
 		},
 		

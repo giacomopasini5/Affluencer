@@ -1,7 +1,7 @@
 <template>
   <div id="registerClient">
     <h1>Registrati</h1>
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent="handleSubmit" novalidate>
         <div class="form-item">
 					<label for="name">Nome</label>
 					<input type="text" v-model="client.name" id="name" name="name" :class="{'is-invalid': $v.client.name.$error}">
@@ -21,7 +21,7 @@
           <input type="email" v-model="client.email" id="email" name="email" :class="{'is-invalid':$v.client.email.$error}">
           <div v-if="$v.client.email.$error" class="invalid-feedback">
 						<span v-if="!$v.client.email.required">L'email è obbligatoria</span>
-						<span v-if="!$v.client.email.email">L'Email non è valida</span>
+						<span v-if="!$v.client.email.email">L'email non è valida</span>
           </div>
         </div>
         <div class="form-item">
@@ -56,22 +56,22 @@
 		data: function() {
       return {
         client: {
-					name: "",
-					city: "",
-					email: "",
-					password: "",
-					confirmPassword: ""
+					name: '',
+					city: '',
+					email: '',
+					password: '',
+					confirmPassword: ''
 				}
       }
     },
 		
 		validations: {
 			client: {
-				name: {required, $autoDirty: true},
-				city: {required, $autoDirty: true},
-				email: {required, email, $autoDirty: true},
-				password: {required, minLength: minLength(6), $autoDirty: true},
-				confirmPassword: {required, sameAsPassword: sameAs('password'), $autoDirty: true}
+				name: {required},
+				city: {required},
+				email: {required, email},
+				password: {required, minLength: minLength(6)},
+				confirmPassword: {required, sameAsPassword: sameAs('password')}
 			}
 		},
 		

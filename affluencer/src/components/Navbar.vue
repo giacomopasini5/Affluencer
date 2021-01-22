@@ -44,3 +44,7 @@
 		}
 	}
 </script>
+
+<style>
+	@import '../styles/navbar.css'
+</style>
