@@ -5,11 +5,14 @@ module.export = function(mongoose) {
         email: String,
         password: String,
         address: String,
+				city: String,
+				capacity: Number,
+				open_time: Number,
+				close_time: Number,
         location: {
             type: String,
             coordinates: [Number]
         },
-        capacity: Number,
         posts: [{
             datetime: Date,
             text: String

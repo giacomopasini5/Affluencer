@@ -42,8 +42,11 @@ NEGOZIO (
   email,
   password,
   indirizzo,
-	coordinate,
+	città,
 	capienza,
+	orario_apertura,
+	orario_chiusura,
+	coordinate,
   annunci[] (
 		dataora,
 		testo

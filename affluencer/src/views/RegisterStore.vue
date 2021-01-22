@@ -1,0 +1,123 @@
+<template>
+  <div id="registerStore">
+    <h1>Registrati</h1>
+      <form @submit.prevent="handleSubmit">
+        <div class="form-item">
+					<label for="name">Nome</label>
+					<input type="text" v-model="store.name" id="name" name="name" :class="{'is-invalid': $v.store.name.$error}">
+					<div v-if="$v.store.name.$error" class="invalid-feedback">
+						<span v-if="!$v.store.name.required">Il nome è obbligatorio</span>
+					</div>
+        </div>
+				<div class="form-item">
+          <label for="address">Indirizzo</label>
+          <input type="text" v-model="store.address" id="address" name="address" :class="{'is-invalid': $v.store.address.$error}">
+          <div v-if="$v.store.address.$error" class="invalid-feedback">
+						<span v-if="!$v.store.address.required">L'indirizzo è obbligatorio</span>
+					</div>
+        </div>
+				<div class="form-item">
+          <label for="city">Città</label>
+          <input type="text" v-model="store.city" id="city" name="city" :class="{'is-invalid': $v.store.city.$error}">
+          <div v-if="$v.store.city.$error" class="invalid-feedback">
+						<span v-if="!$v.store.city.required">La città è obbligatoria</span>
+					</div>
+        </div>
+				<div class="form-item">
+          <label for="capacity">Capienza</label>
+          <input type="number" v-model="store.capacity" id="capacity" name="capacity" :class="{'is-invalid': $v.store.capacity.$error}">
+          <div v-if="$v.store.capacity.$error" class="invalid-feedback">
+						<span v-if="!$v.store.capacity.required">La capienza è obbligatoria</span>
+						<span v-if="!$v.store.capacity.minValue">La capienza deve essere maggiore di 0</span>
+          </div>
+        </div>
+				<div class="form-item">
+          <label for="openTime">Orario di apertura</label>
+          <input type="time" v-model="store.openTime" id="openTime" name="openTime" :class="{'is-invalid': $v.store.openTime.$error}">
+          <div v-if="$v.store.openTime.$error" class="invalid-feedback">
+						<span v-if="!$v.store.openTime.required">L'orario di apertura è obbligatorio</span>
+          </div>
+        </div>
+        <div class="form-item">
+          <label for="closeTime">Orario di chiusura</label>
+          <input type="time" v-model="store.closeTime" id="closeTime" name="closeTime" :class="{'is-invalid': $v.store.closeTime.$error}">
+          <div v-if="$v.store.closeTime.$error" class="invalid-feedback">
+						<span v-if="!$v.store.closeTime.required">L'orario di chiusura è obbligatorio</span>
+          </div>
+        </div>
+        <div class="form-item">
+          <label for="email">Email</label>
+          <input type="email" v-model="store.email" id="email" name="email" :class="{'is-invalid':$v.store.email.$error}">
+          <div v-if="$v.store.email.$error" class="invalid-feedback">
+						<span v-if="!$v.store.email.required">L'email è obbligatoria</span>
+						<span v-if="!$v.store.email.email">L'Email non è valida</span>
+          </div>
+        </div>
+        <div class="form-item">
+          <label for="password">Password</label>
+          <input type="password" v-model="store.password" id="password" name="password" :class="{'is-invalid': $v.store.password.$error}">
+          <div v-if="$v.store.password.$error" class="invalid-feedback">
+						<span v-if="!$v.store.password.required">La password è obbligatoria</span>
+						<span v-if="!$v.store.password.minLength">La password deve essere di almeno 6 caratteri</span>
+          </div>
+        </div>
+        <div class="form-item">
+          <label for="confirmPassword">Conferma password</label>
+          <input type="password" v-model="store.confirmPassword" id="confirmPassword" name="confirmPassword" :class="{ 'is-invalid': $v.store.confirmPassword.$error}">
+          <div v-if="$v.store.confirmPassword.$error" class="invalid-feedback">
+            <span v-if="!$v.store.confirmPassword.required">La conferma password è obbligatoria</span>
+            <span v-else-if="!$v.store.confirmPassword.sameAsPassword">Le password devono corrispondere</span>
+          </div>
+        </div>
+        <div class="form-item">
+          <button>Registrati</button>
+        </div>
+      </form>
+  </div>
+</template>
+
+<script>
+	import {required, minValue, email, minLength, sameAs} from "vuelidate/lib/validators"
+	
+	export default {
+		name: 'registerStore',
+		
+		data: function() {
+      return {
+        store: {
+					name: "",
+					address: "",
+					city: "",
+					capacity: "",
+					openTime: "",
+					closeTime: "",
+					email: "",
+					password: "",
+					confirmPassword: ""
+				}
+      }
+    },
+		
+		validations: {
+			store: {
+				name: {required, $autoDirty: true},
+				address: {required, $autoDirty: true},
+				city: {required, $autoDirty: true},
+				capacity: {required, minValue: minValue(1), $autoDirty: true},
+				openTime: {required, $autoDirty: true},
+				closeTime: {required, $autoDirty: true},
+				email: {required, email, $autoDirty: true},
+				password: {required, minLength: minLength(6), $autoDirty: true},
+        confirmPassword: {required, sameAsPassword: sameAs('password'), $autoDirty: true}
+			}
+		},
+		
+		methods: {
+      handleSubmit: function(e) {
+        this.$v.$touch()
+        if (this.$v.$invalid) return
+        alert("SUCCESS")
+      }
+    }
+	}
+</script>
