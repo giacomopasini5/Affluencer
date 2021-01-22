@@ -42,13 +42,11 @@ const routes = [
   }
 ]
 
-const router = new VueRouter({
-  routes
-})
+const router = new VueRouter({routes})
 
-/*router.beforeEach((to, from, next) => {
-	if ((to.name == 'profile' || to.name == 'store') && (!this.logged)) next('/login')
+router.beforeEach((to, from, next) => {
+	if ((to.name == 'profile' || to.name == 'store') && (!$cookies.isKey("user"))) next('/login')
 	else next()
-})*/
+})
 
 export default router
