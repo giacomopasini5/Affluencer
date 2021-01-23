@@ -1,3 +1,7 @@
+body {
+	background: #e7dfdd;
+}
+
 nav {
 	display: flex;
 	justify-content: space-around;

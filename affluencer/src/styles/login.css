@@ -1,0 +1,96 @@
+#login {
+	margin: 5% 20%;
+	background-color: white;
+	font-family: 'Montserrat', sans-serif;
+	color: #0e0b16;
+	border: 2px solid #0e0b16;
+  border-radius: 7px;
+}
+
+#login h1 {
+	margin: 0;
+	padding: 5% 2% 2% 2%;
+	text-align: center;
+	font-weight: 500;
+	font-size: 3rem;
+}
+
+form {
+	padding: 5%;
+}
+
+.form-item {
+	display: block;
+	padding: 2%;
+	text-align: center;
+}
+
+input {
+	display: block;
+	margin: 1% auto;
+	width: 50%;
+	border: 2px solid #a9a9a9;
+  border-radius: 7px;
+	line-height: 30px;
+	font-size: 1rem;
+	transition: all 0.3s;
+}
+
+input:focus {
+	outline: none;
+  border-color: #9ecaed;
+  box-shadow: 0 0 10px #9ecaed;
+}
+
+label, span {
+	display: block;
+	margin: 1%;
+	font-size: 1.2rem;
+}
+
+button {
+	border: none;
+	outline: none;
+}
+
+.form-button {
+	display: inline-block;
+	padding: 0.3em 1.2em;
+	margin: 5% 2% 2% 2%;
+	border-radius: 2em;
+	color: inherit;
+	text-decoration: none;
+	font-size: 1.2rem;
+	background-color: #9ecaed;
+	text-align: center;
+	transition: all 0.3s;
+}
+
+.form-button:hover {
+	background-color: #4eb5f1;
+}
+
+.is-invalid {
+	border-color: red;
+}
+
+.invalid-feedback span {
+	display: block;
+	margin: 1%;
+	font-size: 1rem;
+	color: red;
+	-webkit-animation: invalidFeedback 0.3s;
+  animation: invalidFeedback 0.3s;
+}
+
+@keyframes invalidFeedback {
+  from {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+	
+	to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
