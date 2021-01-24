@@ -1,6 +1,6 @@
 <template>
   <div id="registerClient">
-    <h1>Registrati</h1>
+    <h1>Registrazione Cliente</h1>
     <form @submit.prevent="handleSubmit" novalidate>
       <div class="form-item">
 				<label for="name">Nome</label>
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="form-item">
-        <button>Registrati</button>
+        <button class="form-button">Registrati</button>
       </div>
     </form>
   </div>
@@ -86,5 +86,5 @@
 </script>
 
 <style>
-	@import '../styles/login.css'
+	@import '../styles/loginForm.css'
 </style>

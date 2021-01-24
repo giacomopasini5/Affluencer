@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-		<navbar
-			:navLinks="navLinks"
-		/>
+		<navbar :navLinks="navLinks"/>
     <router-view/>
   </div>
 </template>

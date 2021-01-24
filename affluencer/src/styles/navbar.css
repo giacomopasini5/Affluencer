@@ -110,6 +110,11 @@ ul#nav-links a {
     width: 100%;
   }
 	
+	ul#nav-links.nav-active li {
+    -webkit-animation: navLinkFade 0.5s ease forwards;
+		animation: navLinkFade 0.5s ease forwards;
+	} 
+	
 	div#burger {
     display: block;
   }

@@ -1,4 +1,4 @@
-#login {
+#login, #register {
 	margin: 5% 20%;
 	background-color: white;
 	font-family: 'Montserrat', sans-serif;
@@ -7,7 +7,7 @@
   border-radius: 7px;
 }
 
-#login h1 {
+h1 {
 	margin: 0;
 	padding: 5% 2% 2% 2%;
 	text-align: center;

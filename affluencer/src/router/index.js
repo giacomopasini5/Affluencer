@@ -4,8 +4,7 @@ import home from '@/views/Home.vue'
 import info from '@/views/Info.vue'
 import profile from '@/views/Profile.vue'
 import login from '@/views/Login.vue'
-import registerClient from '@/views/RegisterClient.vue'
-import registerStore from '@/views/RegisterStore.vue'
+import register from '@/views/Register.vue'
 import store from '@/views/Store.vue'
 import pageNotFound from '@/views/PageNotFound.vue'
 
@@ -33,14 +32,9 @@ const routes = [
     component: login
   },
 	{
-    path: '/registerClient',
-    name: 'registerClient',
-    component: registerClient
-  },
-	{
-    path: '/registerStore',
-    name: 'registerStore',
-    component: registerStore
+    path: '/register',
+    name: 'register',
+    component: register
   },
 	{
     path: '/store',
