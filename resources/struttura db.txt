@@ -26,13 +26,13 @@ CLIENTE (
   _id,
   nome,
   email,
-	password,
-	città,
+  password,
+  città,
   notifiche[] (
-		dataora,
-		testo,
-		attiva
-	),
+    dataora,
+    testo,
+    attiva
+  ),
   stato
 )
 
@@ -42,33 +42,33 @@ NEGOZIO (
   email,
   password,
   indirizzo,
-	città,
-	capienza,
-	orario_apertura,
-	orario_chiusura,
-	coordinate,
+  città,
+  capienza,
+  orario_apertura,
+  orario_chiusura,
+  coordinate,
   annunci[] (
-		dataora,
-		testo
-	),
-	prenotazioni[] (
-		cliente_id,
-		dataora
-	),
-	commenti[] (
-		cliente_id,
-		dataora
-	),
-	segnalazioni[] ( //no cliente_id perchè anonime
-		dataora,
-		persone_interno,
-		persone_coda
-	),
+    dataora,
+    testo
+  ),
+  prenotazioni[] (
+    cliente_id,
+    dataora
+  ),
+  commenti[] (
+    cliente_id,
+    dataora
+  ),
+  segnalazioni[] ( //no cliente_id perchè anonime
+    dataora,
+    persone_interno,
+    persone_coda
+  ),
   dati_sensori[] (
-		dataora,
-		persone_interno,
-		persone_coda
-	),
+    dataora,
+    persone_interno,
+    persone_coda
+  ),
   notifiche[],
   stato
 )
