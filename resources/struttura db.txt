@@ -92,6 +92,7 @@ NOTIFICHE ( // include sia quelle dei negozi che dei clienti
   user_id,
   dataora,
   testo,
+  url,
   letto
 )
 

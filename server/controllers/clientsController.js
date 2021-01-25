@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 const mongoose = require('mongoose');
 var Client = require("../models/clientsModel.js")(mongoose);
 
@@ -18,7 +19,23 @@ exports.create_client = function(req, res) {
     });
 };
 
-exports.update_client_infos = function(req, res) {
+exports.read_client = function(req, res) {
+    console.log(req.body);
+
+    var obj_id = new ObjectId(req.body.id);
+    Client.findById(obj_id, function(err, client) {
+        if (err)
+            res.send(err);
+        
+        if (client == null) {
+            res.status(404).send("Client not found");
+        } else {
+            res.json(client);
+        }
+    });
+};
+
+exports.update_client = function(req, res) {
 
     console.log(req.body);
     var clientInfos = {

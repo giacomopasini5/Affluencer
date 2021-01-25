@@ -4,6 +4,7 @@ module.export = function(mongoose) {
         user_id: ObjectId,
         datetime: Date,
         text: String,
+        url: String,
         read: Boolean
     });
 
