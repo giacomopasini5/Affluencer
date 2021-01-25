@@ -5,12 +5,7 @@ module.export = function(mongoose) {
         email: String,
         password: String,
         city: String,
-        notifications: [{
-            datetime: Date,
-            text: String,
-            read: Boolean
-        }],
-        status: Boolean
+        enabled: Boolean
     });
 
     return mongoose.model('clientmodel', ClientSchema, 'Clients');

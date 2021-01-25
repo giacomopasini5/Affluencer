@@ -5,10 +5,12 @@ module.export = function(mongoose) {
         email: String,
         password: String,
         address: String,
-				city: String,
-				capacity: Number,
-				open_time: Number,
-				close_time: Number,
+		city: String,
+        capacity: Number,
+        working_hours: [{
+            day: String,
+            hour: String,
+        }],
         location: {
             type: String,
             coordinates: [Number]
@@ -17,30 +19,7 @@ module.export = function(mongoose) {
             datetime: Date,
             text: String
         }],
-        reservations: [{
-            client_id: ObjectId,
-            datetime: Date
-        }],
-        comments: [{
-            client_id: ObjectId,
-            datetime: Date
-        }],
-        communications: [{
-            datetime: Date,
-            client_id: ObjectId,
-            people_inside: Number,
-            people_in_queue: Number
-        }],
-        sensor_data: [{
-            datetime: Date,
-            people_inside: Number
-        }],
-        notifications: [{
-            datetime: Date,
-            text: String,
-            read: Boolean
-        }],
-        status: Boolean
+        enabled: Boolean
     });
 
     return mongoose.model('shopmodel', ShopSchema, 'Shops');

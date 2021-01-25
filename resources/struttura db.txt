@@ -20,7 +20,7 @@ RECENSIONI(_id, idcliente, idnegozio, titolo, testo, voto, dataora)
 
 NOTIFICHE(_id, idutente, titolo, descrizione, dataora, letto)
 
--- db nosql
+-- db nosql v1
 
 CLIENTE (
   _id,
@@ -46,7 +46,10 @@ NEGOZIO (
   capienza,
   orario_apertura,
   orario_chiusura,
-  coordinate,
+  posizione ( // GeoJSON
+    type: String, // "Point"
+    coordinates: [Number, Number] // latitudine, longitudine
+  ),
   annunci[] (
     dataora,
     testo
@@ -71,4 +74,82 @@ NEGOZIO (
   ),
   notifiche[],
   stato
+)
+
+-- db nosql v2
+
+CLIENTI (
+  _id,
+  nome,
+  email,
+  password,
+  città,
+  attivo // sì/no
+)
+
+NOTIFICHE ( // include sia quelle dei negozi che dei clienti
+  _id,
+  user_id,
+  dataora,
+  testo,
+  letto
+)
+
+NEGOZI (
+  _id,
+  nome,
+  email,
+  password,
+  indirizzo,
+  città,
+  capacità,
+  orario_lavoro[] (
+    giorno,
+    orario
+  ),
+  posizione ( // GeoJSON
+    type: String,
+    coordinates: [Number, Number]
+  ),
+  annunci[] (
+    dataora,
+    testo
+  ),
+  attivo
+)
+
+SEGNALAZIONI (
+  _id,
+  clienti_id
+  dataora,
+  persone_dentro,
+  persone_coda
+)
+
+PRENOTAZIONI (
+  _id,
+  clienti_id,
+  negozi_id,
+  dataora,
+  persone
+)
+
+SENSORI (
+  _id,
+  negozi_id,
+  dataora,
+  persone_interno
+)
+
+RECENSIONI (
+  _id,
+  clienti_id,
+  negozi_id,
+  dataora,
+  testo,
+  commenti[] (
+    clienti_id, // opzionale, se assente allora è il negozio
+    dataora,
+    testo
+  )
 )
