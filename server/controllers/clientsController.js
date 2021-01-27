@@ -1,5 +1,6 @@
-import { ObjectId } from "mongodb";
 const mongoose = require('mongoose');
+const utils = require('../common.js');
+
 var Client = require("../models/clientsModel.js")(mongoose);
 
 exports.list_clients = function(req, res) {
@@ -11,42 +12,40 @@ exports.list_clients = function(req, res) {
 };
 
 exports.create_client = function(req, res) {
-    var newClient = new Client(res.body);
-    newClient.save(function(err, client) {
+    if (req.body == null)
+        res.status(400).send("Empty body");
+
+    (new Client(req.body)).save(function(err, client) {
         if (err)
             res.send(err);
-        res.json(client);
+        res.status(201).json(client);
     });
 };
 
-exports.read_client = function(req, res) {
-    console.log(req.body);
+exports.get_client = function(req, res) {
+    if (utils.emptyField(req.params.id))
+        res.status(400).send("Missing id");
 
-    var obj_id = new ObjectId(req.body.id);
-    Client.findById(obj_id, function(err, client) {
-        if (err)
-            res.send(err);
-        
-        if (client == null) {
+    Client.findById(id, function(err, client) {
+        if (err || client == null)
             res.status(404).send("Client not found");
-        } else {
-            res.json(client);
-        }
+
+        res.json(client);
     });
 };
 
 exports.update_client = function(req, res) {
+    if (utils.emptyField(req.params.id))
+        res.status(400).send("Missing id");
 
-    console.log(req.body);
-    var clientInfos = {
-        // campi da aggiornare
-    }
-
-    /*
-    Client.findOneAndUpdate({ _id: req.params.id }, clientInfos, { new: true }, function(err, client) {
-        if (err)
-            res.send(err);
-        res.json(client);
-    });
-    */
+    Client.findOneAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true, useFindAndModify: false },
+        (err, client) => {
+            if (err)
+                res.send(err);
+            res.json(client);
+        }
+    );
 }

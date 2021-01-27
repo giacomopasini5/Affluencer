@@ -1,4 +1,4 @@
-module.export = function(mongoose) {
+module.exports = function(mongoose) {
     var Schema = mongoose.Schema;
     var NotifSchema = new Schema({
         user_id: ObjectId,

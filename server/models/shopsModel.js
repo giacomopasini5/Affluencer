@@ -1,4 +1,4 @@
-module.export = function(mongoose) {
+module.exports = function(mongoose) {
     var Schema = mongoose.Schema;
     var ShopSchema = new Schema({
         name: String,
@@ -8,14 +8,17 @@ module.export = function(mongoose) {
 		city: String,
         capacity: Number,
         working_hours: [{
+            _id: false,
             day: String,
-            hour: String,
+            hours: String
         }],
         location: {
-            type: String,
+            _id: false,
+            type: {type: String},
             coordinates: [Number]
         },
         posts: [{
+            _id: false,
             datetime: Date,
             text: String
         }],
