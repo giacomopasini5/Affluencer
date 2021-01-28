@@ -1,7 +1,7 @@
 <template>
   <div id="profile">
 		<userInfo/>
-    <favoriteStoresList :favoriteStores="[1, 2, 3]"/>
+    <favoriteStoresList :favoriteStores="favoriteStores"/>
   </div>
 </template>
 
@@ -15,6 +15,25 @@
 		components: {
 			userInfo,
 			favoriteStoresList
+		},
+		
+		data: function() {
+			return {
+				favoriteStores: [
+					{
+						name: 'prova',
+						id: '1'
+					},
+					{
+						name: 'prova2',
+						id: '2'
+					},
+					{
+						name: 'prova3',
+						id: '3'
+					}
+				]
+			}
 		}
 	}
 </script>

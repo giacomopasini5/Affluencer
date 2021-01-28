@@ -3,6 +3,8 @@
 	background-color: white;
 	font-family: 'Montserrat', sans-serif;
 	color: #0e0b16;
+	border: 2px solid #0e0b16;
+  border-radius: 7px;
 }
 
 #userInfo, #favoriteStoresList {
@@ -17,14 +19,20 @@
 	font-size: 2rem;
 }
 
-/*ul#favorite-stores li {
+ul#favorite-stores {
+	padding: 0;
+}
+
+ul#favorite-stores li {
 	list-style: none;
-}*/
+	padding: 2%;
+}
 
 ul#favorite-stores a {
 	text-decoration: none;
-	color: #e7dfdd;
-	font-size: 2rem;
+	text-align: center;
+	color: #0e0b16;
+	font-size: 1.2rem;
 	font-weight: 500;
 	display: block;
 }
