@@ -4,6 +4,8 @@ import router from './router'
 import VueCookies from 'vue-cookies'
 import Vuelidate from 'vuelidate'
 
+import "leaflet/dist/leaflet.css";
+
 Vue.config.productionTip = false
 Vue.use(VueCookies)
 Vue.use(Vuelidate)
