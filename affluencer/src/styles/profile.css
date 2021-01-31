@@ -7,8 +7,27 @@
   border-radius: 7px;
 }
 
-#userInfo, #favoriteStoresList {
+#userInfo {
 	display: block;
+}
+
+#userInfo h1 {
+	margin: 0;
+	padding: 5% 2% 2% 2%;
+	text-align: center;
+	font-weight: 500;
+	font-size: 3rem;
+}
+
+#userInfo span {
+	margin: 1%;
+	font-size: 1.5rem;
+	text-align: center;
+}
+
+#favoriteStoresList {
+	display: block;
+	padding: 2%;
 }
 
 #favoriteStoresList h1 {
@@ -24,8 +43,19 @@ ul#favorite-stores {
 }
 
 ul#favorite-stores li {
+	position: relative;
 	list-style: none;
-	padding: 2%;
+	padding: 1%;
+	margin: 2% auto;
+	width: 50%;
+	border: 2px solid #123c69;
+  border-radius: 7px;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+ul#favorite-stores li:hover {
+	background-color: #9ecaed;
 }
 
 ul#favorite-stores a {
@@ -35,4 +65,22 @@ ul#favorite-stores a {
 	font-size: 1.2rem;
 	font-weight: 500;
 	display: block;
+}
+
+.item-delete {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	border-radius: 2em;
+	color: inherit;
+	text-decoration: none;
+	font-size: 0.8rem;
+	background-color: #e7dfdd;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+.item-delete:hover {
+	background-color: #ff0000;
 }

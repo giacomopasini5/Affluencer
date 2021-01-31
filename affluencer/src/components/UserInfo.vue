@@ -1,6 +1,7 @@
 <template>
 	<div id="userInfo">
-		
+		<h1>Nome</h1>
+		<span>Città</span>
 	</div>
 </template>
 

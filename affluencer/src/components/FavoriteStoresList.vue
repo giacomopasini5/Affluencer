@@ -4,6 +4,7 @@
 		<ul id="favorite-stores">
 			<li v-for="item in favoriteStores">
 				<router-link to="/store">{{ item.name }}</router-link>
+				<button class="item-delete">&#10006</button>
 			</li>
 		</ul>
 	</div>
