@@ -3,7 +3,6 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-//global.Task = require('./api/models/taskModel');
 const routes = require('./routes/config');
 
 mongoose.connect('mongodb://localhost/affluencer', { useNewUrlParser: true, useFindAndModify: false });

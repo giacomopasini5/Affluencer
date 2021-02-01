@@ -15,7 +15,7 @@ exports.create_shop = function(req, res) {
     if (req.body == null)
         return res.status(400).send("Empty body");
 
-    (new Shop(newShop)).save((err, shop) => {
+    (new Shop(req.body)).save((err, shop) => {
         if (err)
             res.json(err);
         res.status(201).json(shop);
