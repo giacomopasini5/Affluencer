@@ -44,7 +44,7 @@ exports.get_shop_sensor_infos = function(req, res) {
     });
 };
 
-exports.update_shop_sensor_info = function(req, res) {
+exports.update_shop_sensor_infos = function(req, res) {
     var id = req.params.id;
     if (utils.emptyField(id))
         return res.status(400).send("Missing id");

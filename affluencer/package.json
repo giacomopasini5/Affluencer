@@ -7,8 +7,10 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "leaflet": "^1.7.1",
     "vue": "^2.6.11",
+    "vue-axios": "^3.2.4",
     "vue-cookies": "^1.7.4",
     "vue-router": "^3.5.1",
     "vue2-leaflet": "^2.6.0",

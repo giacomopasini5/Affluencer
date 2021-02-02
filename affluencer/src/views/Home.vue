@@ -2,6 +2,7 @@
   <div id="home">
     <l-map
       :zoom="zoom"
+      :center="center"
       ref="myMap"
       @ready="onReady()"
       style="height: calc(100vh - 8vh)"
@@ -18,7 +19,7 @@
 /*  */
 /* <l-map style="height: 100%"> */
 
-import * as L from "leaflet";
+import { latLng } from "leaflet";
 import { LMap, LTileLayer } from "vue2-leaflet";  
 
 export default {
@@ -30,7 +31,8 @@ export default {
 
     data() {
         return {
-            zoom: 11,
+            zoom: 10,
+            center: latLng(44.14797, 12.23589),
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }

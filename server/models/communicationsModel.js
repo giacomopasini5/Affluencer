@@ -1,7 +1,7 @@
 module.exports = function(mongoose) {
     var Schema = mongoose.Schema;
     var CommSchema = new Schema({
-        client_id: ObjectId,
+        client_id: mongoose.Types.ObjectId,
         datetime: Date,
         people_inside: Number,
         people_queue: Number
