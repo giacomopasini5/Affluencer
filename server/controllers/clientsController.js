@@ -13,7 +13,7 @@ exports.list_clients = function(req, res) {
 
 exports.create_client = function(req, res) {
     if (req.body == null)
-        res.status(400).send("Empty body");
+        return res.status(400).send("Empty body");
 
     (new Client(req.body)).save(function(err, client) {
         if (err)
@@ -24,11 +24,11 @@ exports.create_client = function(req, res) {
 
 exports.get_client = function(req, res) {
     if (utils.emptyField(req.params.id))
-        res.status(400).send("Missing id");
+        return res.status(400).send("Missing id");
 
     Client.findById(id, function(err, client) {
         if (err || client == null)
-            res.status(404).send("Client not found");
+            return res.status(404).send("Client not found");
 
         res.json(client);
     });
@@ -36,7 +36,7 @@ exports.get_client = function(req, res) {
 
 exports.update_client = function(req, res) {
     if (utils.emptyField(req.params.id))
-        res.status(400).send("Missing id");
+        return res.status(400).send("Missing id");
 
     Client.findOneAndUpdate(
         req.params.id,
@@ -49,3 +49,53 @@ exports.update_client = function(req, res) {
         }
     );
 }
+
+exports.list_client_favorite_shops = function(req, res) {
+    var id = req.params.id;
+    if (utils.emptyField(id))
+        return res.status(400).send("Missing client id");
+
+    Client.findById(id, "favorite_shops", (err, fs) => {
+        if (err)
+            res.send(err);
+        res.json(fs);
+    });
+};
+
+exports.add_client_favorite_shop = function(req, res) {
+    var id = req.params.id;
+    if (utils.emptyField(id))
+        return res.status(400).send("Missing client id");
+    var shop_id = req.body.shop_id
+    if (utils.emptyField(shop_id))
+        return res.status(400).send("Missing shop id");
+
+    Client.findByIdAndUpdate(
+        id,
+        { $push: { favorite_shops: shop_id }},
+        (err, client) => {
+            if (err)
+                res.send(err);
+            res.send(shop_id);
+        }
+    );
+};
+
+exports.remove_client_favorite_shop = function(req, res) {
+    var id = req.params.id;
+    if (utils.emptyField(id))
+        return res.status(400).send("Missing client id");
+    var shop_id = req.params.shop_id
+    if (utils.emptyField(shop_id))
+        return res.status(400).send("Missing shop id");
+
+    Client.findByIdAndUpdate(
+        id,
+        { $pull: { favorite_shops: shop_id }},
+        (err, client) => {
+            if (err)
+                res.send(err);
+            res.send("Removed");
+        }
+    );
+};

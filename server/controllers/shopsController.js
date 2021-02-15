@@ -38,7 +38,7 @@ exports.get_shop = function(req, res) {
 exports.update_shop = function(req, res) {
     var id = req.params.id;
     if (utils.emptyField(id))
-        res.status(400).send("Missing id");
+        return res.status(400).send("Missing id");
 
     Shop.findOneAndUpdate(
         id,
@@ -55,7 +55,7 @@ exports.update_shop = function(req, res) {
 exports.list_shop_posts = function(req, res) {
     var id = req.params.id;
     if (utils.emptyField(id))
-        res.status(400).send("Missing shop id");
+        return res.status(400).send("Missing shop id");
     
     Shop.findById(id, "posts", (err, posts) => {
         if (err)
@@ -67,7 +67,7 @@ exports.list_shop_posts = function(req, res) {
 exports.create_shop_post = function(req, res) {
     var id = req.params.id;
     if (utils.emptyField(id))
-        res.status(400).send("Missing shop id");
+        return res.status(400).send("Missing shop id");
 
     //Shop.update(id, { $push: { posts: req.body }})
     Shop.findByIdAndUpdate(
@@ -85,10 +85,10 @@ exports.create_shop_post = function(req, res) {
 exports.get_shop_post = function(req, res) {
     var id = req.params.id;
     if (utils.emptyField(id))
-        res.status(400).send("Missing shop id");
+        return res.status(400).send("Missing shop id");
     var dt = req.params.datetime;
     if (utils.emptyField(dt))
-        res.status(400).send("Missing post id");
+        return res.status(400).send("Missing post id");
 
     Shop.findById(
         id,
@@ -104,10 +104,10 @@ exports.get_shop_post = function(req, res) {
 exports.update_shop_post = function(req, res) {
     var id = req.params.id;
     if (utils.emptyField(id))
-        res.status(400).send("Missing shop id");
+        return res.status(400).send("Missing shop id");
     var dt = req.params.datetime;
     if (utils.emptyField(dt))
-        res.status(400).send("Missing post id");
+        return res.status(400).send("Missing post id");
 
     Shop.findOneAndUpdate(
         { "_id": id, "posts.datetime": dt },
@@ -119,5 +119,3 @@ exports.update_shop_post = function(req, res) {
         }
     );
 };
-
-

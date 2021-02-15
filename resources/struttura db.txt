@@ -84,6 +84,7 @@ CLIENTI (
   email,
   password,
   città,
+  negozi_preferiti[], 
   attivo // sì/no
 )
 

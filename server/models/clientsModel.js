@@ -5,7 +5,7 @@ module.exports = function(mongoose) {
         email: String,
         password: String,
         city: String,
-        favoriteStores: [mongoose.Types.ObjectId],
+        favorite_shops: [mongoose.Types.ObjectId],
         enabled: Boolean
     });
 

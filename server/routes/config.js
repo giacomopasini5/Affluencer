@@ -13,6 +13,13 @@ module.exports = function(app) {
         .get(clientsController.get_client)
         .put(clientsController.update_client)
         //.delete(clientsController.delete_client);
+
+    app.route('/api/clients/:id/favorite_shops')
+        .get(clientsController.list_client_favorite_shops)
+        .post(clientsController.add_client_favorite_shop);
+
+    app.route('/api/clients/:id/favorite_shops/:shop_id')
+        .delete(clientsController.remove_client_favorite_shop);
     
     // SHOPS
     app.route('/api/shops')
