@@ -13,17 +13,8 @@
 <script>
 	export default {
 		name: 'favoriteStoresList',
-		//props: ['favoriteStores'],
-		data() {
-			return {
-				favoriteStores: null
-			}
-		},
-		mounted() {
-			this.axios.get('/shops').then(resp => {
-				this.favoriteStores = resp.data;
-			});
-		}
+		
+		props: ['favoriteStores']
 	}
 </script>
 

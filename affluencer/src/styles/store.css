@@ -1,0 +1,28 @@
+#store {
+	margin: 5% 10%;
+	background-color: white;
+	font-family: 'Montserrat', sans-serif;
+	color: #0e0b16;
+	border: 2px solid #0e0b16;
+  border-radius: 7px;
+}
+
+#storeInfo {
+	display: block;
+}
+
+#storeInfo h1 {
+	display: block;
+	margin: 0;
+	padding: 5% 2% 2% 2%;
+	text-align: center;
+	font-weight: 500;
+	font-size: 3rem;
+}
+
+#storeInfo span {
+	display: block;
+	margin: 1%;
+	font-size: 1.5rem;
+	text-align: center;
+}

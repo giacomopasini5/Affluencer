@@ -1,5 +1,17 @@
 <template>
   <div id="store">
-    STORE
+    <storeInfo/>
   </div>
 </template>
+
+<script>
+	import storeInfo from '@/components/StoreInfo.vue'
+	
+	export default {
+		name: 'store',
+		
+		components: {
+			storeInfo
+		}
+	}
+</script>
