@@ -19,15 +19,29 @@
 		
 		data: function() {
 			return {
-				favoriteStores: ''
+				favoriteStores: [
+					{
+						id: '1',
+						name: 'prova 1'
+					},
+					{
+						id: '2',
+						name: 'prova 2'
+					},
+					{
+						id: '3',
+						name: 'prova 3'
+					}
+				],
+				ciao: 'sto'
 			}
-		},
+		}/*,
 		
 		mounted: function() {
 			this.axios.get('/shops').then(resp => {
 				favoriteStores = resp.data
 			})
-		}
+		}*/
 	}
 </script>
 
