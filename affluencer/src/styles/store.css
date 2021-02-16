@@ -5,14 +5,22 @@
 	color: #0e0b16;
 	border: 2px solid #0e0b16;
   border-radius: 7px;
+	overflow: hidden;
 }
 
-#storeInfo {
-	display: block;
+.sideInfo {
+	width: 33%;
+	float: left;
+	padding-bottom: 10px;
+}
+
+.mainInfo {
+	width: 66%;
+	float: right;
+	padding-bottom: 10px;
 }
 
 #storeInfo h1 {
-	display: block;
 	margin: 0;
 	padding: 2%;
 	text-align: center;
@@ -20,14 +28,18 @@
 	font-size: 3rem;
 }
 
-#location {
-	display: block;
+#description {
+	display: flex;
+	flex-direction: column;
+	padding: 2%;
+}
+
+#description span {
+	margin: 2%;
+	font-size: 1.2rem;
 	text-align: center;
 }
 
-#location span {
-	display: inline-block;
-	margin: 1%;
-	font-size: 1.5rem;
-	text-align: center;
+#statistics {
+	padding: 2%;
 }

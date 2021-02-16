@@ -32,8 +32,7 @@
 						id: '3',
 						name: 'prova 3'
 					}
-				],
-				ciao: 'sto'
+				]
 			}
 		}/*,
 		
