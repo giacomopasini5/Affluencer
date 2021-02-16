@@ -1,7 +1,10 @@
 <template>
 	<div id="storeInfo">
 		<h1>Nome</h1>
-		<span>Città</span>
+		<div id="location">
+			<span>Indirizzo</span>
+			<span>Città</span>
+		</div>
 	</div>
 </template>
 
