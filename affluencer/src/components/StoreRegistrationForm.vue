@@ -1,30 +1,30 @@
 <template>
   <div id="registerStore">
-    <h1>Registrazione Negozio</h1>
+    <h1 class="form-title">Registrazione Negozio</h1>
     <form @submit.prevent="handleSubmit" novalidate>
       <div class="form-item">
-				<label for="name">Nome</label>
+				<label for="name" class="form-label">Nome</label>
 				<input type="text" v-model="store.name" id="name" name="name" :class="{'is-invalid': $v.store.name.$error}">
 				<div v-if="$v.store.name.$error" class="invalid-feedback">
-					<span v-if="!$v.store.name.required">Il nome è obbligatorio</span>
+					<span v-if="!$v.store.name.required" class="">Il nome è obbligatorio</span>
 				</div>
       </div>
 			<div class="form-item">
-        <label for="address">Indirizzo</label>
+        <label for="address" class="form-label">Indirizzo</label>
         <input type="text" v-model="store.address" id="address" name="address" :class="{'is-invalid': $v.store.address.$error}">
         <div v-if="$v.store.address.$error" class="invalid-feedback">
 					<span v-if="!$v.store.address.required">L'indirizzo è obbligatorio</span>
 				</div>
       </div>
 			<div class="form-item">
-        <label for="city">Città</label>
+        <label for="city" class="form-label">Città</label>
         <input type="text" v-model="store.city" id="city" name="city" :class="{'is-invalid': $v.store.city.$error}">
         <div v-if="$v.store.city.$error" class="invalid-feedback">
 					<span v-if="!$v.store.city.required">La città è obbligatoria</span>
 				</div>
       </div>
 			<div class="form-item">
-        <label for="capacity">Capienza</label>
+        <label for="capacity" class="form-label">Capienza</label>
         <input type="number" v-model="store.capacity" id="capacity" name="capacity" :class="{'is-invalid': $v.store.capacity.$error}">
         <div v-if="$v.store.capacity.$error" class="invalid-feedback">
 					<span v-if="!$v.store.capacity.required">La capienza è obbligatoria</span>
@@ -32,21 +32,21 @@
         </div>
       </div>
 			<div class="form-item">
-        <label for="openTime">Orario di apertura</label>
+        <label for="openTime" class="form-label">Orario di apertura</label>
         <input type="time" v-model="store.openTime" id="openTime" name="openTime" :class="{'is-invalid': $v.store.openTime.$error}">
         <div v-if="$v.store.openTime.$error" class="invalid-feedback">
 					<span v-if="!$v.store.openTime.required">L'orario di apertura è obbligatorio</span>
         </div>
       </div>
       <div class="form-item">
-        <label for="closeTime">Orario di chiusura</label>
+        <label for="closeTime" class="form-label">Orario di chiusura</label>
         <input type="time" v-model="store.closeTime" id="closeTime" name="closeTime" :class="{'is-invalid': $v.store.closeTime.$error}">
         <div v-if="$v.store.closeTime.$error" class="invalid-feedback">
 					<span v-if="!$v.store.closeTime.required">L'orario di chiusura è obbligatorio</span>
         </div>
       </div>
       <div class="form-item">
-        <label for="email">Email</label>
+        <label for="email" class="form-label">Email</label>
         <input type="email" v-model="store.email" id="email" name="email" :class="{'is-invalid':$v.store.email.$error}">
         <div v-if="$v.store.email.$error" class="invalid-feedback">
 					<span v-if="!$v.store.email.required">L'email è obbligatoria</span>
@@ -54,7 +54,7 @@
         </div>
       </div>
       <div class="form-item">
-        <label for="password">Password</label>
+        <label for="password" class="form-label">Password</label>
         <input type="password" v-model="store.password" id="password" name="password" :class="{'is-invalid': $v.store.password.$error}">
         <div v-if="$v.store.password.$error" class="invalid-feedback">
 					<span v-if="!$v.store.password.required">La password è obbligatoria</span>
@@ -62,7 +62,7 @@
         </div>
       </div>
       <div class="form-item">
-        <label for="confirmPassword">Conferma password</label>
+        <label for="confirmPassword" class="form-label">Conferma password</label>
         <input type="password" v-model="store.confirmPassword" id="confirmPassword" name="confirmPassword" :class="{ 'is-invalid': $v.store.confirmPassword.$error}">
         <div v-if="$v.store.confirmPassword.$error" class="invalid-feedback">
           <span v-if="!$v.store.confirmPassword.required">La conferma password è obbligatoria</span>

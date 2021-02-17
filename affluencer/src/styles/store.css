@@ -20,7 +20,7 @@
 	padding-bottom: 10px;
 }
 
-#storeInfo h1 {
+.store-title {
 	margin: 0;
 	padding: 2%;
 	text-align: center;
@@ -28,16 +28,32 @@
 	font-size: 3rem;
 }
 
-#description {
+#description, #signalCustomers {
 	display: flex;
 	flex-direction: column;
 	padding: 2%;
 }
 
-#description span {
+.store-info {
 	margin: 2%;
 	font-size: 1.2rem;
 	text-align: center;
+}
+
+.store-input {
+	margin: 1% auto;
+	width: 30%;
+	border: 2px solid #a9a9a9;
+  border-radius: 7px;
+	line-height: 20px;
+	font-size: 0.8rem;
+	transition: all 0.3s;
+}
+
+.store-input:focus {
+	outline: none;
+  border-color: #9ecaed;
+  box-shadow: 0 0 10px #9ecaed;
 }
 
 #statistics {

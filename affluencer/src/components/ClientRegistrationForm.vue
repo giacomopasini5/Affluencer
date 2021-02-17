@@ -1,23 +1,23 @@
 <template>
   <div id="registerClient">
-    <h1>Registrazione Cliente</h1>
+    <h1 class="form-title">Registrazione Cliente</h1>
     <form @submit.prevent="handleSubmit" novalidate>
       <div class="form-item">
-				<label for="name">Nome</label>
+				<label for="name" class="form-label">Nome</label>
 				<input type="text" v-model="client.name" id="name" name="name" :class="{'is-invalid': $v.client.name.$error}">
 				<div v-if="$v.client.name.$error" class="invalid-feedback">
 					<span v-if="!$v.client.name.required">Il nome è obbligatorio</span>
 				</div>
       </div>
       <div class="form-item">
-        <label for="city">Città</label>
+        <label for="city" class="form-label">Città</label>
         <input type="text" v-model="client.city" id="city" name="city" :class="{'is-invalid': $v.client.city.$error}">
         <div v-if="$v.client.city.$error" class="invalid-feedback">
 					<span v-if="!$v.client.city.required">La città è obbligatoria</span>
 				</div>
       </div>
       <div class="form-item">
-        <label for="email">Email</label>
+        <label for="email" class="form-label">Email</label>
         <input type="email" v-model="client.email" id="email" name="email" :class="{'is-invalid':$v.client.email.$error}">
         <div v-if="$v.client.email.$error" class="invalid-feedback">
 					<span v-if="!$v.client.email.required">L'email è obbligatoria</span>
@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="form-item">
-        <label for="password">Password</label>
+        <label for="password" class="form-label">Password</label>
         <input type="password" v-model="client.password" id="password" name="password" :class="{'is-invalid': $v.client.password.$error}">
         <div v-if="$v.client.password.$error" class="invalid-feedback">
 					<span v-if="!$v.client.password.required">La password è obbligatoria</span>
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="form-item">
-        <label for="confirmPassword">Conferma Password</label>
+        <label for="confirmPassword" class="form-label">Conferma Password</label>
         <input type="password" v-model="client.confirmPassword" id="confirmPassword" name="confirmPassword" :class="{ 'is-invalid': $v.client.confirmPassword.$error}">
         <div v-if="$v.client.confirmPassword.$error" class="invalid-feedback">
           <span v-if="!$v.client.confirmPassword.required">La conferma password è obbligatoria</span>

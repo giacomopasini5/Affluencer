@@ -2,7 +2,13 @@
 	<div id="storeStats">
 		<div class="mainInfo">
 			<div id="statistics">
-				<span>Prova</span>
+				
+			</div>
+			<div id="">
+				
+			</div>
+			<div id="statistics">
+				
 			</div>
 		</div>
 	</div>

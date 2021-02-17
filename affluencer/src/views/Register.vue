@@ -1,7 +1,7 @@
 <template>
   <div id="register">
 		<div class="form-item" v-if="chooseRegistration">
-			<span>Che tipo di profilo vuoi registrare?</span>
+			<span class="form-span">Che tipo di profilo vuoi registrare?</span>
 			<button class="form-button" @click="setClientRegistration()">Cliente</button>
 			<button class="form-button" @click="setStoreRegistration()">Negozio</button>
 		</div>

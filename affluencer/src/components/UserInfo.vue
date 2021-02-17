@@ -1,7 +1,7 @@
 <template>
 	<div id="userInfo">
-		<h1>Nome</h1>
-		<span>Città</span>
+		<h1 class="profile-title">Nome</h1>
+		<span class="profile-span">Città</span>
 	</div>
 </template>
 

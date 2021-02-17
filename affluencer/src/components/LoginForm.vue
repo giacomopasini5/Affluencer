@@ -1,9 +1,9 @@
 <template>
 	<div id="loginForm">
-		<h1>Accedi</h1>
+		<h1 class="form-title">Accedi</h1>
 		<form @submit.prevent="handleSubmit" novalidate>
 			<div class="form-item">
-				<label for="email">Email</label>
+				<label for="email" class="form-label">Email</label>
 				<input type="email" v-model="user.email" id="email" name="email" :class="{'is-invalid':$v.user.email.$error}">
 				<div v-if="$v.user.email.$error" class="invalid-feedback">
 					<span v-if="!$v.user.email.required">L'email è obbligatoria</span>
@@ -11,7 +11,7 @@
 				</div>
 			</div>
 			<div class="form-item">
-				<label for="password">Password</label>
+				<label for="password" class="form-label">Password</label>
 				<input type="password" v-model="user.password" id="password" name="password" :class="{'is-invalid': $v.user.password.$error}">
 				<div v-if="$v.user.password.$error" class="invalid-feedback">
 					<span v-if="!$v.user.password.required">La password è obbligatoria</span>
@@ -21,7 +21,7 @@
 			<button class="form-button">Accedi</button>
 			</div>
 			<div class="form-item">
-				<span>Non sei registrato?</span>
+				<span class="form-span">Non sei registrato?</span>
 				<router-link to="/register" class="form-button">Registrati</router-link>
 			</div>
 		</form>

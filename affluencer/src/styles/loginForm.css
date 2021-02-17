@@ -7,15 +7,15 @@
   border-radius: 7px;
 }
 
-#login h1, #register h1 {
+.form-title {
 	margin: 0;
-	padding: 5% 2% 2% 2%;
+	padding: 2%;
 	text-align: center;
 	font-weight: 500;
 	font-size: 3rem;
 }
 
-#login span, #register span {
+.form-span {
 	display: block;
 	margin: 2%;
 	font-size: 1.2rem;
@@ -31,7 +31,7 @@ form {
 	text-align: center;
 }
 
-input {
+#login input, #register input {
 	display: block;
 	margin: 1% auto;
 	width: 50%;
@@ -42,25 +42,22 @@ input {
 	transition: all 0.3s;
 }
 
-input:focus {
+#login input:focus, #register input:focus {
 	outline: none;
   border-color: #9ecaed;
   box-shadow: 0 0 10px #9ecaed;
 }
 
-label {
+.form-label {
 	display: block;
 	margin: 1%;
 	font-size: 1.2rem;
 }
 
-button {
-	border: none;
-	outline: none;
-}
-
 .form-button {
 	display: inline-block;
+	border: none;
+	outline: none;
 	padding: 0.3em 1.2em;
 	margin: 2%;
 	border-radius: 2em;
