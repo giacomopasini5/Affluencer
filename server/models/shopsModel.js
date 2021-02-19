@@ -7,11 +7,18 @@ module.exports = function(mongoose) {
         address: String,
 		city: String,
         capacity: Number,
+        working_hours: {
+            _id: false,
+            opening: String,
+            closing: String
+        },
+        /*
         working_hours: [{
             _id: false,
             day: String,
             hours: String
         }],
+        */
         location: {
             _id: false,
             type: {type: String},

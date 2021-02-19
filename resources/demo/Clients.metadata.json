@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"affluencer.Clients"}],"uuid":"1740243c3eaa400bb085082088ad3c9c"}
