@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const utils = require('../common.js');
 
 var Client = require("../models/clientsModel.js")(mongoose);
+var Shop = require("../models/shopsModel.js")(mongoose);
 
 exports.list_clients = function(req, res) {
     Client.find({}, function(err, clients) {
@@ -26,7 +27,7 @@ exports.get_client = function(req, res) {
     if (utils.emptyField(req.params.id))
         return res.status(400).send("Missing id");
 
-    Client.findById(id, function(err, client) {
+    Client.findById(req.params.id, function(err, client) {
         if (err || client == null)
             return res.status(404).send("Client not found");
 
@@ -57,8 +58,17 @@ exports.list_client_favorite_shops = function(req, res) {
 
     Client.findById(id, "favorite_shops", (err, fs) => {
         if (err)
-            res.send(err);
-        res.json(fs);
+            return res.send(err);
+        
+        Shop.find(
+            {_id: {$in: fs}},
+            "_id, name",
+            (err, shops) => {
+                if (err)
+                    res.send(err);
+                res.json(shops);
+            }
+        );
     });
 };
 

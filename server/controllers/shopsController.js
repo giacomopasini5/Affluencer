@@ -119,3 +119,22 @@ exports.update_shop_post = function(req, res) {
         }
     );
 };
+
+exports.delete_shop_post = function(req, res) {
+    var id = req.params.id;
+    if (utils.emptyField(id))
+        return res.status(400).send("Missing shop id");
+    var dt = req.params.datetime;
+    if (utils.emptyField(dt))
+        return res.status(400).send("Missing post id");
+
+    Shop.findByIdAndUpdate(
+        id,
+        { $pull: { posts: { datetime: dt }}},
+        (err, post) => {
+            if (err)
+                res.send(err);
+            res.send("Deleted");
+        }
+    );
+};

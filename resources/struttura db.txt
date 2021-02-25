@@ -122,7 +122,8 @@ NEGOZI (
 
 SEGNALAZIONI (
   _id,
-  clienti_id
+  clienti_id,
+  negozi_id,
   dataora,
   persone_dentro,
   persone_coda
