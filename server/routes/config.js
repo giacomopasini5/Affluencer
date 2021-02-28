@@ -1,10 +1,16 @@
+const communicationsModel = require('../models/communicationsModel');
+
 module.exports = function(app) {
     var clientsController = require('../controllers/clientsController');
     var shopsController = require('../controllers/shopsController.js');
     var sensorsController = require('../controllers/sensorsController.js');
     var notificationsController = require('../controllers/notificationsController.js');
+    var reviewsController = require('../controllers/reviewsController.js');
+    var reservationsController = require('../controllers/reservationsController.js');
+    var communicationsController = require('../controllers/communicationsController.js');
 
     // CLIENTS
+
     app.route('/api/clients')
         .get(clientsController.list_clients)
         .post(clientsController.create_client);
@@ -22,6 +28,7 @@ module.exports = function(app) {
         .delete(clientsController.remove_client_favorite_shop);
     
     // SHOPS
+
     app.route('/api/shops')
         .get(shopsController.list_shops)
         .post(shopsController.create_shop);
@@ -41,15 +48,17 @@ module.exports = function(app) {
         //.delete(shopsController.delete_shop_post);
 
     // SENSORS
-    app.route('/api/sensors/:shop_id')
+
+    app.route('/api/sensors')
         .get(sensorsController.list_shop_sensor_infos)
         .post(sensorsController.create_shop_sensor_info);
 
-    app.route('/api/sensors/:shop_id/:id')
+    app.route('/api/sensors/:id')
         .get(sensorsController.get_shop_sensor_infos)
         .put(sensorsController.update_shop_sensor_infos);
 
     // NOTIFICATIONS
+
     app.route('/api/notifications/:user_id')
         .get(notificationsController.list_user_notifications)
         .post(notificationsController.create_user_notification);
@@ -58,5 +67,41 @@ module.exports = function(app) {
         .get(notificationsController.get_user_notification)
         .put(notificationsController.update_user_notification);
 
-    
+    // REVIEWS
+
+    app.route('/api/reviews')
+        .get(reviewsController.list_reviews)
+        .post(reviewsController.create_review);
+
+    app.route('/api/reviews/:id')
+        .get(reviewsController.get_review)
+        .put(reviewsController.update_review)
+        .delete(reviewsController.delete_review);
+
+    app.route('/api/reviews/:id/:datetime')
+        .get(reviewsController.get_review_comment)
+        .put(reviewsController.update_review_comment)
+        .delete(reviewsController.delete_review_comment);
+
+    // RESERVATIONS
+
+    app.route('/api/reservations')
+        .get(reservationsController.list_reservations)
+        .post(reservationsController.create_reservation);
+
+    app.route('/api/reservations/:id')
+        .get(reservationsController.get_reservation)
+        .put(reservationsController.update_reservation)
+        .delete(reservationsController.delete_reservation);
+
+    // COMMUNICATIONS
+
+    app.route('/api/communications')
+        .get(communicationsController.list_communications)
+        .post(communicationsController.create_communication);
+
+    app.route('/api/communications/:id')
+        .get(communicationsController.get_communication)
+        .put(communicationsController.update_communication)
+        .delete(communicationsController.delete_communication);
 };

@@ -3,17 +3,26 @@ const utils = require("../common.js");
 
 var Communication = require("../models/communicationsModel.js")(mongoose);
 
-exports.list_shop_communications = function(req, res) {
-    if (req.body == null)
+exports.list_communications = function(req, res) {
+    var body = req.body;
+    if (body == null)
         return res.status(400).send("Empty body");
+    var obj = null;
+    if (!utils.emptyField(body.client_id)) {
+        obj = {client_id: body.client_id};
+    }
+    if (!utils.emptyField(body.shop_id)) {
+        obj = {shop_id: body.shop_id};
+    }
 
-    Communication.find({shop_id: req.body.shop_id}, (err, com) => {
+    Communication.find(obj, (err, com) => {
         if (err)
             res.status(404).send(err);
         res.json(com);
     });
 };
 
+/*
 exports.list_client_communications = function(req, res) {
     if (req.body == null)
         return res.status(400).send("Empty body");
@@ -24,6 +33,7 @@ exports.list_client_communications = function(req, res) {
         res.json(com);
     });
 };
+*/
 
 exports.create_communication = function(req, res) {
     if (req.body == null)

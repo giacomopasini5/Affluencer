@@ -4,7 +4,7 @@ const utils = require("../common.js");
 var Sensor = require("../models/sensorsModel.js")(mongoose);
 
 exports.list_shop_sensor_infos = function(req, res) {
-    var id = req.params.id;
+    var id = req.body.id;
     if (utils.emptyField(id))
         res.status(400).send("Missing shop id");
 

@@ -3,17 +3,26 @@ const utils = require('../common.js');
 
 var Review = require("../models/reviewsModel.js")(mongoose);
 
-exports.list_client_reviews = function(req, res) {
-    if (req.body == null)
+exports.list_reviews = function(req, res) {
+    var body = req.body;
+    if (body == null)
         return res.status(400).send("Empty body");
+    var obj = null;
+    if (!utils.emptyField(body.client_id)) {
+        obj = {client_id: body.client_id};
+    }
+    if (!utils.emptyField(body.shop_id)) {
+        obj = {shop_id: body.shop_id};
+    }
 
-    Review.find({ client_id: req.body.client_id }, (err, reviews) => {
+    Review.find(obj, (err, reviews) => {
         if (err)
             res.status(404).send(err);
         res.json(reviews);
     });
 };
 
+/*
 exports.list_shop_reviews = function(req, res) {
     if (req.body == null)
         return res.status(400).send("Empty body");
@@ -24,6 +33,7 @@ exports.list_shop_reviews = function(req, res) {
         res.json(reviews);
     });
 };
+*/
 
 exports.create_review = function(req, res) {
     if (req.body == null)
@@ -146,7 +156,7 @@ exports.update_review_comment = function(req, res) {
     );
 };
 
-exports.delete_review_post = function(req, res) {
+exports.delete_review_comment = function(req, res) {
     var id = req.params.id;
     if (utils.emptyField(id))
         return res.status(400).send("Missing review id");

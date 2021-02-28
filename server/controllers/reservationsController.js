@@ -3,17 +3,26 @@ const utils = require("../common.js");
 
 var Reservation = require("../models/reservationsModel.js")(mongoose);
 
-exports.list_shop_reservations = function(req, res) {
-    if (req.body == null)
+exports.list_reservations = function(req, res) {
+    var body = req.body;
+    if (body == null)
         return res.status(400).send("Empty body");
+    var obj = null;
+    if (!utils.emptyField(body.client_id)) {
+        obj = {client_id: body.client_id};
+    }
+    if (!utils.emptyField(body.shop_id)) {
+        obj = {shop_id: body.shop_id};
+    }
 
-    Reservation.find({shop_id: req.body.shop_id}, (err, reservations) => {
+    Reservation.find(obj, (err, reservations) => {
         if (err)
             res.status(404).send(err);
         res.json(reservations);
     });
 };
 
+/*
 exports.list_client_reservations = function(req, res) {
     if (req.body == null)
         return res.status(400).send("Empty body");
@@ -24,6 +33,7 @@ exports.list_client_reservations = function(req, res) {
         res.json(reservations);
     });
 };
+*/
 
 exports.create_reservation = function(req, res) {
     if (req.body == null)

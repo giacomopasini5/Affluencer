@@ -4,7 +4,7 @@ const utils = require("../common.js");
 var Notification = require("../models/notificationsModel.js")(mongoose);
 
 exports.list_user_notifications = function(req, res) {
-    var id = req.params.id;
+    var id = req.body.id;
     if (utils.emptyField(id))
         res.status(400).send("Missing user id");
 
@@ -62,4 +62,16 @@ exports.update_user_notification = function(req, res) {
             res.json(notification);
         }
     );
+};
+
+exports.delete_user_notification = function(req, res) {
+    var id = req.params.id;
+    if (utils.emptyField(id))
+        return res.status(400).send("Missing id");
+
+    Notification.findByIdAndRemove(id, (err, notif) => {
+        if (err)
+            res.send(err);
+        res.send("Deleted");
+    });
 };
