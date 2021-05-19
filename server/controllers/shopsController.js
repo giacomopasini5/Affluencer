@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const utils = require("../common.js");
+const bcrypt = require('bcrypt');
+const saltRound = 10;
 
 var Shop = require("../models/shopsModel.js")(mongoose);
 
@@ -14,11 +16,19 @@ exports.list_shops = function(req, res) {
 exports.create_shop = function(req, res) {
     if (req.body == null)
         return res.status(400).send("Empty body");
+    var body = req.body;
 
-    (new Shop(req.body)).save((err, shop) => {
-        if (err)
-            res.json(err);
-        res.status(201).json(shop);
+    bcrypt.genSalt(saltRound)
+    .then(salt => {
+        return bcrypt.hash(body.password, salt);
+    })
+    .then(hash => {
+        body.password = hash;
+        (new Shop(body)).save((err, shop) => {
+            if (err)
+                res.json(err);
+            res.status(201).json(shop);
+        });
     });
 };
 
@@ -138,3 +148,5 @@ exports.delete_shop_post = function(req, res) {
         }
     );
 };
+
+exports.Shop = Shop;

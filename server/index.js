@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost/affluencer', { useNewUrlParser: true, useF
 const port = 3000;
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: ['http://localhost:8080'] }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

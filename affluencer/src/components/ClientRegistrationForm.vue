@@ -1,7 +1,7 @@
 <template>
   <div id="registerClient">
     <h1 class="form-title">Registrazione Cliente</h1>
-    <form @submit.prevent="handleSubmit" novalidate>
+    <form id="clientForm" @submit.prevent="handleSubmit" novalidate>
       <div class="form-item">
 				<label for="name" class="form-label">Nome</label>
 				<input type="text" v-model="client.name" id="name" name="name" :class="{'is-invalid': $v.client.name.$error}">
@@ -79,7 +79,16 @@
       handleSubmit: function(e) {
         this.$v.$touch()
         if (this.$v.$invalid) return
-        alert("SUCCESS")
+
+        this.axios.post('/clients', this.client)
+          .then((res) => {
+            this.login(res._id, res.username, 'client');
+            window.location.href = '/';
+          })
+          .catch((error) => {
+            console.log('failure');
+            console.log(error);
+          });
       }
     }
 	}

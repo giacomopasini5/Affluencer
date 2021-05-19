@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const utils = require('../common.js');
+const bcrypt = require('bcrypt');
+const saltRound = 10;
 
 var Client = require("../models/clientsModel.js")(mongoose);
-var Shop = require("../models/shopsModel.js")(mongoose);
+const { Shop } = require("../controllers/shopsController.js");
 
 exports.list_clients = function(req, res) {
     Client.find({}, function(err, clients) {
@@ -15,11 +17,19 @@ exports.list_clients = function(req, res) {
 exports.create_client = function(req, res) {
     if (req.body == null)
         return res.status(400).send("Empty body");
+    var body = req.body;
 
-    (new Client(req.body)).save(function(err, client) {
-        if (err)
-            res.send(err);
-        res.status(201).json(client);
+    bcrypt.genSalt(saltRound)
+    .then(salt => {
+        return bcrypt.hash(body.password, salt);
+    })
+    .then(hash => {
+        body.password = hash;
+        (new Client(body)).save(function(err, client) {
+            if (err)
+                res.send(err);
+            res.status(201).json(client);
+        });
     });
 };
 
@@ -109,3 +119,5 @@ exports.remove_client_favorite_shop = function(req, res) {
         }
     );
 };
+
+exports.Client = Client;

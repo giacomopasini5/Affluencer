@@ -7,7 +7,7 @@ module.exports = function(mongoose) {
         text: String,
         comments: [{
             client_id: mongoose.Types.ObjectId,
-            datetime,
+            datetime: Date,
             text: String
         }]
     });

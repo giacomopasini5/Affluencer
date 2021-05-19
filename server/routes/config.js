@@ -1,5 +1,3 @@
-const communicationsModel = require('../models/communicationsModel');
-
 module.exports = function(app) {
     var clientsController = require('../controllers/clientsController');
     var shopsController = require('../controllers/shopsController.js');
@@ -9,24 +7,8 @@ module.exports = function(app) {
     var reservationsController = require('../controllers/reservationsController.js');
     var communicationsController = require('../controllers/communicationsController.js');
 
-    // CLIENTS
+    var loginController = require('../controllers/loginController.js');
 
-    app.route('/api/clients')
-        .get(clientsController.list_clients)
-        .post(clientsController.create_client);
-
-    app.route('/api/clients/:id')
-        .get(clientsController.get_client)
-        .put(clientsController.update_client)
-        //.delete(clientsController.delete_client);
-
-    app.route('/api/clients/:id/favorite_shops')
-        .get(clientsController.list_client_favorite_shops)
-        .post(clientsController.add_client_favorite_shop);
-
-    app.route('/api/clients/:id/favorite_shops/:shop_id')
-        .delete(clientsController.remove_client_favorite_shop);
-    
     // SHOPS
 
     app.route('/api/shops')
@@ -46,6 +28,24 @@ module.exports = function(app) {
         .get(shopsController.get_shop_post)
         .put(shopsController.update_shop_post)
         //.delete(shopsController.delete_shop_post);
+
+    // CLIENTS
+
+    app.route('/api/clients')
+        .get(clientsController.list_clients)
+        .post(clientsController.create_client);
+
+    app.route('/api/clients/:id')
+        .get(clientsController.get_client)
+        .put(clientsController.update_client)
+        //.delete(clientsController.delete_client);
+
+    app.route('/api/clients/:id/favorite_shops')
+        .get(clientsController.list_client_favorite_shops)
+        .post(clientsController.add_client_favorite_shop);
+
+    app.route('/api/clients/:id/favorite_shops/:shop_id')
+        .delete(clientsController.remove_client_favorite_shop);
 
     // SENSORS
 
@@ -104,4 +104,7 @@ module.exports = function(app) {
         .get(communicationsController.get_communication)
         .put(communicationsController.update_communication)
         .delete(communicationsController.delete_communication);
+
+    app.route('/api/login')
+        .post(loginController.login);
 };
