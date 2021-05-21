@@ -7,11 +7,8 @@ module.exports = function(mongoose) {
         address: String,
 		city: String,
         capacity: Number,
-        working_hours: {
-            _id: false,
-            opening: String,
-            closing: String
-        },
+        openTime: String,
+        closeTime: String,
         /*
         working_hours: [{
             _id: false,
