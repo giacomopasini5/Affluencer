@@ -17,6 +17,7 @@ exports.create_shop = function(req, res) {
     if (req.body == null)
         return res.status(400).send("Empty body");
     var body = req.body;
+    body.enabled = true;
 
     bcrypt.genSalt(saltRound)
     .then(salt => {

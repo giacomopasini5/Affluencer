@@ -1,0 +1,7 @@
+-- EXPORT
+
+mongodump.exe -d <database_name> -o <directory>
+
+-- IMPORT
+
+mongorestore.exe -d <database_name> <directory>

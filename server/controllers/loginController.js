@@ -14,7 +14,8 @@ exports.login = function(req, res) {
             (err, client) => {
                 if (err)
                     res.send(err);
-
+                if (client == null)
+                    return res.status(404).send('User not found');
                 bcrypt.compare(password, client.password)
                 .then(result => {
                     if (result) {
@@ -24,7 +25,7 @@ exports.login = function(req, res) {
                             usertype: 'client'
                         });
                     } else {
-                        return res.status(404).send('User not found');
+                        return res.status(404).send('Wrong password');
                     }
                 });
             }
@@ -40,7 +41,8 @@ exports.login = function(req, res) {
             (err, shop) => {
                 if (err)
                     res.send(err);
-                
+                if (shop == null)
+                    return res.status(404).send('User not found');
                 bcrypt.compare(password, shop.password)
                 .then(result => {
                     if (result) {
@@ -50,7 +52,7 @@ exports.login = function(req, res) {
                             usertype: 'shop'
                         });
                     } else {
-                        return res.status(404).send('User not found');
+                        return res.status(404).send('Wrong password');
                     }
                 });
             }
