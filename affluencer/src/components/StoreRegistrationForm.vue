@@ -83,8 +83,8 @@
 		name: 'registerStore',
 		
 		data: function() {
-      return {
-        store: {
+			return {
+				store: {
 					name: '',
 					address: '',
 					city: '',
@@ -95,8 +95,8 @@
 					password: '',
 					confirmPassword: ''
 				}
-      }
-    },
+			}
+		},
 		
 		validations: {
 			store: {
@@ -108,17 +108,26 @@
 				closeTime: {required},
 				email: {required, email},
 				password: {required, minLength: minLength(6)},
-        confirmPassword: {required, sameAsPassword: sameAs('password')}
+				confirmPassword: {required, sameAsPassword: sameAs('password')}
 			}
 		},
 		
 		methods: {
-      handleSubmit: function(e) {
-        this.$v.$touch()
-        if (this.$v.$invalid) return
-        alert("SUCCESS")
-      }
-    }
+			handleSubmit: function(e) {
+				this.$v.$touch()
+				if (this.$v.$invalid) return
+		
+				this.axios.post('/shops', this.store)
+				.then((res) => {
+					this.login(res._id, res.username, 'shop');
+					window.location.href = '/';
+				})
+				.catch((error) => {
+					console.log('failure');
+					console.log(error);
+				});
+			}
+		}
 	}
 </script>
 

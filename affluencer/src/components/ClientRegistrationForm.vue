@@ -54,16 +54,16 @@
 		name: 'registerClient',
 		
 		data: function() {
-      return {
-        client: {
+			return {
+				client: {
 					name: '',
 					city: '',
 					email: '',
 					password: '',
 					confirmPassword: ''
 				}
-      }
-    },
+			}
+		},
 		
 		validations: {
 			client: {
@@ -76,21 +76,21 @@
 		},
 		
 		methods: {
-      handleSubmit: function(e) {
-        this.$v.$touch()
-        if (this.$v.$invalid) return
+			handleSubmit: function(e) {
+				this.$v.$touch()
+				if (this.$v.$invalid) return
 
-        this.axios.post('/clients', this.client)
-          .then((res) => {
-            this.login(res._id, res.username, 'client');
-            window.location.href = '/';
-          })
-          .catch((error) => {
-            console.log('failure');
-            console.log(error);
-          });
-      }
-    }
+				this.axios.post('/clients', this.client)
+				.then((res) => {
+					this.login(res._id, res.username, 'client');
+					window.location.href = '/';
+				})
+				.catch((error) => {
+					console.log('failure');
+					console.log(error);
+				});
+			}
+		}
 	}
 </script>
 

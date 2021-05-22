@@ -17,12 +17,12 @@
 					<span v-if="!$v.user.password.required">La password è obbligatoria</span>
 				</div>
 			</div>
-			<div class="form-item"><div>
+			<div class="form-item">
 				<input type="radio" id="usertype_client" name="usertype" value="client" v-model="user.usertype" :class="{'is-invalid':$v.user.usertype.$error}">
 				<label for="usertype_client" class="form-label">Cliente</label>
 				<input type="radio" id="usertype_shop" name="usertype" value="shop" v-model="user.usertype" :class="{'is-invalid':$v.user.usertype.$error}">
 				<label for="usertype_shop" class="form-label">Negozio</label>
-			</div></div>
+			</div>
 			<div class="form-item">
 				<button class="form-button">Accedi</button>
 			</div>

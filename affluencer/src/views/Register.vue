@@ -23,23 +23,23 @@
 		},
 		
 		data: function() {
-      return {
+			return {
 				chooseRegistration: true,
-        clientRegistration: false,
+				clientRegistration: false,
 				storeRegistration: false
-      }
-    },
+			}
+		},
 		
 		methods: {
 			setClientRegistration: function() {
 				this.chooseRegistration = false
-        this.clientRegistration = true
+				this.clientRegistration = true
 				this.storeRegistration = false
 			},
 			
 			setStoreRegistration: function() {
 				this.chooseRegistration = false
-        this.clientRegistration = false
+				this.clientRegistration = false
 				this.storeRegistration = true
 			}
 		}
