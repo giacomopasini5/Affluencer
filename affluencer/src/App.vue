@@ -17,7 +17,7 @@
 		
 		computed: {
 			navLinks: function() {
-				return this.logged ? [
+				return $cookies.isKey("userid") ? [
 					{
 						name: 'Informazioni',
 						link: '/info'

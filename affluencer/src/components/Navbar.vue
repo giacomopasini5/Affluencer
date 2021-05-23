@@ -27,13 +27,13 @@
 		
 		methods: {
 			openMobileNav: function() {
-				document.getElementById('nav-links').classList.toggle('nav-active')
-				document.getElementById('burger').classList.toggle('toggle')
+				document.getElementById('nav-links').classList.toggle('nav-active');
+				document.getElementById('burger').classList.toggle('toggle');
 			},
 			
 			closeMobileNav: function() {
-				document.getElementById('nav-links').classList.remove('nav-active')
-				document.getElementById('burger').classList.remove('toggle')
+				document.getElementById('nav-links').classList.remove('nav-active');
+				document.getElementById('burger').classList.remove('toggle');
 			},
 
 			exit: function() {

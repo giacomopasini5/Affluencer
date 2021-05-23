@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const { Client } = require("../controllers/clientsController");
+const { Client } = require("../controllers/clientsController.js");
 const { Shop } = require("../controllers/shopsController.js");
 
 exports.login = function(req, res) {

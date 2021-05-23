@@ -15,17 +15,11 @@ axios.defaults.baseURL = 'http://localhost:3000/api';
 Vue.use(VueAxios, axios);
 
 Vue.mixin({
-	data: function() {
-		return {
-			logged: $cookies.isKey("userid")
-		}
-	},
-	
 	methods: {
-		login: function(userid, username, type) {
+		login: function(userid, username, usertype) {
 			$cookies.set("userid", userid);
 			$cookies.set("username", username);
-			$cookies.set("usertype", type);
+			$cookies.set("usertype", usertype);
 		},
 
 		logout: function() {
