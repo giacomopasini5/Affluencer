@@ -28,7 +28,11 @@ exports.create_shop = function(req, res) {
         (new Shop(body)).save((err, shop) => {
             if (err)
                 res.json(err);
-            res.status(201).json(shop);
+            res.status(201).json({
+                id: shop._id,
+                username: shop.email,
+                usertype: 'shop'
+            }); 
         });
     });
 };

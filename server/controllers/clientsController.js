@@ -29,7 +29,11 @@ exports.create_client = function(req, res) {
         (new Client(body)).save(function(err, client) {
             if (err)
                 res.send(err);
-            res.status(201).json(client);
+            res.status(201).json({
+                id: client._id,
+                username: client.email,
+                usertype: 'client'
+            });    
         });
     });
 };
