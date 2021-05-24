@@ -15,7 +15,6 @@ Vue.use(Vuelidate);
 
 axios.defaults.baseURL = 'http://localhost:3000/api';
 Vue.use(VueAxios, axios);
-initializeRoutes();
 
 Vue.mixin({
 	methods: {
@@ -33,20 +32,7 @@ Vue.mixin({
 	}
 })
 
-function initializeRoutes() {
-	axios.get('/shops')
-	.then((res) => {
-		for(var shop in res.data)
-			router.addRoute(store, { path: '/' + shop._id, name: shop._id, component: store })
-	})
-	.catch((error) => {
-        console.log('failure');
-        console.log(error);
-    })
-	router.addRoute({ path: '*', name: 'pageNotFound', component: pageNotFound });
-}
-
 new Vue({
-  router,
-  render: function (h) { return h(App) }
+	router,
+	render: function(h) { return h(App) }
 }).$mount('#app')

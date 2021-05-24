@@ -6,6 +6,7 @@ import profile from '@/views/Profile.vue'
 import login from '@/views/Login.vue'
 import register from '@/views/Register.vue'
 import store from '@/views/Store.vue'
+import pageNotFound from '@/views/PageNotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -36,9 +37,14 @@ const routes = [
     component: register
   },
 	{
-    path: '/store',
+    path: '/store/:id',
     name: 'store',
     component: store
+  },
+	{
+    path: '*',
+    name: 'pageNotFound',
+    component: pageNotFound
   }
 ]
 
@@ -46,8 +52,7 @@ const router = new VueRouter({routes})
 
 router.beforeEach((to, from, next) => {
 	if ((to.name == 'profile' || to.name == 'store') && (!$cookies.isKey("userid"))) next('/login')
-	else if ((to.name == 'profile') && ($cookies.get("usertype") == "shop")) next('/store')
-	else if ((to.name == 'store') && ($cookies.get("usertype") == "client")) next('/')
+	else if ((to.name == 'profile') && ($cookies.get("usertype") == "shop")) next('/store/' + $cookies.get("userid"))
 	else next();
 })
 

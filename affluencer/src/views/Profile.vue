@@ -17,30 +17,16 @@
 			favoriteStoresList
 		},
 		
-		data: function() {
-			return {
-				favoriteStores: [
-					{
-						id: '1',
-						name: 'prova 1'
-					},
-					{
-						id: '2',
-						name: 'prova 2'
-					},
-					{
-						id: '3',
-						name: 'prova 3'
-					}
-				]
-			}
-		}/*,
-		
 		mounted: function() {
-			this.axios.get('/shops').then(resp => {
-				favoriteStores = resp.data
+			this.axios.get('/clients/' + $cookies.get("userid"))
+			.then((res) => {
+				favoriteStores = res.favorite_shops;
 			})
-		}*/
+			.catch((error) => {
+				console.log('failure');
+				console.log(error);
+			});
+		}
 	}
 </script>
 
