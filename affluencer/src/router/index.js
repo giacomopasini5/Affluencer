@@ -6,7 +6,6 @@ import profile from '@/views/Profile.vue'
 import login from '@/views/Login.vue'
 import register from '@/views/Register.vue'
 import store from '@/views/Store.vue'
-import pageNotFound from '@/views/PageNotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -40,11 +39,6 @@ const routes = [
     path: '/store',
     name: 'store',
     component: store
-  },
-	{
-    path: '*',
-    name: 'pageNotFound',
-    component: pageNotFound
   }
 ]
 

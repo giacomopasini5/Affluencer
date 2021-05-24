@@ -6,6 +6,8 @@ import Vuelidate from 'vuelidate'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import "leaflet/dist/leaflet.css"
+import store from '@/views/Store.vue'
+import pageNotFound from '@/views/PageNotFound.vue'
 
 Vue.config.productionTip = false;
 Vue.use(VueCookies);
@@ -13,6 +15,7 @@ Vue.use(Vuelidate);
 
 axios.defaults.baseURL = 'http://localhost:3000/api';
 Vue.use(VueAxios, axios);
+initializeRoutes();
 
 Vue.mixin({
 	methods: {
@@ -29,6 +32,19 @@ Vue.mixin({
 		}
 	}
 })
+
+function initializeRoutes() {
+	axios.get('/shops')
+	.then((res) => {
+		for(var shop in res.data)
+			router.addRoute(store, { path: '/' + shop._id, name: shop._id, component: store })
+	})
+	.catch((error) => {
+        console.log('failure');
+        console.log(error);
+    })
+	router.addRoute({ path: '*', name: 'pageNotFound', component: pageNotFound });
+}
 
 new Vue({
   router,
