@@ -65,7 +65,7 @@
         		
 				this.axios.post('/login', this.user)
           		.then((res) => {
-            		this.login(res.id, res.username, res.usertype);
+            		this.login(res.data.id, res.data.username, res.data.usertype);
             		window.location.href = '/';
           		})
           		.catch((error) => {
