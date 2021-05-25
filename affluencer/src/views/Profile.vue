@@ -25,7 +25,7 @@
 		
 		mounted: function() {
 			const userId = $cookies.get("userid");
-			this.axios.get('/clients/' + userId + '/favorite_shops', { params: { id: userId } })
+			this.axios.get('/clients/' + userId + '/favorite_shops')
 			.then((res) => {
 				console.log(res.data); //array vuoto anche se dovrebbero essere 3 shops
 			})
