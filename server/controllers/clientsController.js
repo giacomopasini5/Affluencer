@@ -9,7 +9,7 @@ const { Shop } = require("../controllers/shopsController.js");
 exports.list_clients = function(req, res) {
     Client.find({}, function(err, clients) {
         if (err)
-            res.send(err);
+            return res.send(err);
         res.json(clients);
     }); 
 };
@@ -28,7 +28,7 @@ exports.create_client = function(req, res) {
         body.password = hash;
         (new Client(body)).save(function(err, client) {
             if (err)
-                res.send(err);
+                return res.send(err);
             res.status(201).json({
                 id: client._id,
                 username: client.email,
@@ -60,7 +60,7 @@ exports.update_client = function(req, res) {
         { new: true, useFindAndModify: false },
         (err, client) => {
             if (err)
-                res.send(err);
+                return res.send(err);
             res.json(client);
         }
     );
@@ -74,9 +74,10 @@ exports.list_client_favorite_shops = function(req, res) {
     Client.findById(id, "favorite_shops", (err, fs) => {
         if (err)
             return res.send(err);
-        
+        res.json(fs.favorite_shops);
+        /*
         Shop.find(
-            {_id: {$in: fs}},
+            {_id: {$in: fs.favorite_shops}},
             "_id, name",
             (err, shops) => {
                 if (err)
@@ -84,6 +85,7 @@ exports.list_client_favorite_shops = function(req, res) {
                 res.json(shops);
             }
         );
+        */
     });
 };
 
@@ -94,14 +96,18 @@ exports.add_client_favorite_shop = function(req, res) {
     var shop_id = req.body.shop_id
     if (utils.emptyField(shop_id))
         return res.status(400).send("Missing shop id");
+    var shop_name = req.body.shop_name
+    if (utils.emptyField(shop_name))
+        return res.status(400).send("Missing shop name");
 
     Client.findByIdAndUpdate(
         id,
-        { $push: { favorite_shops: shop_id }},
+        { $push: { favorite_shops: {"shop_id":shop_id, "shop_name":shop_name }}},
+        { new: true },
         (err, client) => {
             if (err)
-                res.send(err);
-            res.send(shop_id);
+                return res.send(err);
+            res.send(client);
         }
     );
 };
@@ -119,7 +125,7 @@ exports.remove_client_favorite_shop = function(req, res) {
         { $pull: { favorite_shops: shop_id }},
         (err, client) => {
             if (err)
-                res.send(err);
+                return res.send(err);
             res.send("Removed");
         }
     );
