@@ -27,7 +27,7 @@
 			const userId = $cookies.get("userid");
 			this.axios.get('/clients/' + userId + '/favorite_shops', { params: { id: userId } })
 			.then((res) => {
-				console.log("fav stores: " + res); //array vuoto anche se dovrebbero essere 3 shops
+				console.log(res.data); //array vuoto anche se dovrebbero essere 3 shops
 			})
 			.catch((error) => {
 				console.log('failure');
