@@ -17,10 +17,17 @@
 			favoriteStoresList
 		},
 		
+		data: function() {
+			return {
+				favoriteStores: []
+			}
+		},
+		
 		mounted: function() {
-			this.axios.get('/clients/' + $cookies.get("userid"))
+			const userId = $cookies.get("userid");
+			this.axios.get('/clients/' + userId + '/favorite_shops', { params: { id: userId } })
 			.then((res) => {
-				favoriteStores = res.favorite_shops;
+				console.log("fav stores: " + res); //array vuoto anche se dovrebbero essere 3 shops
 			})
 			.catch((error) => {
 				console.log('failure');
