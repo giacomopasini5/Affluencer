@@ -51,8 +51,8 @@ const routes = [
 const router = new VueRouter({routes})
 
 router.beforeEach((to, from, next) => {
-	if ((to.name == 'profile' || to.name == 'store') && (!$cookies.isKey("userid"))) next('/login')
-	else if ((to.name == 'profile') && ($cookies.get("usertype") == "shop")) next('/store/' + $cookies.get("userid"))
+	if ((to.name == 'profile' || to.name == 'store') && (!$cookies.isKey('userid'))) next('/login')
+	else if ((to.name == 'profile') && ($cookies.get('usertype') == 'shop')) next('/store/' + $cookies.get('userid'))
 	else next();
 })
 

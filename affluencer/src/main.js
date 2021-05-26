@@ -19,15 +19,15 @@ Vue.use(VueAxios, axios);
 Vue.mixin({
 	methods: {
 		login: function(userid, username, usertype) {
-			$cookies.set("userid", userid);
-			$cookies.set("username", username);
-			$cookies.set("usertype", usertype);
+			$cookies.set('userid', userid);
+			$cookies.set('username', username);
+			$cookies.set('usertype', usertype);
 		},
 
 		logout: function() {
-			$cookies.remove("userid");
-			$cookies.remove("username");
-			$cookies.remove("usertype");
+			$cookies.remove('userid');
+			$cookies.remove('username');
+			$cookies.remove('usertype');
 		}
 	}
 })
