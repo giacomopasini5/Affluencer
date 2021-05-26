@@ -24,10 +24,9 @@
 		},
 		
 		mounted: function() {
-			const userId = $cookies.get("userid");
-			this.axios.get('/clients/' + userId + '/favorite_shops')
+			this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops')
 			.then((res) => {
-				console.log(res.data); //array vuoto anche se dovrebbero essere 3 shops
+				this.favoriteStores.push(res.data.shop_name);
 			})
 			.catch((error) => {
 				console.log('failure');
