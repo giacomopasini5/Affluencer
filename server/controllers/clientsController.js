@@ -93,16 +93,16 @@ exports.add_client_favorite_shop = function(req, res) {
     var id = req.params.id;
     if (utils.emptyField(id))
         return res.status(400).send("Missing client id");
-    var shop_id = req.body.shop_id
-    if (utils.emptyField(shop_id))
+    var shop_id2 = req.body.shop_id
+    if (utils.emptyField(shop_id2))
         return res.status(400).send("Missing shop id");
-    var shop_name = req.body.shop_name
-    if (utils.emptyField(shop_name))
+    var shop_name2 = req.body.shop_name
+    if (utils.emptyField(shop_name2))
         return res.status(400).send("Missing shop name");
 
     Client.findByIdAndUpdate(
         id,
-        { $push: { favorite_shops: {"shop_id":shop_id, "shop_name":shop_name }}},
+        { $push: { favorite_shops: { shop_id:mongoose.Types.ObjectId(shop_id2), shop_name:shop_name2 }}},
         { new: true },
         (err, client) => {
             if (err)
@@ -116,13 +116,13 @@ exports.remove_client_favorite_shop = function(req, res) {
     var id = req.params.id;
     if (utils.emptyField(id))
         return res.status(400).send("Missing client id");
-    var shop_id = req.params.shop_id
-    if (utils.emptyField(shop_id))
+    var shop_id2 = req.params.shop_id
+    if (utils.emptyField(shop_id2))
         return res.status(400).send("Missing shop id");
 
     Client.findByIdAndUpdate(
         id,
-        { $pull: { favorite_shops: shop_id }},
+        { $pull: { favorite_shops: { shop_id:mongoose.Types.ObjectId(shop_id2) }}},
         (err, client) => {
             if (err)
                 return res.send(err);
