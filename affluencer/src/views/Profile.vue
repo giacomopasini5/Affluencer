@@ -19,24 +19,15 @@
 		
 		data: function() {
 			return {
-				user: {
-					favoriteStores: [],
-					name: '',
-					city: ''
-				}
+				user: ''
 			}
 		},
 		
 		mounted: function() {
-			this.axios.all([
-				this.axios.get('/clients/' + $cookies.get('userid')),
-				this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops')
-			])
-			.then(this.axios.spread((client, stores) => {
-				this.user.name = client.data.name;
-				this.user.city = client.data.city;
-				this.user.favoriteStores = stores.data;
-			}))
+			this.axios.get('/clients/' + $cookies.get('userid'))
+			.then((res) => {
+				this.user = res.data;
+			})
 			.catch((error) => {
 				console.log('failure');
 				console.log(error);

@@ -9,7 +9,10 @@
 	export default {
 		name: 'userInfo',
 		
-		props: ['name', 'city']
+		props: [
+			'name',
+			'city'
+		]
 	}
 </script>
 
