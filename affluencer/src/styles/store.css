@@ -44,7 +44,7 @@
 	margin: 1% auto;
 	width: 30%;
 	border: 2px solid #a9a9a9;
-  border-radius: 7px;
+	border-radius: 7px;
 	line-height: 20px;
 	font-size: 0.8rem;
 	transition: all 0.3s;
@@ -52,8 +52,23 @@
 
 .store-input:focus {
 	outline: none;
-  border-color: #9ecaed;
-  box-shadow: 0 0 10px #9ecaed;
+	border-color: #9ecaed;
+	box-shadow: 0 0 10px #9ecaed;
+}
+
+.store-button {
+	border: none;
+	outline: none;
+	padding: 0.3em 1.2em;
+	margin: 2% auto;
+	border-radius: 2em;
+	color: inherit;
+	text-decoration: none;
+	font-size: 1.2rem;
+	background-color: #9ecaed;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.3s;
 }
 
 #statistics {

@@ -14,10 +14,10 @@
 		components: {
 			navbar
 		},
-		
+
 		computed: {
 			navLinks: function() {
-				return $cookies.isKey("userid") ? [
+				return this.$store.isLogged ? [
 					{
 						name: 'Informazioni',
 						link: '/info'

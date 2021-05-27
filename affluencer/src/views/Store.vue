@@ -31,12 +31,6 @@
 			}
 		},
 		
-		computed: {
-			isOwner: function() {
-				return $cookies.get('userid') == this.$route.params.id;
-			}
-		},
-		
 		mounted: function() {
 			this.axios.get('/shops/' + this.$route.params.id)
 			.then((res) => {

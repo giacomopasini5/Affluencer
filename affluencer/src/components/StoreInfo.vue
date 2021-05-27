@@ -13,6 +13,7 @@
 			<div id="signalCustomers">
 				<label for="currentCustomers" class="store-info">Segnala affluenza</label>
 				<input type="number" v-model="currentCustomers" id="currentCustomers" name="currentCustomers" class="store-input">
+				<button @click="signalCustomers()" class="store-button">Invia</button>
 			</div>
 		</div>
 	</div>
@@ -36,7 +37,7 @@
 			return {
 				currentCustomers: ''
 			}
-		},
+		}
 	}
 </script>
 

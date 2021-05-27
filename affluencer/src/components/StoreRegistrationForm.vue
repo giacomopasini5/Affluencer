@@ -120,7 +120,6 @@
 				this.axios.post('/shops', this.store)
 				.then((res) => {
 					this.login(res.data.id, res.data.username, res.data.usertype);
-					window.location.href = '/';
 				})
 				.catch((error) => {
 					console.log('failure');

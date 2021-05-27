@@ -6,7 +6,7 @@
 			</div>
 			<ul id="nav-links">
 				<li v-for="item in navLinks" @click="closeMobileNav()">
-					<router-link v-if="item.name == 'Esci'" @click.native="exit" :to="item.link">{{ item.name }}</router-link>
+					<router-link v-if="item.name == 'Esci'" @click.native="logout()" :to="item.link">{{ item.name }}</router-link>
 					<router-link v-else :to="item.link">{{ item.name }}</router-link>
 				</li>
 			</ul>
@@ -34,11 +34,6 @@
 			closeMobileNav: function() {
 				document.getElementById('nav-links').classList.remove('nav-active');
 				document.getElementById('burger').classList.remove('toggle');
-			},
-
-			exit: function() {
-				this.logout();
-				window.location.href = '/';
 			}
 		}
 	}
