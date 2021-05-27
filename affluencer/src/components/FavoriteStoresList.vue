@@ -3,7 +3,7 @@
 		<h1>Negozi preferiti</h1>
 		<ul id="favorite-stores">
 			<li v-for="item in favoriteStores" :key="item.shop_id">
-				<router-link to="/store/item.shop_id">{{ item.name }}</router-link>
+				<router-link to="/store/item.shop_id">{{ item.shop_name }}</router-link>
 				<button class="item-delete">&#10006</button>
 			</li>
 		</ul>

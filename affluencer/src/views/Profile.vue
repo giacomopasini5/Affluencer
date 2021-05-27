@@ -1,7 +1,7 @@
 <template>
   <div id="profile">
 		<userInfo :name="user.name" :city="user.city"/>
-    <favoriteStoresList :favoriteStores="favoriteStores"/>
+		<favoriteStoresList :favoriteStores="user.favoriteStores"/>
   </div>
 </template>
 
@@ -32,12 +32,11 @@
 				this.axios.get('/clients/' + $cookies.get('userid')),
 				this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops')
 			])
-			.then((client, stores) => {
+			.then(this.axios.spread((client, stores) => {
 				this.user.name = client.data.name;
 				this.user.city = client.data.city;
-				for(store in stores)
-					this.user.favoriteStores.push(store.data.shop_name);
-			})
+				this.user.favoriteStores = stores.data;
+			}))
 			.catch((error) => {
 				console.log('failure');
 				console.log(error);
