@@ -1,8 +1,8 @@
 <template>
 	<div id="storeInfo">
 		<h1 class="store-title">{{ name }}</h1>
-		<div v-if="!isOwner && isClient">
-			<button v-if="isFavorite()" @click="removeFavorite()" class="favorite-button">&#11088</button>
+		<div v-if="!isOwner && isClient()">
+			<button v-if="isFavorite" @click="removeFavorite()" class="favorite-button">&#11088</button>
 			<button v-else @click="setFavorite()" class="favorite-button">&#9734</button>
 		</div>
 		<div class="sideInfo">
@@ -42,25 +42,28 @@
 		
 		data: function() {
 			return {
+				isFavorite: false,
 				currentCustomers: '',
 				settings: false
 			}
 		},
 		
+		updated() {
+			this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops')
+			.then((res) => {
+				for(var store of res.data)
+					if(store.shop_id == this.$route.params.id)
+						this.isFavorite = true;
+					else
+						this.isFavorite = false;
+			})
+			.catch((error) => {
+				console.log('failure');
+				console.log(error);
+			});
+		},
+		
 		methods: {
-			isFavorite: function() {
-				this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops')
-				.then((res) => {/*shop_id è undefined anche se inserito
-					for(var store in res.data)
-						if(store.shop_id == this.$route.params.id) return true;
-					return false;*/
-				})
-				.catch((error) => {
-					console.log('failure');
-					console.log(error);
-				});
-			},
-			
 			setFavorite: function() {
 				this.axios.post('/clients/' + $cookies.get('userid') + '/favorite_shops', {
 					shop_id: this.$route.params.id,
