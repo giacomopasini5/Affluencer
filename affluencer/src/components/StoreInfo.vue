@@ -14,7 +14,7 @@
 				<span class="store-info">Capienza: {{ capacity }} </span>
 				<span class="store-info">Affluenza: {{ influx }} </span>
 			</div>
-			<div v-if="!isOwner" id="signalCustomers">
+			<div v-if="!isOwner" id="customersForm">
 				<label for="currentCustomers" class="store-info">Segnala affluenza</label>
 				<input type="number" v-model="currentCustomers" id="currentCustomers" name="currentCustomers" class="store-input">
 				<button @click="signalCustomers()" class="store-button">Invia</button>
@@ -48,19 +48,20 @@
 			}
 		},
 		
-		updated() {
-			this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops')
-			.then((res) => {
-				for(var store of res.data)
-					if(store.shop_id == this.$route.params.id)
-						this.isFavorite = true;
-					else
-						this.isFavorite = false;
-			})
-			.catch((error) => {
-				console.log('failure');
-				console.log(error);
-			});
+		mounted: function() {
+			if(this.isClient()) {
+				this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops')
+				.then((res) => {
+					for(var store of res.data)
+						if(store.shop_id == this.$route.params.id)
+							this.isFavorite = true;
+				})
+				.catch((error) => {
+					console.log('failure');
+					console.log(error);
+				});
+				this.isFavorite = false;
+			}
 		},
 		
 		methods: {

@@ -1,7 +1,7 @@
 <template>
   <div id="profile">
 		<userInfo :name="user.name" :city="user.city"/>
-		<favoriteStoresList :favoriteStores="user.favoriteStores"/>
+		<favoriteStoresList :favoriteStores="user.favorite_shops"/>
   </div>
 </template>
 

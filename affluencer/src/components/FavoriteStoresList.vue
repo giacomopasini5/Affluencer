@@ -4,7 +4,7 @@
 		<ul id="favorite-stores">
 			<li v-for="item in favoriteStores" :key="item.shop_id">
 				<router-link to="/store/item.shop_id">{{ item.shop_name }}</router-link>
-				<button class="item-delete">&#10006</button>
+				<button @click="removeFavorite(item.shop_id)" class="item-delete">&#10006</button>
 			</li>
 		</ul>
 	</div>
@@ -14,7 +14,20 @@
 	export default {
 		name: 'favoriteStoresList',
 		
-		props: ['favoriteStores']
+		props: ['favoriteStores'],
+		
+		methods: {
+			removeFavorite: function(shop_id) {
+				this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + shop_id)
+				.then((res) => {
+					this.$router.go();
+				})
+				.catch((error) => {
+					console.log('failure');
+					console.log(error);
+				});
+			}
+		}
 	}
 </script>
 

@@ -28,7 +28,7 @@
 	font-size: 2.5rem;
 }
 
-#description, #signalCustomers, #settingsButton {
+#description, #customersForm, #settingsButton {
 	display: flex;
 	flex-direction: column;
 	padding: 2%;
