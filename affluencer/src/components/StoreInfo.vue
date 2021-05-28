@@ -1,6 +1,10 @@
 <template>
 	<div id="storeInfo">
 		<h1 class="store-title">{{ name }}</h1>
+		<div v-if="!isOwner && isClient">
+			<button v-if="isFavorite()" @click="removeFavorite()" class="favorite-button">&#11088</button>
+			<button v-else @click="setFavorite()" class="favorite-button">&#9734</button>
+		</div>
 		<div class="sideInfo">
 			<div id="description">
 				<span class="store-info">{{ address }}</span>
@@ -10,10 +14,13 @@
 				<span class="store-info">Capienza: {{ capacity }} </span>
 				<span class="store-info">Affluenza: {{ influx }} </span>
 			</div>
-			<div id="signalCustomers">
+			<div v-if="!isOwner" id="signalCustomers">
 				<label for="currentCustomers" class="store-info">Segnala affluenza</label>
 				<input type="number" v-model="currentCustomers" id="currentCustomers" name="currentCustomers" class="store-input">
 				<button @click="signalCustomers()" class="store-button">Invia</button>
+			</div>
+			<div v-else id="settingsButton">
+				<button @click="openSettings()" class="store-button">Impostazioni</button>
 			</div>
 		</div>
 	</div>
@@ -35,7 +42,56 @@
 		
 		data: function() {
 			return {
-				currentCustomers: ''
+				currentCustomers: '',
+				settings: false
+			}
+		},
+		
+		methods: {
+			isFavorite: function() {
+				this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops')
+				.then((res) => {/*shop_id è undefined anche se inserito
+					for(var store in res.data)
+						if(store.shop_id == this.$route.params.id) return true;
+					return false;*/
+				})
+				.catch((error) => {
+					console.log('failure');
+					console.log(error);
+				});
+			},
+			
+			setFavorite: function() {
+				this.axios.post('/clients/' + $cookies.get('userid') + '/favorite_shops', {
+					shop_id: this.$route.params.id,
+					shop_name: this.name
+				})
+				.then((res) => {
+					this.$router.go();
+				})
+				.catch((error) => {
+					console.log('failure');
+					console.log(error);
+				});
+			},
+			
+			removeFavorite: function() {
+				this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + this.$route.params.id)
+				.then((res) => {
+					this.$router.go();
+				})
+				.catch((error) => {
+					console.log('failure');
+					console.log(error);
+				});
+			},
+			
+			signalCustomers: function() {
+				//axios
+			},
+			
+			openSettings: function() {
+				this.settings = true;
 			}
 		}
 	}

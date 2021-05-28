@@ -52,7 +52,7 @@ ul#favorite-stores li {
 	margin: 2% auto;
 	width: 50%;
 	border: 2px solid #123c69;
-  border-radius: 7px;
+	border-radius: 7px;
 	cursor: pointer;
 	transition: all 0.3s;
 }

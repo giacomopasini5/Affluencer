@@ -74,18 +74,7 @@ exports.list_client_favorite_shops = function(req, res) {
     Client.findById(id, "favorite_shops", (err, fs) => {
         if (err)
             return res.send(err);
-        res.json(fs.favorite_shops);
-        /*
-        Shop.find(
-            {_id: {$in: fs.favorite_shops}},
-            "_id, name",
-            (err, shops) => {
-                if (err)
-                    res.send(err);
-                res.json(shops);
-            }
-        );
-        */
+        console.log(res.json(fs.favorite_shops));
     });
 };
 

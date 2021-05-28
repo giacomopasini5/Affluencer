@@ -28,7 +28,8 @@ Vue.mixin({
 			$cookies.set('username', username);
 			$cookies.set('usertype', usertype);
 			this.$store.commit('login');
-			window.location.href = '/';
+			if(this.$route.path == '/') router.go();
+			else router.push('/');
 		},
 
 		logout: function() {
@@ -36,7 +37,16 @@ Vue.mixin({
 			$cookies.remove('username');
 			$cookies.remove('usertype');
 			this.$store.commit('logout');
-			window.location.href = '/';
+			if(this.$route.path == '/') router.go();
+			else router.push('/');
+		},
+		
+		isClient: function() {
+			return $cookies.get('usertype') == 'client';
+		},
+		
+		isStore: function() {
+			return $cookies.get('usertype') == 'shop';
 		}
 	}
 });
