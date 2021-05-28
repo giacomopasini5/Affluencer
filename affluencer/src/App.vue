@@ -17,7 +17,7 @@
 
 		computed: {
 			navLinks: function() {
-				return this.$store.isLogged ? [
+				return this.$store.state.isLogged ? [
 					{
 						name: 'Informazioni',
 						link: '/info'

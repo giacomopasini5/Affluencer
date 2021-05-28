@@ -18,7 +18,7 @@ Vue.use(VueAxios, axios);
 Vue.mixin({
 	computed: {
 		isOwner: function() {
-			return this.$store.isLogged ? $cookies.get('userid') == this.$route.params.id : false;
+			return this.$store.state.isLogged ? $cookies.get('userid') == this.$route.params.id : false;
 		}
 	},
 	
