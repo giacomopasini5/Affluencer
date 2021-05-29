@@ -1,14 +1,6 @@
 <template>
   <div id="store">
-		<storeInfo
-			:name="store.name"
-			:address="store.address"
-			:city="store.city"
-			:openTime="store.openTime"
-			:closeTime="store.closeTime"
-			:capacity="store.capacity"
-			:influx="store.influx"
-		/>
+		<storeInfo :store="store"/>
 		<storeStats/>
   </div>
 </template>

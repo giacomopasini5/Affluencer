@@ -1,6 +1,6 @@
 <template>
   <div id="profile">
-		<userInfo :name="user.name" :city="user.city"/>
+		<userInfo :user="user"/>
 		<favoriteStoresList :favoriteStores="user.favorite_shops"/>
   </div>
 </template>

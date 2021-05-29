@@ -1,18 +1,18 @@
 <template>
 	<div id="storeInfo">
-		<h1 class="store-title">{{ name }}</h1>
+		<h1 class="store-title">{{ store.name }}</h1>
 		<div v-if="!isOwner && isClient()">
 			<button v-if="isFavorite" @click="removeFavorite()" class="favorite-button">&#11088</button>
 			<button v-else @click="setFavorite()" class="favorite-button">&#9734</button>
 		</div>
 		<div class="sideInfo">
 			<div id="description">
-				<span class="store-info">{{ address }}</span>
-				<span class="store-info">{{ city }}</span>
-				<span class="store-info">Apre alle {{ openTime }}</span>
-				<span class="store-info">Chiude alle {{ closeTime }}</span>
-				<span class="store-info">Capienza: {{ capacity }} </span>
-				<span class="store-info">Affluenza: {{ influx }} </span>
+				<span class="store-info">{{ store.address }}</span>
+				<span class="store-info">{{ store.city }}</span>
+				<span class="store-info">Apre alle {{ store.openTime }}</span>
+				<span class="store-info">Chiude alle {{ store.closeTime }}</span>
+				<span class="store-info">Capienza: {{ store.capacity }} </span>
+				<span class="store-info">Affluenza: {{ store.influx }} </span>
 			</div>
 			<div v-if="!isOwner" id="customersForm">
 				<label for="currentCustomers" class="store-info">Segnala affluenza</label>
@@ -20,7 +20,8 @@
 				<button @click="signalCustomers()" class="store-button">Invia</button>
 			</div>
 			<div v-else id="settingsButton">
-				<button @click="openSettings()" class="store-button">Impostazioni</button>
+				<button v-if="!settings" @click="openSettings()" class="store-button">Impostazioni</button>
+				<button v-else @click="applySettings()" class="store-button">Salva</button>
 			</div>
 		</div>
 	</div>
@@ -30,15 +31,7 @@
 	export default {
 		name: 'storeInfo',
 		
-		props: [
-			'name',
-			'address',
-			'city',
-			'openTime',
-			'closeTime',
-			'capacity',
-			'influx'
-		],
+		props: ['store'],
 		
 		data: function() {
 			return {
@@ -96,6 +89,10 @@
 			
 			openSettings: function() {
 				this.settings = true;
+			},
+			
+			applySettings: function() {
+				this.settings = false;
 			}
 		}
 	}
