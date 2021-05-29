@@ -42,12 +42,16 @@
 
 .store-input {
 	margin: 1% auto;
-	width: 30%;
 	border: 2px solid #a9a9a9;
 	border-radius: 7px;
 	line-height: 20px;
 	font-size: 0.8rem;
 	transition: all 0.3s;
+}
+
+.store-info .store-input {
+	-webkit-animation: settingsInput 0.3s;
+	animation: settingsInput 0.3s;
 }
 
 .store-input:focus {
@@ -90,4 +94,15 @@
 
 #statistics {
 	padding: 2%;
+}
+
+@keyframes settingsInput {
+	from {
+		opacity: 0;
+		transform: translateY(-60px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0px);
+	}
 }

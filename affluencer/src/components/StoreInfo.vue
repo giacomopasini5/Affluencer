@@ -1,33 +1,64 @@
 <template>
 	<div id="storeInfo">
 		<h1 class="store-title">{{ store.name }}</h1>
-		<div v-if="!isOwner && isClient()">
+		<div v-if="isClient()">
 			<button v-if="isFavorite" @click="removeFavorite()" class="favorite-button">&#11088</button>
 			<button v-else @click="setFavorite()" class="favorite-button">&#9734</button>
 		</div>
 		<div class="sideInfo">
 			<div id="description">
-				<span class="store-info">{{ store.address }}</span>
-				<span class="store-info">{{ store.city }}</span>
-				<span class="store-info">Apre alle {{ store.openTime }}</span>
-				<span class="store-info">Chiude alle {{ store.closeTime }}</span>
-				<span class="store-info">Capienza: {{ store.capacity }} </span>
-				<span class="store-info">Affluenza: {{ store.influx }} </span>
+				<div v-if="isOwner" class="store-info">
+					<div v-if="settings">
+						<input type="email" v-model="storeSettings.email" id="emailSettings" name="emailSettings" placeholder="Email" class="store-input" :class="{'is-invalid':$v.storeSettings.email.$error}">
+						<div v-if="$v.storeSettings.email.$error" class="invalid-feedback">
+							<span v-if="!$v.storeSettings.email.email">L'email non è valida</span>
+						</div>
+					</div>
+					<span v-else>{{ store.email }}</span>
+				</div>
+				<div class="store-info">
+					<input v-if="settings" type="text" v-model="storeSettings.address" id="addressSettings" name="addressSettings" placeholder="Indirizzo" class="store-input">
+					<span v-else>{{ store.address }}</span>
+				</div>
+				<div class="store-info">
+					<input v-if="settings" type="text" v-model="storeSettings.city" id="citySettings" name="citySettings" placeholder="Città" class="store-input">
+					<span v-else>{{ store.city }}</span>
+				</div>
+				<div class="store-info">
+					<input v-if="settings" type="time" v-model="storeSettings.openTime" id="openTimeSettings" name="openTimeSettings" class="store-input">
+					<span v-else>Apre alle {{ store.openTime }}</span>
+				</div>
+				<div class="store-info">
+					<input v-if="settings" type="time" v-model="storeSettings.closeTime" id="closeTimeSettings" name="closeTimeSettings" class="store-input">
+					<span v-else>Chiude alle {{ store.closeTime }}</span>
+				</div>
+				<div class="store-info">
+					<div v-if="settings">
+						<input type="number" v-model="storeSettings.capacity" id="capacitySettings" name="capacitySettings" placeholder="Capienza" class="store-input" :class="{'is-invalid': $v.storeSettings.capacity.$error}">
+						<div v-if="$v.storeSettings.capacity.$error" class="invalid-feedback">
+							<span v-if="!$v.storeSettings.capacity.minValue">La capienza deve essere maggiore di 0</span>
+						</div>
+					</div>
+					<span v-else>Capienza: {{ store.capacity }}</span>
+				</div>
+				<span class="store-info">Affluenza: {{ store.influx }}</span>
 			</div>
-			<div v-if="!isOwner" id="customersForm">
+			<div v-if="isOwner" id="settingsButton">
+				<button v-if="!settings" @click="openSettings()" class="store-button">Modifica</button>
+				<button v-else @click="applySettings()" class="store-button">Salva</button>
+			</div>
+			<div v-else id="customersForm">
 				<label for="currentCustomers" class="store-info">Segnala affluenza</label>
 				<input type="number" v-model="currentCustomers" id="currentCustomers" name="currentCustomers" class="store-input">
 				<button @click="signalCustomers()" class="store-button">Invia</button>
-			</div>
-			<div v-else id="settingsButton">
-				<button v-if="!settings" @click="openSettings()" class="store-button">Impostazioni</button>
-				<button v-else @click="applySettings()" class="store-button">Salva</button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import {minValue, email} from "vuelidate/lib/validators"
+	
 	export default {
 		name: 'storeInfo',
 		
@@ -35,6 +66,14 @@
 		
 		data: function() {
 			return {
+				storeSettings: {
+					email: '',
+					address: '',
+					city: '',
+					openTime: '',
+					closeTime: '',
+					capacity: ''
+				},
 				isFavorite: false,
 				currentCustomers: '',
 				settings: false
@@ -92,7 +131,20 @@
 			},
 			
 			applySettings: function() {
-				this.settings = false;
+				this.$v.$touch();
+				if (this.$v.$invalid) return;
+				
+				for(var key in this.storeSettings)
+					if(this.storeSettings[key] == '')
+						this.storeSetting[key] = this.store[key];
+				//axios
+			}
+		},
+		
+		validations: {
+			storeSettings: {
+				email: {email},
+				capacity: {minValue: minValue(1)}
 			}
 		}
 	}

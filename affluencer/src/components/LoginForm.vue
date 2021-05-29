@@ -60,8 +60,8 @@
 		
 		methods: {
 			handleSubmit: function(e) {
-        		this.$v.$touch()
-        		if (this.$v.$invalid) return
+        		this.$v.$touch();
+        		if (this.$v.$invalid) return;
         		
 				this.axios.post('/login', this.user)
           		.then((res) => {
