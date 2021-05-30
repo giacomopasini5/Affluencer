@@ -136,7 +136,7 @@
 				
 				for(var key in this.storeSettings)
 					if(this.storeSettings[key] == '')
-						this.storeSetting[key] = this.storeData[key];
+						this.storeSettings[key] = this.storeData[key];
 				//axios
 			}
 		},
