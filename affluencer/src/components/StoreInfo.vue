@@ -7,14 +7,14 @@
 		</div>
 		<div class="sideInfo">
 			<div id="description">
-				<div v-if="isOwner" class="store-info">
-					<div v-if="settings">
-						<input type="email" v-model="storeSettings.email" id="emailSettings" name="emailSettings" placeholder="Email" class="store-input" :class="{'is-invalid':$v.storeSettings.email.$error}">
-						<div v-if="$v.storeSettings.email.$error" class="invalid-feedback">
-							<span v-if="!$v.storeSettings.email.email">L'email non è valida</span>
-						</div>
+				<div v-if="settings" class="store-info">
+					<input type="text" v-model="storeSettings.name" id="nameSettings" name="nameSettings" placeholder="Nome" class="store-input">
+				</div>
+				<div v-if="settings" class="store-info">
+					<input type="email" v-model="storeSettings.email" id="emailSettings" name="emailSettings" placeholder="Email" class="store-input" :class="{'is-invalid':$v.storeSettings.email.$error}">
+					<div v-if="$v.storeSettings.email.$error" class="invalid-feedback">
+						<span v-if="!$v.storeSettings.email.email">L'email non è valida</span>
 					</div>
-					<span v-else>{{ storeData.email }}</span>
 				</div>
 				<div class="store-info">
 					<input v-if="settings" type="text" v-model="storeSettings.address" id="addressSettings" name="addressSettings" placeholder="Indirizzo" class="store-input">
@@ -67,6 +67,7 @@
 		data: function() {
 			return {
 				storeSettings: {
+					name: '',
 					email: '',
 					address: '',
 					city: '',
@@ -135,9 +136,9 @@
 					this.$v.$touch();
 					if (this.$v.$invalid) return;
 					
-					for(var key in this.storeSettings)
+					/*for(var key in this.storeSettings) //probably useless
 						if(this.storeSettings[key] == '')
-							this.storeSettings[key] = this.storeData[key];
+							this.storeSettings[key] = this.storeData[key];*/
 					try {
 						console.log(this.storeSettings);
 						var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeSettings);
