@@ -1,6 +1,6 @@
 <template>
 	<div id="storeInfo">
-		<h1 class="store-title">{{ store.name }}</h1>
+		<h1 class="store-title">{{ storeData.name }}</h1>
 		<div v-if="isClient()">
 			<button v-if="isFavorite" @click="removeFavorite()" class="favorite-button">&#11088</button>
 			<button v-else @click="setFavorite()" class="favorite-button">&#9734</button>
@@ -14,23 +14,23 @@
 							<span v-if="!$v.storeSettings.email.email">L'email non è valida</span>
 						</div>
 					</div>
-					<span v-else>{{ store.email }}</span>
+					<span v-else>{{ storeData.email }}</span>
 				</div>
 				<div class="store-info">
 					<input v-if="settings" type="text" v-model="storeSettings.address" id="addressSettings" name="addressSettings" placeholder="Indirizzo" class="store-input">
-					<span v-else>{{ store.address }}</span>
+					<span v-else>{{ storeData.address }}</span>
 				</div>
 				<div class="store-info">
 					<input v-if="settings" type="text" v-model="storeSettings.city" id="citySettings" name="citySettings" placeholder="Città" class="store-input">
-					<span v-else>{{ store.city }}</span>
+					<span v-else>{{ storeData.city }}</span>
 				</div>
 				<div class="store-info">
 					<input v-if="settings" type="time" v-model="storeSettings.openTime" id="openTimeSettings" name="openTimeSettings" class="store-input">
-					<span v-else>Apre alle {{ store.openTime }}</span>
+					<span v-else>Apre alle {{ storeData.openTime }}</span>
 				</div>
 				<div class="store-info">
 					<input v-if="settings" type="time" v-model="storeSettings.closeTime" id="closeTimeSettings" name="closeTimeSettings" class="store-input">
-					<span v-else>Chiude alle {{ store.closeTime }}</span>
+					<span v-else>Chiude alle {{ storeData.closeTime }}</span>
 				</div>
 				<div class="store-info">
 					<div v-if="settings">
@@ -39,15 +39,15 @@
 							<span v-if="!$v.storeSettings.capacity.minValue">La capienza deve essere maggiore di 0</span>
 						</div>
 					</div>
-					<span v-else>Capienza: {{ store.capacity }}</span>
+					<span v-else>Capienza: {{ storeData.capacity }}</span>
 				</div>
-				<span class="store-info">Affluenza: {{ store.influx }}</span>
+				<span class="store-info">Affluenza: {{ storeData.influx }}</span>
 			</div>
 			<div v-if="isOwner" id="settingsButton">
-				<button v-if="!settings" @click="openSettings()" class="store-button">Modifica</button>
-				<button v-else @click="applySettings()" class="store-button">Salva</button>
+				<button v-if="settings" @click="applySettings()" class="store-button">Salva</button>
+				<button v-else @click="openSettings()" class="store-button">Modifica</button>
 			</div>
-			<div v-else id="customersForm">
+			<div v-if="isClient()" id="customersForm">
 				<label for="currentCustomers" class="store-info">Segnala affluenza</label>
 				<input type="number" v-model="currentCustomers" id="currentCustomers" name="currentCustomers" class="store-input">
 				<button @click="signalCustomers()" class="store-button">Invia</button>
@@ -62,7 +62,7 @@
 	export default {
 		name: 'storeInfo',
 		
-		props: ['store'],
+		props: ['storeData'],
 		
 		data: function() {
 			return {
@@ -80,46 +80,46 @@
 			}
 		},
 		
-		mounted: function() {
-			if(this.isClient()) {
-				this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops')
-				.then((res) => {
-					for(var store of res.data)
-						if(store.shop_id == this.$route.params.id)
-							this.isFavorite = true;
-				})
-				.catch((error) => {
-					console.log('failure');
-					console.log(error);
-				});
-				this.isFavorite = false;
-			}
+		created: function() {
+			this.initializeFavorite();
 		},
 		
 		methods: {
-			setFavorite: function() {
-				this.axios.post('/clients/' + $cookies.get('userid') + '/favorite_shops', {
-					shop_id: this.$route.params.id,
-					shop_name: this.name
-				})
-				.then((res) => {
-					this.$router.go();
-				})
-				.catch((error) => {
-					console.log('failure');
-					console.log(error);
-				});
+			initializeFavorite: async function() {
+				if(this.isClient()) {
+					try {
+						var res = await this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops');
+						for(var store of res.data)
+							if(store.shop_id == this.$route.params.id)
+								this.isFavorite = true;
+					} catch(error) {
+						console.log('failure');
+						console.log(error);
+					}
+				}
 			},
 			
-			removeFavorite: function() {
-				this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + this.$route.params.id)
-				.then((res) => {
+			setFavorite: async function() {
+				try {
+					var res = await this.axios.post('/clients/' + $cookies.get('userid') + '/favorite_shops', {
+						shop_id: this.$route.params.id,
+						shop_name: this.storeData.name
+					});
 					this.$router.go();
-				})
-				.catch((error) => {
+				} catch(error) {
 					console.log('failure');
 					console.log(error);
-				});
+				}
+			},
+			
+			removeFavorite: async function() {
+				try {
+					var res = await this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + this.$route.params.id);
+					this.$router.go();
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
+				}
 			},
 			
 			signalCustomers: function() {
@@ -130,13 +130,13 @@
 				this.settings = true;
 			},
 			
-			applySettings: function() {
+			applySettings: async function() {
 				this.$v.$touch();
 				if (this.$v.$invalid) return;
 				
 				for(var key in this.storeSettings)
 					if(this.storeSettings[key] == '')
-						this.storeSetting[key] = this.store[key];
+						this.storeSetting[key] = this.storeData[key];
 				//axios
 			}
 		},

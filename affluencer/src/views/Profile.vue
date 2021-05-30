@@ -1,7 +1,7 @@
 <template>
   <div id="profile">
-		<userInfo :user="user"/>
-		<favoriteStoresList :favoriteStores="user.favorite_shops"/>
+		<userInfo v-if="hasUserData" :userData="userData"/>
+		<favoriteStoresList v-if="hasUserData" :favoriteStores="userData.favorite_shops"/>
   </div>
 </template>
 
@@ -19,19 +19,26 @@
 		
 		data: function() {
 			return {
-				user: ''
+				userData: '',
+				hasUserData: false
 			}
 		},
 		
-		mounted: function() {
-			this.axios.get('/clients/' + $cookies.get('userid'))
-			.then((res) => {
-				this.user = res.data;
-			})
-			.catch((error) => {
-				console.log('failure');
-				console.log(error);
-			});
+		created: function() {
+			this.initializeProfile();
+		},
+		
+		methods: {
+			initializeProfile: async function() {
+				try {
+					var res = await this.axios.get('/clients/' + $cookies.get('userid'));
+					this.userData = res.data;
+					this.hasUserData = true;
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
+				}
+			}
 		}
 	}
 </script>

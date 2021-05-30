@@ -1,6 +1,6 @@
 <template>
   <div id="store">
-		<storeInfo :store="store"/>
+		<storeInfo v-if="hasStoreData" :storeData="storeData"/>
 		<storeStats/>
   </div>
 </template>
@@ -19,19 +19,26 @@
 		
 		data: function() {
 			return {
-				store: ''
+				storeData: '',
+				hasStoreData: false
 			}
 		},
 		
-		mounted: function() {
-			this.axios.get('/shops/' + this.$route.params.id)
-			.then((res) => {
-				this.store = res.data;
-			})
-			.catch((error) => {
-				console.log('failure');
-				console.log(error);
-			});
+		created: function() {
+			this.initializeStore();
+		},
+		
+		methods: {
+			initializeStore: async function() {
+				try {
+					var res = await this.axios.get('/shops/' + this.$route.params.id);
+					this.storeData = res.data;
+					this.hasStoreData = true;
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
+				}
+			}
 		}
 	}
 </script>

@@ -1,7 +1,7 @@
 <template>
 	<div id="userInfo">
-		<h1 class="profile-title">{{ user.name }}</h1>
-		<span class="profile-span">{{ user.city }}</span>
+		<h1 class="profile-title">{{ userData.name }}</h1>
+		<span class="profile-span">{{ userData.city }}</span>
 	</div>
 </template>
 
@@ -9,7 +9,7 @@
 	export default {
 		name: 'userInfo',
 		
-		props: ['user']
+		props: ['userData']
 	}
 </script>
 

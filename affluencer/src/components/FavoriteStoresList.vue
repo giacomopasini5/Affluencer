@@ -17,15 +17,14 @@
 		props: ['favoriteStores'],
 		
 		methods: {
-			removeFavorite: function(shop_id) {
-				this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + shop_id)
-				.then((res) => {
+			removeFavorite: async function(shop_id) {
+				try {
+					var res = await this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + shop_id);
 					this.$router.go();
-				})
-				.catch((error) => {
+				} catch(error) {
 					console.log('failure');
 					console.log(error);
-				});
+				}
 			}
 		}
 	}
