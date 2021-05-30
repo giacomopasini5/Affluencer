@@ -131,13 +131,22 @@
 			},
 			
 			applySettings: async function() {
-				this.$v.$touch();
-				if (this.$v.$invalid) return;
-				
-				for(var key in this.storeSettings)
-					if(this.storeSettings[key] == '')
-						this.storeSettings[key] = this.storeData[key];
-				//axios
+				if(this.isOwner) {
+					this.$v.$touch();
+					if (this.$v.$invalid) return;
+					
+					for(var key in this.storeSettings)
+						if(this.storeSettings[key] == '')
+							this.storeSettings[key] = this.storeData[key];
+					try {
+						console.log(this.storeSettings);
+						var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeSettings);
+						console.log(res.data);
+					} catch(error) {
+						console.log('failure');
+						console.log(error);
+					}
+				}
 			}
 		},
 		
