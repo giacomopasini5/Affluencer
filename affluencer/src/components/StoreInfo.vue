@@ -140,9 +140,7 @@
 						if(this.storeSettings[key] != '')
 							this.storeData[key] = this.storeSettings[key];
 					try {
-						//console.log(this.storeData);
 						var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeData);
-						//console.log(res.data);
 						this.settings = false;
 					} catch(error) {
 						console.log('failure');
