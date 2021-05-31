@@ -136,9 +136,9 @@
 					this.$v.$touch();
 					if (this.$v.$invalid) return;
 					
-					/*for(var key in this.storeSettings) //probably useless
+					for(var key in this.storeSettings)
 						if(this.storeSettings[key] == '')
-							this.storeSettings[key] = this.storeData[key];*/
+							this.storeSettings[key] = this.storeData[key];
 					try {
 						console.log(this.storeSettings);
 						var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeSettings);
