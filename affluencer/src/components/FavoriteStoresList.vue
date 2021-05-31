@@ -2,9 +2,9 @@
 	<div id="favoriteStoresList">
 		<h1>Negozi preferiti</h1>
 		<ul id="favorite-stores">
-			<li v-for="item in favoriteStores" :key="item.shop_id" ref="item.shop_id">
-				<router-link to="/store/item.shop_id">{{ item.shop_name }}</router-link>
-				<button @click="removeFavorite(item.shop_id)" class="item-delete">&#10006</button>
+			<li v-for="shop in favoriteStores" :key="shop.shop_id">
+				<router-link to="{ path: '/store/' + shop.shop_id }">{{ shop.shop_name }}</router-link>
+				<button @click="removeFavorite(shop)" class="item-delete">&#10006</button>
 			</li>
 		</ul>
 	</div>
@@ -17,10 +17,11 @@
 		props: ['favoriteStores'],
 		
 		methods: {
-			removeFavorite: async function(shop_id) {
+			removeFavorite: async function(shop) {
 				try {
-					var res = await this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + shop_id);
-					//remove from array
+					var res = await this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + shop.shop_id);
+					var index = this.favoriteStores.indexOf(shop);
+					this.favoriteStores.splice(index, 1);
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
