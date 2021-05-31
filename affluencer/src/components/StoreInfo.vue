@@ -106,7 +106,7 @@
 						shop_id: this.$route.params.id,
 						shop_name: this.storeData.name
 					});
-					this.$router.go();
+					this.isFavorite = true;
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
@@ -116,7 +116,7 @@
 			removeFavorite: async function() {
 				try {
 					var res = await this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + this.$route.params.id);
-					this.$router.go();
+					this.isFavorite = false;
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
@@ -137,12 +137,13 @@
 					if (this.$v.$invalid) return;
 					
 					for(var key in this.storeSettings)
-						if(this.storeSettings[key] == '')
-							this.storeSettings[key] = this.storeData[key];
+						if(this.storeSettings[key] != '')
+							this.storeData[key] = this.storeSettings[key];
 					try {
-						console.log(this.storeSettings);
-						var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeSettings);
-						console.log(res.data);
+						//console.log(this.storeData);
+						var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeData);
+						//console.log(res.data);
+						this.settings = false;
 					} catch(error) {
 						console.log('failure');
 						console.log(error);
