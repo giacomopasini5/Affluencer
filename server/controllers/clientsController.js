@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRound = 10;
 
 var Client = require("../models/clientsModel.js")(mongoose);
-const { Shop } = require("../controllers/shopsController.js");
+//const { Shop } = require("../controllers/shopsController.js");
 
 exports.list_clients = function(req, res) {
     Client.find({}, function(err, clients) {

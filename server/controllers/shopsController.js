@@ -8,7 +8,7 @@ var Shop = require("../models/shopsModel.js")(mongoose);
 exports.list_shops = function(req, res) {
     Shop.find({}, (err, shops) => {
         if (err)
-            res.send(err);
+            return res.send(err);
         res.json(shops);
     });
 };
@@ -44,8 +44,7 @@ exports.get_shop = function(req, res) {
 
     Shop.findById(id, (err, shop) => {
         if (err || shop == null)
-            res.status(404).send("Shop not found");
-
+            return res.status(404).send("Shop not found");
         res.json(shop);
     });
 };
@@ -54,17 +53,17 @@ exports.update_shop = function(req, res) {
     var id = req.params.id;
     if (utils.emptyField(id))
         return res.status(400).send("Missing id");
-
-    Shop.findOneAndUpdate(
+    
+    Shop.findByIdAndUpdate(
         id,
         req.body,
-        { new: true, useFindAndModify: false },
+        { new: true },
         (err, shop) => {
             if (err)
-                res.send(err)
+                return res.send(err)
             res.json(shop);
         }
-    )
+    );
 };
 
 exports.list_shop_posts = function(req, res) {
@@ -74,7 +73,7 @@ exports.list_shop_posts = function(req, res) {
     
     Shop.findById(id, "posts", (err, posts) => {
         if (err)
-            res.send(err);
+            return res.send(err);
         res.json(posts);
     });
 };
@@ -90,8 +89,7 @@ exports.create_shop_post = function(req, res) {
         { $push: { posts: req.body }},
         (err, shop) => {
             if (err)
-                res.send(err);
-            
+                return res.send(err);
             res.json(shop.posts[shop.posts.length-1]);
         }
     );
@@ -110,7 +108,7 @@ exports.get_shop_post = function(req, res) {
         { posts: { $elemMatch: { datetime: dt }}},
         (err, post) => {
             if (err || post == null)
-                res.send(err);
+                return res.send(err);
             res.json(post);
         }
     );
@@ -129,7 +127,7 @@ exports.update_shop_post = function(req, res) {
         { $set: { "posts.$.text" : req.body.text }},
         (err, post) => {
             if (err)
-                res.send(err);
+                return res.send(err);
             res.json(post);
         }
     );
@@ -148,7 +146,7 @@ exports.delete_shop_post = function(req, res) {
         { $pull: { posts: { datetime: dt }}},
         (err, post) => {
             if (err)
-                res.send(err);
+                return res.send(err);
             res.send("Deleted");
         }
     );
