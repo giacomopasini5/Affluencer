@@ -8,20 +8,20 @@
 		<div class="sideInfo">
 			<div id="description">
 				<div v-if="settings" class="store-info">
-					<input type="text" v-model="storeSettings.name" id="nameSettings" name="nameSettings" placeholder="Nome" class="store-input">
+					<input type="text" v-model="storeSettings.name" id="nameSettings" name="nameSettings" :placeholder="storeData.name" class="store-input">
 				</div>
 				<div v-if="settings" class="store-info">
-					<input type="email" v-model="storeSettings.email" id="emailSettings" name="emailSettings" placeholder="Email" class="store-input" :class="{'is-invalid':$v.storeSettings.email.$error}">
+					<input type="email" v-model="storeSettings.email" id="emailSettings" name="emailSettings" :placeholder="storeData.email" class="store-input" :class="{'is-invalid':$v.storeSettings.email.$error}">
 					<div v-if="$v.storeSettings.email.$error" class="invalid-feedback">
 						<span v-if="!$v.storeSettings.email.email">L'email non è valida</span>
 					</div>
 				</div>
 				<div class="store-info">
-					<input v-if="settings" type="text" v-model="storeSettings.address" id="addressSettings" name="addressSettings" placeholder="Indirizzo" class="store-input">
+					<input v-if="settings" type="text" v-model="storeSettings.address" id="addressSettings" name="addressSettings" :placeholder="storeData.address" class="store-input">
 					<span v-else>{{ storeData.address }}</span>
 				</div>
 				<div class="store-info">
-					<input v-if="settings" type="text" v-model="storeSettings.city" id="citySettings" name="citySettings" placeholder="Città" class="store-input">
+					<input v-if="settings" type="text" v-model="storeSettings.city" id="citySettings" name="citySettings" :placeholder="storeData.city" class="store-input">
 					<span v-else>{{ storeData.city }}</span>
 				</div>
 				<div class="store-info">
@@ -34,7 +34,7 @@
 				</div>
 				<div class="store-info">
 					<div v-if="settings">
-						<input type="number" v-model="storeSettings.capacity" id="capacitySettings" name="capacitySettings" placeholder="Capienza" class="store-input" :class="{'is-invalid': $v.storeSettings.capacity.$error}">
+						<input type="number" v-model="storeSettings.capacity" id="capacitySettings" name="capacitySettings" :placeholder="storeData.capacity" class="store-input" :class="{'is-invalid': $v.storeSettings.capacity.$error}">
 						<div v-if="$v.storeSettings.capacity.$error" class="invalid-feedback">
 							<span v-if="!$v.storeSettings.capacity.minValue">La capienza deve essere maggiore di 0</span>
 						</div>
