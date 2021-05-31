@@ -41,7 +41,7 @@
 					</div>
 					<span v-else>Capienza: {{ storeData.capacity }}</span>
 				</div>
-				<span class="store-info">Affluenza: {{ storeData.influx }}</span>
+				<span v-if="!settings" class="store-info">Affluenza: {{ storeData.influx }}</span>
 			</div>
 			<div v-if="isOwner" id="settingsButton">
 				<button v-if="settings" @click="applySettings()" class="store-button">Salva</button>
