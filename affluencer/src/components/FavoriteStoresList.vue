@@ -1,10 +1,10 @@
 <template>
 	<div id="favoriteStoresList">
 		<h1>&#11088 Negozi preferiti</h1>
-		<ul id="favorite-stores">
+		<ul id="favoriteShops">
 			<li v-for="shop in favoriteStores" :key="shop.shop_id">
 				<router-link :to="/store/ + shop.shop_id">{{ shop.shop_name }}</router-link>
-				<button @click="removeFavorite(shop)" class="item-delete">&#10006</button>
+				<button v-if="$store.state.config.settings" @click="removeFavorite(shop)" class="item-delete">&#10006</button>
 			</li>
 		</ul>
 	</div>

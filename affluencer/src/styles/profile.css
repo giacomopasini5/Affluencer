@@ -8,10 +8,6 @@
 	overflow: hidden;
 }
 
-#userInfo {
-	display: block;
-}
-
 .profile-title {
 	margin: 0;
 	padding: 2%;
@@ -21,14 +17,44 @@
 }
 
 .profile-info {
-	display: block;
 	margin: 1%;
 	font-size: 1.5rem;
 	text-align: center;
 }
 
-#favoriteStoresList {
-	display: block;
+.profile-input {
+	margin: 1% auto;
+	border: 2px solid #a9a9a9;
+	border-radius: 7px;
+	line-height: 20px;
+	font-size: 0.8rem;
+	transition: all 0.3s;
+}
+
+.profile-input:focus {
+	outline: none;
+	border-color: #9ecaed;
+	box-shadow: 0 0 10px #9ecaed;
+}
+
+.profile-button {
+	border: none;
+	outline: none;
+	padding: 0.3em 1.2em;
+	margin: 2% auto;
+	border-radius: 2em;
+	color: inherit;
+	text-decoration: none;
+	font-size: 1.2rem;
+	background-color: #9ecaed;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+#profileSettings, #profileDescription {
+	display: flex;
+	flex-direction: column;
 	padding: 2%;
 }
 
@@ -40,11 +66,11 @@
 	font-size: 2rem;
 }
 
-ul#favorite-stores {
+ul#favoriteShops {
 	padding: 0;
 }
 
-ul#favorite-stores li {
+ul#favoriteShops li {
 	position: relative;
 	list-style: none;
 	padding: 1%;
@@ -56,11 +82,11 @@ ul#favorite-stores li {
 	transition: all 0.3s;
 }
 
-ul#favorite-stores li:hover {
+ul#favoriteShops li:hover {
 	background-color: #9ecaed;
 }
 
-ul#favorite-stores a {
+ul#favoriteShops a {
 	text-decoration: none;
 	text-align: center;
 	color: #0e0b16;

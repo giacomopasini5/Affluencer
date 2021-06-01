@@ -4,12 +4,6 @@
 			<div id="statistics">
 				
 			</div>
-			<div id="">
-				
-			</div>
-			<div id="statistics">
-				
-			</div>
 		</div>
 	</div>
 </template>

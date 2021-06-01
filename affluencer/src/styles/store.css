@@ -92,10 +92,6 @@
 	position: relative;
 }
 
-#statistics {
-	padding: 2%;
-}
-
 @keyframes settingsInput {
 	from {
 		opacity: 0;

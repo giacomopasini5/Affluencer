@@ -1,8 +1,8 @@
 <template>
-  <div v-if="hasUserData" id="profile">
+	<div v-if="hasUserData" id="profile">
 		<userInfo :userData="userData"/>
 		<favoriteStoresList :favoriteStores="userData.favorite_shops"/>
-  </div>
+	</div>
 </template>
 
 <script>

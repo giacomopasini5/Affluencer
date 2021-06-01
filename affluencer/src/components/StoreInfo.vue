@@ -96,6 +96,7 @@
 		
 		created: function() {
 			this.initializeFavorite();
+			this.$store.commit('disableSettings');
 		},
 		
 		methods: {
@@ -147,7 +148,7 @@
 			applySettings: async function() {
 				if(this.isOwner) {
 					this.$v.$touch();
-					if (this.$v.$invalid) return;
+					if(this.$v.$invalid) return;
 					
 					for(var key in this.storeSettings)
 						if(this.storeSettings[key] != '')

@@ -1,8 +1,8 @@
 <template>
-  <div v-if="hasStoreData" id="store">
+	<div v-if="hasStoreData" id="store">
 		<storeInfo :storeData="storeData"/>
 		<storeStats/>
-  </div>
+	</div>
 </template>
 
 <script>
