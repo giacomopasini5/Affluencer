@@ -24,6 +24,7 @@ ul#nav-links {
 	justify-content: space-between;
 	width: 40%;
 	line-height: 40px;
+  z-index: 9999;
 }
 
 ul#nav-links li {

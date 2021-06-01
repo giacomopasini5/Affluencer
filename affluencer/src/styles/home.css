@@ -2,3 +2,17 @@
     height: calc(100vh - 8vh);
     width: 100vw;
 }
+
+.v-dialog {
+    position: absolute;
+    /*left: 0;*/
+}
+
+.leaflet-popup-content{
+    width: 600px;
+    max-height: fit-content;
+}
+
+.leaflet-popup-close-button {
+    display: none; 
+ }
