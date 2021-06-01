@@ -28,7 +28,7 @@
 	font-size: 2.5rem;
 }
 
-#description, #customersForm, #settingsButton {
+#storeSettings, #storeDescription, #customersForm {
 	display: flex;
 	flex-direction: column;
 	padding: 2%;
@@ -49,7 +49,7 @@
 	transition: all 0.3s;
 }
 
-.store-info .store-input {
+.settings-input {
 	-webkit-animation: settingsInput 0.3s;
 	animation: settingsInput 0.3s;
 }

@@ -13,7 +13,6 @@
 }
 
 .profile-title {
-	display: block;
 	margin: 0;
 	padding: 2%;
 	text-align: center;
@@ -21,7 +20,7 @@
 	font-size: 2.5rem;
 }
 
-.profile-span {
+.profile-info {
 	display: block;
 	margin: 1%;
 	font-size: 1.5rem;

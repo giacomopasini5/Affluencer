@@ -3,10 +3,10 @@ import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
- 
-const store = new Vuex.Store({
+
+const auth = {
 	state: {
-		isLogged: true
+		isLogged: false
 	},
 	
 	mutations: {
@@ -17,9 +17,32 @@ const store = new Vuex.Store({
 		logout(state) {
 			state.isLogged = false;
 		}
+	}
+}
+
+const config = {
+	state: {
+		settings: false
 	},
 	
-	plugins: [createPersistedState()]
+	mutations: {
+		enableSettings(state) {
+			state.settings = true;
+		},
+		
+		disableSettings(state) {
+			state.settings = false;
+		}
+	}
+}
+
+const store = new Vuex.Store({
+	modules: {
+		auth,
+		config
+	},
+	
+	plugins: [createPersistedState({ paths: ['auth'] })]
 });
 
 export default store

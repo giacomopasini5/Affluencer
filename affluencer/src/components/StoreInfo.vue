@@ -6,46 +6,60 @@
 			<button v-else @click="setFavorite()" class="favorite-button">&#9734</button>
 		</div>
 		<div class="sideInfo">
-			<div id="description">
-				<div v-if="settings" class="store-info">
-					<input type="text" v-model="storeSettings.name" id="nameSettings" name="nameSettings" :placeholder="storeData.name" class="store-input">
+			<div v-if="$store.state.config.settings" id="storeSettings">
+				<div class="store-info">
+					<input type="text" v-model="storeSettings.name" id="nameSettings" name="nameSettings" :placeholder="storeData.name" class="store-input settings-input">
 				</div>
-				<div v-if="settings" class="store-info">
-					<input type="email" v-model="storeSettings.email" id="emailSettings" name="emailSettings" :placeholder="storeData.email" class="store-input" :class="{'is-invalid':$v.storeSettings.email.$error}">
+				<div class="store-info">
+					<input type="email" v-model="storeSettings.email" id="emailSettings" name="emailSettings" :placeholder="storeData.email" class="store-input settings-input" :class="{'is-invalid':$v.storeSettings.email.$error}">
 					<div v-if="$v.storeSettings.email.$error" class="invalid-feedback">
 						<span v-if="!$v.storeSettings.email.email">L'email non è valida</span>
 					</div>
 				</div>
 				<div class="store-info">
-					<input v-if="settings" type="text" v-model="storeSettings.address" id="addressSettings" name="addressSettings" :placeholder="storeData.address" class="store-input">
-					<span v-else>{{ storeData.address }}</span>
+					<input type="text" v-model="storeSettings.address" id="addressSettings" name="addressSettings" :placeholder="storeData.address" class="store-input settings-input">
 				</div>
 				<div class="store-info">
-					<input v-if="settings" type="text" v-model="storeSettings.city" id="citySettings" name="citySettings" :placeholder="storeData.city" class="store-input">
-					<span v-else>{{ storeData.city }}</span>
+					<input type="text" v-model="storeSettings.city" id="citySettings" name="citySettings" :placeholder="storeData.city" class="store-input settings-input">
 				</div>
 				<div class="store-info">
-					<input v-if="settings" type="time" v-model="storeSettings.openTime" id="openTimeSettings" name="openTimeSettings" class="store-input">
-					<span v-else>Apre alle {{ storeData.openTime }}</span>
+					<input type="time" v-model="storeSettings.openTime" id="openTimeSettings" name="openTimeSettings" class="store-input settings-input">
 				</div>
 				<div class="store-info">
-					<input v-if="settings" type="time" v-model="storeSettings.closeTime" id="closeTimeSettings" name="closeTimeSettings" class="store-input">
-					<span v-else>Chiude alle {{ storeData.closeTime }}</span>
+					<input type="time" v-model="storeSettings.closeTime" id="closeTimeSettings" name="closeTimeSettings" class="store-input settings-input">
 				</div>
 				<div class="store-info">
-					<div v-if="settings">
-						<input type="number" v-model="storeSettings.capacity" id="capacitySettings" name="capacitySettings" :placeholder="storeData.capacity" class="store-input" :class="{'is-invalid': $v.storeSettings.capacity.$error}">
-						<div v-if="$v.storeSettings.capacity.$error" class="invalid-feedback">
-							<span v-if="!$v.storeSettings.capacity.minValue">La capienza deve essere maggiore di 0</span>
-						</div>
+					<input type="number" v-model="storeSettings.capacity" id="capacitySettings" name="capacitySettings" :placeholder="storeData.capacity" class="store-input settings-input" :class="{'is-invalid': $v.storeSettings.capacity.$error}">
+					<div v-if="$v.storeSettings.capacity.$error" class="invalid-feedback">
+						<span v-if="!$v.storeSettings.capacity.minValue">La capienza deve essere maggiore di 0</span>
 					</div>
-					<span v-else>Capienza: {{ storeData.capacity }}</span>
 				</div>
-				<span v-if="!settings" class="store-info">Affluenza: {{ storeData.influx }}</span>
+				<div class="store-info">
+					<button @click="applySettings()" class="store-button">Salva</button>
+				</div>
 			</div>
-			<div v-if="isOwner" id="settingsButton">
-				<button v-if="settings" @click="applySettings()" class="store-button">Salva</button>
-				<button v-else @click="openSettings()" class="store-button">Modifica</button>
+			<div v-else id="storeDescription">
+				<div class="store-info">
+					<span>{{ storeData.address }}</span>
+				</div>
+				<div class="store-info">
+					<span>{{ storeData.city }}</span>
+				</div>
+				<div class="store-info">
+					<span>Apre alle {{ storeData.openTime }}</span>
+				</div>
+				<div class="store-info">
+					<span>Chiude alle {{ storeData.closeTime }}</span>
+				</div>
+				<div class="store-info">
+					<span>Capienza: {{ storeData.capacity }}</span>
+				</div>
+				<div class="store-info">
+					<span>Affluenza: {{ storeData.influx }}</span>
+				</div>
+				<div v-if="isOwner" class="store-info">
+					<button @click="openSettings()" class="store-button">Modifica</button>
+				</div>
 			</div>
 			<div v-if="isClient()" id="customersForm">
 				<label for="currentCustomers" class="store-info">Segnala affluenza</label>
@@ -76,8 +90,7 @@
 					capacity: ''
 				},
 				isFavorite: false,
-				currentCustomers: '',
-				settings: false
+				currentCustomers: ''
 			}
 		},
 		
@@ -128,7 +141,7 @@
 			},
 			
 			openSettings: function() {
-				this.settings = true;
+				this.$store.commit('enableSettings');
 			},
 			
 			applySettings: async function() {
@@ -141,7 +154,7 @@
 							this.storeData[key] = this.storeSettings[key];
 					try {
 						var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeData);
-						this.settings = false;
+						this.$store.commit('disableSettings');
 					} catch(error) {
 						console.log('failure');
 						console.log(error);

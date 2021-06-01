@@ -52,7 +52,7 @@ const routes = [
 const router = new VueRouter({routes});
 
 router.beforeEach((to, from, next) => {
-	if((to.name == 'profile' || to.name == 'store') && (!appStore.state.isLogged)) next('/login')
+	if((to.name == 'profile' || to.name == 'store') && (!appStore.state.auth.isLogged)) next('/login')
 	else if((to.name == 'profile') && ($cookies.get('usertype') == 'shop')) next('/store/' + $cookies.get('userid'))
 	else next();
 });
