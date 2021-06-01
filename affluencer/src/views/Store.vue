@@ -1,6 +1,6 @@
 <template>
-  <div id="store">
-		<storeInfo v-if="hasStoreData" :storeData="storeData"/>
+  <div v-if="hasStoreData" id="store">
+		<storeInfo :storeData="storeData"/>
 		<storeStats/>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
 	<div id="favoriteStoresList">
-		<h1>Negozi preferiti</h1>
+		<h1>&#11088 Negozi preferiti</h1>
 		<ul id="favorite-stores">
 			<li v-for="shop in favoriteStores" :key="shop.shop_id">
 				<router-link :to="/store/ + shop.shop_id">{{ shop.shop_name }}</router-link>

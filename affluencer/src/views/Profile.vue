@@ -1,7 +1,7 @@
 <template>
-  <div id="profile">
-		<userInfo v-if="hasUserData" :userData="userData"/>
-		<favoriteStoresList v-if="hasUserData" :favoriteStores="userData.favorite_shops"/>
+  <div v-if="hasUserData" id="profile">
+		<userInfo :userData="userData"/>
+		<favoriteStoresList :favoriteStores="userData.favorite_shops"/>
   </div>
 </template>
 
