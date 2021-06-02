@@ -75,7 +75,3 @@
     	}
 	}
 </script>
-
-<style>
-	@import '../styles/loginForm.css'
-</style>

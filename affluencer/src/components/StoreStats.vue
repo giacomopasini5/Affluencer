@@ -13,7 +13,3 @@
 		name: 'storeStats'
 	}
 </script>
-
-<style>
-	@import '../styles/store.css'
-</style>

@@ -172,7 +172,3 @@
 		}
 	}
 </script>
-
-<style>
-	@import '../styles/store.css'
-</style>

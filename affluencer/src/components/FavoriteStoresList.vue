@@ -30,7 +30,3 @@
 		}
 	}
 </script>
-
-<style>
-	@import '../styles/profile.css'
-</style>
