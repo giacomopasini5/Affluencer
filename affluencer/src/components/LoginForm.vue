@@ -1,8 +1,45 @@
 <template>
 	<div id="loginForm">
-		<h1 class="form-title">Accedi</h1>
-		<form @submit.prevent="handleSubmit" novalidate>
-			<div class="form-item">
+		<v-row justify="center" class="text-center pa-5">
+			<v-col cols="6">
+				<v-row justify="center" class="text-center pa-5">
+					<v-col cols="12">
+						<h1>Accedi</h1>
+					</v-col>
+					<v-col cols="12">
+						<form @submit.prevent="handleSubmit" novalidate>
+							<v-row>
+								<v-col cols="12">
+									<v-text-field type="email" v-model="user.email" label="Email" hide-details="auto" outlined></v-text-field>
+								</v-col>
+								<v-col cols="12">
+									<v-text-field type="password" v-model="user.password" label="Password" hide-details="auto" outlined></v-text-field>
+								</v-col>
+								<v-col cols="12">
+									<v-radio-group v-model="user.usertype" hide-details="auto">
+										<v-radio value="client" label="Cliente"></v-radio>
+										<v-radio value="shop" label="Negozio"></v-radio>
+									</v-radio-group>
+								</v-col>
+								<v-col cols="12">
+									<v-btn type="submit" color="primary">Accedi</v-btn>
+								</v-col>
+							</v-row>
+						</form>
+					</v-col>
+				</v-row>
+			</v-col>
+		</v-row>
+	</div>
+		
+		
+		
+		
+		
+		
+		
+		
+			<!--<div class="form-item">
 				<label for="email" class="form-label">Email</label>
 				<input type="email" v-model="user.email" id="email" name="email" :class="{'is-invalid':$v.user.email.$error}">
 				<div v-if="$v.user.email.$error" class="invalid-feedback">
@@ -29,8 +66,8 @@
 			<div class="form-item">
 				<span class="form-span">Non sei registrato?</span>
 				<router-link to="/register" class="form-button">Registrati</router-link>
-			</div>
-		</form>
+			</div>-->
+		</v-form>
 	</div>
 </template>
 
@@ -45,7 +82,7 @@
         		user: {	
 					email: '',
 					password: '',
-					usertype: null
+					usertype: ''
 				}
       		}
     	},

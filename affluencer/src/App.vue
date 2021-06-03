@@ -2,7 +2,9 @@
 	<v-app id="app">
 		<navbar :navLinks="navLinks"/>
 		<v-main>
-			<router-view/>
+			<v-container fluid class="pa-0">
+				<router-view/>
+			</v-container>
 		</v-main>
 	</v-app>
 </template>
