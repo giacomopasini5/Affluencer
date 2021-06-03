@@ -146,20 +146,18 @@
 			},
 			
 			applySettings: async function() {
-				if(this.isOwner) {
-					this.$v.$touch();
-					if(this.$v.$invalid) return;
-					
-					for(var key in this.storeSettings)
-						if(this.storeSettings[key] != '')
-							this.storeData[key] = this.storeSettings[key];
-					try {
-						var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeData);
-						this.$store.commit('disableSettings');
-					} catch(error) {
-						console.log('failure');
-						console.log(error);
-					}
+				this.$v.$touch();
+				if(this.$v.$invalid) return;
+				
+				for(var key in this.storeSettings)
+					if(this.storeSettings[key] != '')
+						this.storeData[key] = this.storeSettings[key];
+				try {
+					var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeData);
+					this.$store.commit('disableSettings');
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
 				}
 			}
 		},

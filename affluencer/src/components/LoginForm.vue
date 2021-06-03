@@ -22,7 +22,13 @@
 									</v-radio-group>
 								</v-col>
 								<v-col cols="12">
-									<v-btn type="submit" color="primary">Accedi</v-btn>
+									<v-btn type="submit" color="primary" :loading="loginLoading" :disabled="loginLoading">Accedi</v-btn>
+								</v-col>
+								<v-col cols="12">
+									<h2>Non sei registrato?</h2>
+								</v-col>
+								<v-col cols="12">
+									<v-btn to="/register" @click.native="handleRegister" color="primary" :loading="registerLoading" :disabled="registerLoading">Registrati</v-btn>
 								</v-col>
 							</v-row>
 						</form>
@@ -83,7 +89,9 @@
 					email: '',
 					password: '',
 					usertype: ''
-				}
+				},
+				loginLoading: false,
+				registerLoading: false
       		}
     	},
 		
@@ -100,6 +108,7 @@
         		this.$v.$touch();
         		if (this.$v.$invalid) return;
         		
+				this.loginLoading = true;
 				this.axios.post('/login', this.user)
           		.then((res) => {
             		this.login(res.data.id, res.data.username, res.data.usertype);
@@ -108,7 +117,11 @@
             		console.log('failure');
             		console.log(error);
          		});
-      		}
+      		},
+			
+			handleRegister: function(e) {
+				this.registerLoading = true;
+			}
     	}
 	}
 </script>
