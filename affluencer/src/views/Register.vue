@@ -1,13 +1,23 @@
 <template>
-  <div id="register">
-		<div class="form-item" v-if="chooseRegistration">
-			<span class="form-span">Che tipo di profilo vuoi registrare?</span>
-			<button class="form-button" @click="setClientRegistration()">Cliente</button>
-			<button class="form-button" @click="setStoreRegistration()">Negozio</button>
-		</div>
+	<div id="register">
+		<v-row justify="center" class="text-center pa-10" v-if="chooseRegistration">
+			<v-col sm="8" md="6" lg="4">
+				<v-row class="form-container text-center pa-5">
+					<v-col cols="12">
+						<h1>Scegli il profilo</h1>
+					</v-col>
+					<v-col cols="6">
+						<v-btn @click.native="setClientRegistration" color="primary">Cliente</v-btn>
+					</v-col>
+					<v-col cols="6">
+						<v-btn @click.native="setStoreRegistration" color="primary">Negozio</v-btn>
+					</v-col>
+				</v-row>
+			</v-col>
+		</v-row>
 		<registerClient v-else-if="clientRegistration"/>
 		<registerStore v-else-if="storeRegistration"/>
-  </div>
+	</div>
 </template>
 
 <script>
