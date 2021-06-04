@@ -1,8 +1,8 @@
 <template>
 	<div id="loginForm">
 		<v-row justify="center" class="text-center pa-10">
-			<v-col cols="6">
-				<v-row justify="center" class="form-container text-center pa-5">
+			<v-col sm="8" md="6" lg="4">
+				<v-row class="form-container text-center pa-5">
 					<v-col cols="12">
 						<h1>Accedi</h1>
 					</v-col>
