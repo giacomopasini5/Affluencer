@@ -162,5 +162,5 @@ export default {
 </script>
 
 <style>
-@import "../styles/home.css";
+	@import "../styles/home.css";
 </style>

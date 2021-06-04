@@ -32,16 +32,20 @@
 		
 		methods: {
 			setClientRegistration: function() {
-				this.chooseRegistration = false
-				this.clientRegistration = true
-				this.storeRegistration = false
+				this.chooseRegistration = false;
+				this.clientRegistration = true;
+				this.storeRegistration = false;
 			},
 			
 			setStoreRegistration: function() {
-				this.chooseRegistration = false
-				this.clientRegistration = false
-				this.storeRegistration = true
+				this.chooseRegistration = false;
+				this.clientRegistration = false;
+				this.storeRegistration = true;
 			}
 		}
 	}
 </script>
+
+<style>
+	@import "../styles/loginForm.css";
+</style>
