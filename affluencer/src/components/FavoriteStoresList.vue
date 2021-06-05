@@ -7,7 +7,11 @@
 			<v-row justify="center">
 				<v-col cols="8">
 					<v-list>
-						
+						<v-list-item v-for="shop in favoriteStores" :key="shop.shop_id">
+							<v-list-item-content>
+								<v-list-item-title :to="/store/ + shop.shop_id" :v-text="shop.shop_name"></v-list-item-title>
+							</v-list-item-content>
+						</v-list-item>
 					</v-list>
 				</v-col>
 			</v-row>
