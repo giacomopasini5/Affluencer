@@ -2,7 +2,7 @@
 	<div id="registerClient">
 		<v-row justify="center" class="text-center pa-10">
 			<v-col sm="8" md="6" lg="4">
-				<v-row class="form-container text-center pa-5">
+				<v-row class="text-center pa-5">
 					<v-col cols="12">
 						<h1>Registrazione Cliente</h1>
 					</v-col>
@@ -88,7 +88,3 @@
 		}
 	}
 </script>
-
-<style>
-	@import "../styles/loginForm.css";
-</style>
