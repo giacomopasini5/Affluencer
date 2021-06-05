@@ -1,25 +1,23 @@
 <template>
-	<div id="register">
-		<v-row v-if="chooseRegistration" justify="center" class="text-center pa-10">
-			<v-col sm="8" md="6" lg="4">
-				<v-card elevation="2" outlined>
-					<v-row class="text-center pa-5">
-						<v-col cols="12">
-							<h1>Scegli il profilo</h1>
-						</v-col>
-						<v-col cols="6">
-							<v-btn @click.native="setClientRegistration" color="primary">Cliente</v-btn>
-						</v-col>
-						<v-col cols="6">
-							<v-btn @click.native="setStoreRegistration" color="primary">Negozio</v-btn>
-						</v-col>
-					</v-row>
-				</v-card>
-			</v-col>
-		</v-row>
-		<registerClient v-else-if="clientRegistration"/>
-		<registerStore v-else-if="storeRegistration"/>
-	</div>
+	<v-row justify="center" class="text-center pa-10">
+		<v-col sm="8" md="6" lg="4">
+			<v-card v-if="chooseRegistration" elevation="5" outlined>
+				<v-row justify="center" class="text-center pa-5">
+					<v-col cols="10">
+						<h1>Scegli il profilo</h1>
+					</v-col>
+					<v-col cols="6">
+						<v-btn @click.native="setClientRegistration" color="primary">Cliente</v-btn>
+					</v-col>
+					<v-col cols="6">
+						<v-btn @click.native="setStoreRegistration" color="primary">Negozio</v-btn>
+					</v-col>
+				</v-row>
+			</v-card>
+			<registerClient v-else-if="clientRegistration"/>
+			<registerStore v-else-if="storeRegistration"/>
+		</v-col>
+	</v-row>
 </template>
 
 <script>

@@ -1,6 +1,24 @@
 <template>
 	<div id="userInfo">
-		<h1 class="profile-title">{{ userData.name }}</h1>
+	<v-row justify="center" class="text-center pa-10">
+			<v-col sm="8" md="6" lg="4">
+				<v-card elevation="5" outlined>
+					<v-row justify="center" class="text-center pa-5">
+						<v-col cols="10">
+							<h1>Accedi</h1>
+						</v-col>
+						<v-col cols="10">
+							
+						</v-col>
+					</v-row>
+				</v-card>
+			</v-col>
+		</v-row>
+	
+	
+	
+	
+		<!--<h1 class="profile-title">{{ userData.name }}</h1>
 		<div v-if="$store.state.config.settings" id="profileSettings">
 			<div class="profile-info">
 				<input type="text" v-model="userSettings.name" id="nameSettings" name="nameSettings" :placeholder="userData.name" class="profile-input settings-input">
@@ -25,7 +43,7 @@
 			<div class="profile-info">
 				<button @click="openSettings()" class="profile-button">Modifica</button>
 			</div>
-		</div>
+		</div>-->
 	</div>
 </template>
 

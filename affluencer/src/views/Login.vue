@@ -1,7 +1,9 @@
 <template>
-	<div id="login">
-		<loginForm/>
-	</div>
+	<v-row justify="center" class="text-center pa-10">
+		<v-col sm="8" md="6" lg="4">
+			<loginForm/>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
