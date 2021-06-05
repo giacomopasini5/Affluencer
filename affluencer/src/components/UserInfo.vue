@@ -1,50 +1,34 @@
 <template>
-	<div id="userInfo">
-	<v-row justify="center" class="text-center pa-10">
-			<v-col sm="8" md="6" lg="4">
-				<v-card elevation="5" outlined>
-					<v-row justify="center" class="text-center pa-5">
-						<v-col cols="10">
-							<h1>Accedi</h1>
-						</v-col>
-						<v-col cols="10">
-							
-						</v-col>
-					</v-row>
-				</v-card>
-			</v-col>
-		</v-row>
-	
-	
-	
-	
-		<!--<h1 class="profile-title">{{ userData.name }}</h1>
-		<div v-if="$store.state.config.settings" id="profileSettings">
-			<div class="profile-info">
-				<input type="text" v-model="userSettings.name" id="nameSettings" name="nameSettings" :placeholder="userData.name" class="profile-input settings-input">
-			</div>
-			<div class="profile-info">
-				<input type="email" v-model="userSettings.email" id="emailSettings" name="emailSettings" :placeholder="userData.email" class="profile-input settings-input" :class="{'is-invalid':$v.userSettings.email.$error}">
-				<div v-if="$v.userSettings.email.$error" class="invalid-feedback">
-					<span v-if="!$v.userSettings.email.email">L'email non è valida</span>
-				</div>
-			</div>
-			<div class="profile-info">
-				<input type="text" v-model="userSettings.city" id="citySettings" name="citySettings" :placeholder="userData.city" class="profile-input settings-input">
-			</div>
-			<div class="profile-info">
-				<button @click="applySettings()" class="profile-button">Salva</button>
-			</div>
-		</div>
-		<div v-else id="profileDescription">
-			<div class="profile-info">
-				<span>{{ userData.city }}</span>
-			</div>
-			<div class="profile-info">
-				<button @click="openSettings()" class="profile-button">Modifica</button>
-			</div>
-		</div>-->
-	</div>
+	<v-row justify="center" class="text-center pa-5">
+		<v-col cols="10">
+			<h1>{{ userData.name }}</h1>
+		</v-col>
+		<v-col cols="10">
+			<v-row justify="center" v-if="$store.state.config.settings">
+				<v-col cols="8">
+					<v-text-field v-model="userSettings.name" label="Nome" hide-details="auto" outlined dense></v-text-field>
+				</v-col>
+				<v-col cols="8">
+					<v-text-field type="email" v-model="userSettings.email" label="Email" hide-details="auto" outlined dense :error="$v.userSettings.email.$error"
+					:rules="!$v.userSettings.email.$error ? [] : [$v.userSettings.email.email || 'L\'email non è valida']"></v-text-field>
+				</v-col>
+				<v-col cols="8">
+					<v-text-field v-model="userSettings.city" label="Città" hide-details="auto" outlined dense></v-text-field>
+				</v-col>
+				<v-col cols="8">
+					<v-btn @click="applySettings" color="primary">Salva</v-btn>
+				</v-col>
+			</v-row>
+			<v-row v-else>
+				<v-col cols="12">
+					<h2>{{ userData.city }}</h2>
+				</v-col>
+				<v-col cols="12">
+					<v-btn @click="openSettings" color="primary">Modifica</v-btn>
+				</v-col>
+			</v-row>
+		</v-col>
+	</v-row>
 </template>
 
 <script>

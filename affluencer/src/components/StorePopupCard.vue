@@ -1,5 +1,4 @@
 <template>
-  <div id="storePopupCard">
     <v-card elevation="0">
       <v-card-title>
         <v-icon color="blue">mdi-home</v-icon>
@@ -26,10 +25,7 @@
           Descrizione
         </div>
       </v-card-text>
-
-      
     </v-card>
-  </div>
 </template>
 
 <script>

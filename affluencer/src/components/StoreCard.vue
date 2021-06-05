@@ -1,5 +1,4 @@
 <template>
-  <div id="storeCard">
     <v-card>
       <v-img
         height="250"
@@ -16,7 +15,6 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-  </div>
 </template>
 
 <script>

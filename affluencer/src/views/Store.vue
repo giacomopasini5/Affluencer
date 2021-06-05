@@ -1,5 +1,5 @@
 <template>
-	<div v-if="hasStoreData" id="store">
+	<div v-if="hasStoreData">
 		<storeInfo :storeData="storeData"/>
 		<storeStats/>
 	</div>

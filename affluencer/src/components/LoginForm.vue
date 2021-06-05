@@ -8,11 +8,11 @@
 				<form @submit.prevent="handleSubmit" novalidate>
 					<v-row>
 						<v-col cols="12">
-							<v-text-field type="email" v-model="user.email" label="Email" hide-details="auto" outlined :error="$v.user.email.$error"
+							<v-text-field type="email" v-model="user.email" label="Email" hide-details="auto" outlined dense :error="$v.user.email.$error"
 							:rules="!$v.user.email.$error ? [] : [$v.user.email.required || 'L\'email è obbligatoria', $v.user.email.email || 'L\'email non è valida']"></v-text-field>
 						</v-col>
 						<v-col cols="12">
-							<v-text-field type="password" v-model="user.password" label="Password" hide-details="auto" outlined :error="$v.user.password.$error"
+							<v-text-field type="password" v-model="user.password" label="Password" hide-details="auto" outlined dense :error="$v.user.password.$error"
 							:rules="!$v.user.password.$error ? [] : [$v.user.password.required || 'La password è obbligatoria']"></v-text-field>
 						</v-col>
 						<v-col cols="12">

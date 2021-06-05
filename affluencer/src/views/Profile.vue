@@ -1,8 +1,12 @@
 <template>
-	<div v-if="hasUserData" id="profile">
-		<userInfo :userData="userData"/>
-		<favoriteStoresList :favoriteStores="userData.favorite_shops"/>
-	</div>
+	<v-row v-if="hasUserData" justify="center" class="text-center pa-10">
+		<v-col md="10" lg="8">
+			<v-card elevation="5" outlined>
+				<userInfo :userData="userData"/>
+				<favoriteStoresList :favoriteStores="userData.favorite_shops"/>
+			</v-card>
+		</v-col>
+	</v-row>
 </template>
 
 <script>

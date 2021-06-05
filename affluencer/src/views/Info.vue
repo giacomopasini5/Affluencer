@@ -1,5 +1,3 @@
 <template>
-  <div id="info">
-    INFO
-  </div>
+	<h1>INFO</h1>
 </template>
