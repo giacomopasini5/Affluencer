@@ -1,13 +1,28 @@
 <template>
-	<div id="favoriteStoresList">
-		<h1>Negozi preferiti</h1>
-		<ul id="favoriteShops">
+	<v-row justify="center" class="text-center pa-5">
+		<v-col cols="10">
+			<h1>Negozi preferiti</h1>
+		</v-col>
+		<v-col cols="10">
+			<v-row justify="center">
+				<v-col cols="8">
+					<v-list>
+						
+					</v-list>
+				</v-col>
+			</v-row>
+		</v-col>
+	</v-row>
+		
+		
+		
+		
+		<!--<ul>
 			<li v-for="shop in favoriteStores" :key="shop.shop_id">
-				<router-link :to="/store/ + shop.shop_id">{{ shop.shop_name }}</router-link>
-				<button v-if="$store.state.config.settings" @click="removeFavorite(shop)" class="item-delete">D</button>
+				<v-btn :to="/store/ + shop.shop_id" color="primary">{{ shop.shop_name }}</v-btn>
+				<v-btn v-if="$store.state.config.settings" @click="removeFavorite(shop)" color="primary">D</v-btn>
 			</li>
-		</ul>
-	</div>
+		</ul>-->
 </template>
 
 <script>
