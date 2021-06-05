@@ -31,7 +31,7 @@
 									<h2>Non sei registrato?</h2>
 								</v-col>
 								<v-col cols="12">
-									<v-btn to="/register" @click.native="handleRegister" color="primary" :loading="registerLoading" :disabled="registerLoading">Registrati</v-btn>
+									<v-btn to="/register" color="primary">Registrati</v-btn>
 								</v-col>
 							</v-row>
 						</form>
@@ -55,8 +55,7 @@
 					password: '',
 					usertype: ''
 				},
-				loginLoading: false,
-				registerLoading: false
+				loginLoading: false
       		}
     	},
 		
@@ -82,11 +81,7 @@
             		console.log('failure');
             		console.log(error);
          		});
-      		},
-			
-			handleRegister: function(e) {
-				this.registerLoading = true;
-			}
+      		}
     	}
 	}
 </script>

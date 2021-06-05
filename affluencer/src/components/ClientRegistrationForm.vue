@@ -1,49 +1,43 @@
 <template>
 	<div id="registerClient">
-    <h1 class="form-title">Registrazione Cliente</h1>
-		<form id="clientForm" @submit.prevent="handleSubmit" novalidate>
-			<div class="form-item">
-				<label for="name" class="form-label">Nome</label>
-				<input type="text" v-model="client.name" id="name" name="name" :class="{'is-invalid': $v.client.name.$error}">
-				<div v-if="$v.client.name.$error" class="invalid-feedback">
-					<span v-if="!$v.client.name.required">Il nome è obbligatorio</span>
-				</div>
-			</div>
-			<div class="form-item">
-				<label for="city" class="form-label">Città</label>
-				<input type="text" v-model="client.city" id="city" name="city" :class="{'is-invalid': $v.client.city.$error}">
-				<div v-if="$v.client.city.$error" class="invalid-feedback">
-					<span v-if="!$v.client.city.required">La città è obbligatoria</span>
-				</div>
-			</div>
-			<div class="form-item">
-				<label for="email" class="form-label">Email</label>
-				<input type="email" v-model="client.email" id="email" name="email" :class="{'is-invalid':$v.client.email.$error}">
-				<div v-if="$v.client.email.$error" class="invalid-feedback">
-					<span v-if="!$v.client.email.required">L'email è obbligatoria</span>
-					<span v-if="!$v.client.email.email">L'email non è valida</span>
-				</div>
-			</div>
-			<div class="form-item">
-				<label for="password" class="form-label">Password</label>
-				<input type="password" v-model="client.password" id="password" name="password" :class="{'is-invalid': $v.client.password.$error}">
-				<div v-if="$v.client.password.$error" class="invalid-feedback">
-					<span v-if="!$v.client.password.required">La password è obbligatoria</span>
-					<span v-if="!$v.client.password.minLength">La password deve essere di almeno 6 caratteri</span>
-				</div>
-			</div>
-			<div class="form-item">
-				<label for="confirmPassword" class="form-label">Conferma Password</label>
-				<input type="password" v-model="client.confirmPassword" id="confirmPassword" name="confirmPassword" :class="{ 'is-invalid': $v.client.confirmPassword.$error}">
-				<div v-if="$v.client.confirmPassword.$error" class="invalid-feedback">
-					<span v-if="!$v.client.confirmPassword.required">La conferma password è obbligatoria</span>
-					<span v-else-if="!$v.client.confirmPassword.sameAsPassword">Le password devono corrispondere</span>
-				</div>
-			</div>
-			<div class="form-item">
-				<button class="form-button">Registrati</button>
-			</div>
-		</form>
+		<v-row justify="center" class="text-center pa-10">
+			<v-col sm="8" md="6" lg="4">
+				<v-row class="form-container text-center pa-5">
+					<v-col cols="12">
+						<h1>Registrazione Cliente</h1>
+					</v-col>
+					<v-col cols="12">
+						<form @submit.prevent="handleSubmit" novalidate>
+							<v-row>
+								<v-col cols="12">
+									<v-text-field v-model="client.name" label="Nome" hide-details="auto" outlined :error="$v.client.name.$error"
+									:rules="!$v.client.name.$error ? [] : [$v.client.name.required || 'Il nome è obbligatorio']"></v-text-field>
+								</v-col>
+								<v-col cols="12">
+									<v-text-field v-model="client.city" label="Città" hide-details="auto" outlined :error="$v.client.city.$error"
+									:rules="!$v.client.city.$error ? [] : [$v.client.city.required || 'La città è obbligatoria']"></v-text-field>
+								</v-col>
+								<v-col cols="12">
+									<v-text-field type="email" v-model="client.email" label="Email" hide-details="auto" outlined :error="$v.client.email.$error"
+									:rules="!$v.client.email.$error ? [] : [$v.client.email.required || 'L\'email è obbligatoria', $v.client.email.email || 'L\'email non è valida']"></v-text-field>
+								</v-col>
+								<v-col cols="12">
+									<v-text-field type="password" v-model="client.password" label="Password" hide-details="auto" outlined :error="$v.client.password.$error"
+									:rules="!$v.client.password.$error ? [] : [$v.client.password.required || 'La password è obbligatoria', $v.client.password.minLength || 'La password deve essere di almeno 6 caratteri']"></v-text-field>
+								</v-col>
+								<v-col cols="12">
+									<v-text-field type="password" v-model="client.confirmPassword" label="Conferma Password" hide-details="auto" outlined :error="$v.client.confirmPassword.$error"
+									:rules="!$v.client.confirmPassword.$error ? [] : [$v.client.confirmPassword.required || 'La conferma password è obbligatoria', $v.client.confirmPassword.sameAsPassword || 'Le password devono corrispondere']"></v-text-field>
+								</v-col>
+								<v-col cols="12">
+									<v-btn type="submit" color="primary" :loading="registerClientLoading" :disabled="registerClientLoading">Registrati</v-btn>
+								</v-col>
+							</v-row>
+						</form>
+					</v-col>
+				</v-row>
+			</v-col>
+		</v-row>
 	</div>
 </template>
 
@@ -61,7 +55,8 @@
 					email: '',
 					password: '',
 					confirmPassword: ''
-				}
+				},
+				registerClientLoading: false
 			}
 		},
 		
@@ -79,7 +74,8 @@
 			handleSubmit: function(e) {
 				this.$v.$touch();
 				if (this.$v.$invalid) return;
-
+				
+				this.registerClientLoading = true;
 				this.axios.post('/clients', this.client)
 				.then((res) => {
 					this.login(res.data.id, res.data.username, res.data.usertype);

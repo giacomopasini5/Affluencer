@@ -1,6 +1,6 @@
 <template>
 	<div id="registerStore">
-		<h1 class="form-title">Registrazione Negozio</h1>
+		<!--<h1 class="form-title">Registrazione Negozio</h1>
 		<form @submit.prevent="handleSubmit" novalidate>
 			<div class="form-item">
 				<label for="name" class="form-label">Nome</label>
@@ -72,7 +72,7 @@
 			<div class="form-item">
 				<button class="form-button">Registrati</button>
 			</div>
-		</form>
+		</form>-->
 	</div>
 </template>
 
