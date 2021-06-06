@@ -1,12 +1,24 @@
 <template>
 	<v-row v-if="hasStoreData" justify="center" class="text-center pa-10">
-		<v-col sm="10" md="8" lg="6">
+		<v-col>
 			<v-card elevation="5">
 				<v-btn fab absolute top right @click="$store.commit('toggleSettings')" color="primary" class="mt-10">
 					<v-icon>mdi-cog</v-icon>
 				</v-btn>
-				<storeInfo :storeData="storeData"/>
-				<storeStats/>
+				<v-btn fab absolute top left @click="" color="primary" class="mt-10">
+					<v-icon color="yellow">mdi-star</v-icon>
+				</v-btn>
+				<v-row justify="center">
+					<v-col cols="10">
+						<h1>{{ storeData.name }}</h1>
+					</v-col>
+					<v-col cols="4">
+						<storeInfo :storeData="storeData"/>
+					</v-col>
+					<v-col cols="8">
+						<storeStats/>
+					</v-col>
+				</v-row>
 			</v-card>
 		</v-col>
 	</v-row>
@@ -27,7 +39,8 @@
 		data: function() {
 			return {
 				storeData: '',
-				hasStoreData: false
+				hasStoreData: false,
+				isFavorite: false
 			}
 		},
 		

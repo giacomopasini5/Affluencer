@@ -1,21 +1,22 @@
 <template>
-
-
-
-
-
-
-
-
-
-
-
-
-	<!--<div id="storeInfo">
-		<h1 class="store-title">{{ storeData.name }}</h1>
-		<div v-if="isClient()">
-			<button v-if="isFavorite" @click="removeFavorite()" class="favorite-button">&#11088</button>
-			<button v-else @click="setFavorite()" class="favorite-button">&#9734</button>
+	<v-row v-if="$store.state.config.settings" justify="center" class="text-center pa-5">
+		<v-col cols="10">
+			
+		</v-col>
+		<v-col cols="10">
+			<v-btn @click="applySettings" color="primary">Salva</v-btn>
+		</v-col>
+	</v-row>
+	<v-row v-else justify="center" class="text-center pa-5">
+		<v-col cols="10">
+			
+		</v-col>
+	</v-row>
+	
+	
+	<!--<div v-if="isClient()">
+			<button v-if="isFavorite" @click="removeFavorite" class="favorite-button">&#11088</button>
+			<button v-else @click="setFavorite" class="favorite-button">&#9734</button>
 		</div>
 		<div class="sideInfo">
 			<div v-if="$store.state.config.settings" id="storeSettings">
@@ -47,7 +48,7 @@
 					</div>
 				</div>
 				<div class="store-info">
-					<button @click="applySettings()" class="store-button">Salva</button>
+					<button @click="applySettings" class="store-button">Salva</button>
 				</div>
 			</div>
 			<div v-else id="storeDescription">
@@ -76,7 +77,7 @@
 			<div v-if="isClient()" id="customersForm">
 				<label for="currentCustomers" class="store-info">Segnala affluenza</label>
 				<input type="number" v-model="currentCustomers" id="currentCustomers" name="currentCustomers" class="store-input">
-				<button @click="signalCustomers()" class="store-button">Invia</button>
+				<button @click="signalCustomers" class="store-button">Invia</button>
 			</div>
 		</div>
 	</div>-->
@@ -101,7 +102,6 @@
 					closeTime: '',
 					capacity: ''
 				},
-				isFavorite: false,
 				currentCustomers: ''
 			}
 		},
@@ -150,10 +150,6 @@
 			
 			signalCustomers: function() {
 				//axios
-			},
-			
-			openSettings: function() {
-				this.$store.commit('enableSettings');
 			},
 			
 			applySettings: async function() {
