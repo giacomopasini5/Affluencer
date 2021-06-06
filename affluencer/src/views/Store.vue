@@ -1,8 +1,15 @@
 <template>
-	<div v-if="hasStoreData">
-		<storeInfo :storeData="storeData"/>
-		<storeStats/>
-	</div>
+	<v-row v-if="hasStoreData" justify="center" class="text-center pa-10">
+		<v-col sm="10" md="8" lg="6">
+			<v-card elevation="5">
+				<v-btn fab absolute top right @click="$store.commit('toggleSettings')" color="primary" class="mt-10">
+					<v-icon>mdi-cog</v-icon>
+				</v-btn>
+				<storeInfo :storeData="storeData"/>
+				<storeStats/>
+			</v-card>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
@@ -26,6 +33,7 @@
 		
 		created: function() {
 			this.initializeStore();
+			this.$store.commit('disableSettings');
 		},
 		
 		methods: {

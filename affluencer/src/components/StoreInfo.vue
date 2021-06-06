@@ -1,5 +1,17 @@
 <template>
-	<div id="storeInfo">
+
+
+
+
+
+
+
+
+
+
+
+
+	<!--<div id="storeInfo">
 		<h1 class="store-title">{{ storeData.name }}</h1>
 		<div v-if="isClient()">
 			<button v-if="isFavorite" @click="removeFavorite()" class="favorite-button">&#11088</button>
@@ -67,7 +79,7 @@
 				<button @click="signalCustomers()" class="store-button">Invia</button>
 			</div>
 		</div>
-	</div>
+	</div>-->
 </template>
 
 <script>
@@ -96,7 +108,6 @@
 		
 		created: function() {
 			this.initializeFavorite();
-			this.$store.commit('disableSettings');
 		},
 		
 		methods: {

@@ -32,6 +32,10 @@ const config = {
 		
 		disableSettings(state) {
 			state.settings = false;
+		},
+		
+		toggleSettings(state) {
+			state.settings ? state.settings = false : state.settings = true;
 		}
 	}
 }
