@@ -38,8 +38,8 @@
     <v-btn
       fab
       fixed
+	  bottom
       right
-      bottom
       x-large
       color="primary"
       style="z-index: 9999; margin-bottom: 50px"

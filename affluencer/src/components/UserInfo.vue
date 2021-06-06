@@ -4,27 +4,24 @@
 			<h1>{{ userData.name }}</h1>
 		</v-col>
 		<v-col cols="10">
-			<v-row justify="center" v-if="$store.state.config.settings">
-				<v-col cols="8">
+			<v-row v-if="$store.state.config.settings" justify="center">
+				<v-col cols="7">
 					<v-text-field v-model="userSettings.name" label="Nome" hide-details="auto" outlined dense></v-text-field>
 				</v-col>
-				<v-col cols="8">
+				<v-col cols="7">
 					<v-text-field type="email" v-model="userSettings.email" label="Email" hide-details="auto" outlined dense :error="$v.userSettings.email.$error"
 					:rules="!$v.userSettings.email.$error ? [] : [$v.userSettings.email.email || 'L\'email non è valida']"></v-text-field>
 				</v-col>
-				<v-col cols="8">
+				<v-col cols="7">
 					<v-text-field v-model="userSettings.city" label="Città" hide-details="auto" outlined dense></v-text-field>
 				</v-col>
-				<v-col cols="8">
+				<v-col cols="7">
 					<v-btn @click="applySettings" color="primary">Salva</v-btn>
 				</v-col>
 			</v-row>
-			<v-row v-else>
-				<v-col cols="12">
+			<v-row v-else justify="center">
+				<v-col cols="10">
 					<h2>{{ userData.city }}</h2>
-				</v-col>
-				<v-col cols="12">
-					<v-btn @click="openSettings" color="primary">Modifica</v-btn>
 				</v-col>
 			</v-row>
 		</v-col>
@@ -49,15 +46,7 @@
 			}
 		},
 		
-		created: function() {
-			this.$store.commit('disableSettings');
-		},
-		
 		methods: {
-			openSettings: function() {
-				this.$store.commit('enableSettings');
-			},
-			
 			applySettings: async function() {
 				this.$v.$touch();
 				if(this.$v.$invalid) return;

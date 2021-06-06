@@ -1,15 +1,15 @@
 <template>
 	<v-row justify="center" class="text-center pa-10">
 		<v-col sm="8" md="6" lg="4">
-			<v-card v-if="chooseRegistration" elevation="5" outlined>
+			<v-card v-if="chooseRegistration" elevation="5">
 				<v-row justify="center" class="text-center pa-5">
 					<v-col cols="10">
 						<h1>Scegli il profilo</h1>
 					</v-col>
-					<v-col cols="6">
+					<v-col cols="5">
 						<v-btn @click.native="setClientRegistration" color="primary">Cliente</v-btn>
 					</v-col>
-					<v-col cols="6">
+					<v-col cols="5">
 						<v-btn @click.native="setStoreRegistration" color="primary">Negozio</v-btn>
 					</v-col>
 				</v-row>

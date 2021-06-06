@@ -1,7 +1,10 @@
 <template>
 	<v-row v-if="hasUserData" justify="center" class="text-center pa-10">
-		<v-col md="10" lg="8">
-			<v-card elevation="5" outlined>
+		<v-col sm="10" md="8" lg="6">
+			<v-card elevation="5">
+				<v-btn fab absolute top right @click="toggleSettings" color="primary" class="mt-10">
+					<v-icon>mdi-cog</v-icon>
+				</v-btn>
 				<userInfo :userData="userData"/>
 				<favoriteStoresList :favoriteStores="userData.favorite_shops"/>
 			</v-card>
@@ -30,6 +33,7 @@
 		
 		created: function() {
 			this.initializeProfile();
+			this.$store.commit('disableSettings');
 		},
 		
 		methods: {
@@ -42,6 +46,10 @@
 					console.log('failure');
 					console.log(error);
 				}
+			},
+			
+			toggleSettings: function() {
+				this.$store.state.config.settings ? this.$store.commit('disableSettings') : this.$store.commit('enableSettings');
 			}
 		}
 	}

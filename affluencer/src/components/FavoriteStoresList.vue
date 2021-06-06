@@ -1,32 +1,30 @@
 <template>
 	<v-row justify="center" class="text-center pa-5">
 		<v-col cols="10">
-			<h1>Negozi preferiti</h1>
+			<h2>Negozi preferiti</h2>
 		</v-col>
 		<v-col cols="10">
 			<v-row justify="center">
-				<v-col cols="8">
-					<v-list>
-						<v-list-item v-for="shop in favoriteStores" :key="shop.shop_id">
+				<v-col cols="10">
+					<v-list outlined class="text-left pa-0">
+						<v-list-item v-for="shop in favoriteStores" :key="shop.shop_id" router :to="$store.state.config.settings ? '' : /store/ + shop.shop_id">
+							<v-list-item-avatar>
+								<v-icon color="yellow">mdi-star</v-icon>
+							</v-list-item-avatar>
 							<v-list-item-content>
-								<v-list-item-title :to="/store/ + shop.shop_id" :v-text="shop.shop_name"></v-list-item-title>
+								<v-list-item-title>{{ shop.shop_name }}</v-list-item-title>
 							</v-list-item-content>
+							<v-list-item-action v-if="$store.state.config.settings">
+								<v-btn @click="removeFavorite(shop)" icon>
+									<v-icon color="red">mdi-delete</v-icon>
+								</v-btn>
+							</v-list-item-action>
 						</v-list-item>
 					</v-list>
 				</v-col>
 			</v-row>
 		</v-col>
 	</v-row>
-		
-		
-		
-		
-		<!--<ul>
-			<li v-for="shop in favoriteStores" :key="shop.shop_id">
-				<v-btn :to="/store/ + shop.shop_id" color="primary">{{ shop.shop_name }}</v-btn>
-				<v-btn v-if="$store.state.config.settings" @click="removeFavorite(shop)" color="primary">D</v-btn>
-			</li>
-		</ul>-->
 </template>
 
 <script>
