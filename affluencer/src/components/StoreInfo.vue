@@ -14,12 +14,7 @@
 	</v-row>
 	
 	
-	<!--<div v-if="isClient()">
-			<button v-if="isFavorite" @click="removeFavorite" class="favorite-button">&#11088</button>
-			<button v-else @click="setFavorite" class="favorite-button">&#9734</button>
-		</div>
-		<div class="sideInfo">
-			<div v-if="$store.state.config.settings" id="storeSettings">
+	<!--<div v-if="$store.state.config.settings" id="storeSettings">
 				<div class="store-info">
 					<input type="text" v-model="storeSettings.name" id="nameSettings" name="nameSettings" :placeholder="storeData.name" class="store-input settings-input">
 				</div>
