@@ -2,15 +2,15 @@
 	<v-row v-if="hasStoreData" justify="center" class="text-center pa-10">
 		<v-col>
 			<v-card elevation="5">
-				<v-btn fab absolute top right @click="$store.commit('toggleSettings')" color="primary" class="mt-10">
+				<v-btn v-if="isOwner" fab absolute top right @click="$store.commit('toggleSettings')" color="primary" class="mt-10">
 					<v-icon>mdi-cog</v-icon>
 				</v-btn>
-				<v-btn v-if="isClient()" fab absolute top left @click="isFavorite? removeFavorite : setFavorite" color="primary" class="mt-10">
+				<v-btn v-if="isClient()" fab absolute top left @click="isFavorite ? removeFavorite : setFavorite" color="primary" class="mt-10">
 					<v-icon color="isFavorite ? yellow : white">mdi-star</v-icon>
 				</v-btn>
 				<v-row justify="center">
 					<v-col cols="10">
-						<h1>{{ storeData.name }}</h1>
+						<span class="text-h4">{{ storeData.name }}</span>
 					</v-col>
 					<v-col cols="4">
 						<storeInfo :storeData="storeData"/>
@@ -46,6 +46,7 @@
 		
 		created: function() {
 			this.initializeStore();
+			this.initializeFavorite();
 			this.$store.commit('disableSettings');
 		},
 		
@@ -55,6 +56,43 @@
 					var res = await this.axios.get('/shops/' + this.$route.params.id);
 					this.storeData = res.data;
 					this.hasStoreData = true;
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
+				}
+			},
+			
+			initializeFavorite: async function() {
+				if(this.isClient()) {
+					try {
+						var res = await this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops');
+						for(var store of res.data)
+							if(store.shop_id == this.$route.params.id)
+								this.isFavorite = true;
+					} catch(error) {
+						console.log('failure');
+						console.log(error);
+					}
+				}
+			},
+			
+			setFavorite: async function() {
+				try {
+					var res = await this.axios.post('/clients/' + $cookies.get('userid') + '/favorite_shops', {
+						shop_id: this.$route.params.id,
+						shop_name: this.storeData.name
+					});
+					this.isFavorite = true;
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
+				}
+			},
+			
+			removeFavorite: async function() {
+				try {
+					var res = await this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + this.$route.params.id);
+					this.isFavorite = false;
 				} catch(error) {
 					console.log('failure');
 					console.log(error);

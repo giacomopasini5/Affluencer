@@ -2,7 +2,7 @@
 	<v-card :loading="registerStoreLoading" elevation="5">
 		<v-row justify="center" class="text-center pa-5">
 			<v-col cols="10">
-				<h1>Registrazione Negozio</h1>
+				<span class="text-h4">Registrazione Negozio</span>
 			</v-col>
 			<v-col cols="10">
 				<form @submit.prevent="handleSubmit" novalidate>

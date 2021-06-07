@@ -1,7 +1,7 @@
 <template>
 	<v-row justify="center" class="text-center pa-5">
 		<v-col cols="10">
-			<h1>{{ userData.name }}</h1>
+			<span class="text-h4">{{ userData.name }}</span>
 		</v-col>
 		<v-col cols="10">
 			<v-row v-if="$store.state.config.settings" justify="center">
@@ -21,7 +21,7 @@
 			</v-row>
 			<v-row v-else justify="center">
 				<v-col cols="10">
-					<h2>{{ userData.city }}</h2>
+					<span class="text-body-1">{{ userData.city }}</span>
 				</v-col>
 			</v-row>
 		</v-col>

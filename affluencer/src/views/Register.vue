@@ -4,7 +4,7 @@
 			<v-card v-if="chooseRegistration" elevation="5">
 				<v-row justify="center" class="text-center pa-5">
 					<v-col cols="10">
-						<h1>Scegli il profilo</h1>
+						<span class="text-h4">Scegli il profilo</span>
 					</v-col>
 					<v-col cols="5">
 						<v-btn @click.native="setClientRegistration" color="primary">Cliente</v-btn>

@@ -2,7 +2,7 @@
 	<v-card :loading="loginLoading "elevation="5">
 		<v-row justify="center" class="text-center pa-5">
 			<v-col cols="10">
-				<h1>Accedi</h1>
+				<span class="text-h4">Accedi</span>
 			</v-col>
 			<v-col cols="10">
 				<form @submit.prevent="handleSubmit" novalidate>
@@ -26,7 +26,7 @@
 							<v-btn type="submit" color="primary" :disabled="loginLoading">Accedi</v-btn>
 						</v-col>
 						<v-col cols="10">
-							<h2>Non sei registrato?</h2>
+							<span class="text-h5">Non sei registrato?</span>
 						</v-col>
 						<v-col cols="10">
 							<v-btn to="/register" color="primary" :disabled="loginLoading">Registrati</v-btn>

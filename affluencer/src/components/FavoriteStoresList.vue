@@ -1,7 +1,7 @@
 <template>
 	<v-row justify="center" class="text-center pa-5">
 		<v-col cols="10">
-			<h2>Negozi preferiti</h2>
+			<span class="text-h5">Negozi preferiti</span>
 		</v-col>
 		<v-col cols="10">
 			<v-row justify="center">
