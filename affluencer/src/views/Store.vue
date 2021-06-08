@@ -12,10 +12,12 @@
 					<v-col cols="10">
 						<span class="text-h4">{{ storeData.name }}</span>
 					</v-col>
-					<v-col cols="4">
+				</v-row>
+				<v-row justify="center">
+					<v-col cols="8" md="5" lg="4">
 						<storeInfo :storeData="storeData"/>
 					</v-col>
-					<v-col cols="8">
+					<v-col cols="10" md="7" lg="8">
 						<storeStats/>
 					</v-col>
 				</v-row>
