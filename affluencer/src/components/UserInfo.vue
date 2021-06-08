@@ -52,10 +52,18 @@
 				if(this.$v.$invalid) return;
 				
 				this.$store.commit('disableSettings');
-				/*for(var key in this.userSettings)
-					if(this.userSettings[key] != '')
-						this.userData[key] = this.userSettings[key];*/
-				//axios
+				for(var key in this.userSettings)
+					if(this.userSettings[key] != '') {
+						this.userData[key] = this.userSettings[key];
+						this.userSettings[key] = '';
+					}
+				try {
+					var res = await this.axios.put('/clients/' + this.$route.params.id, this.userData);
+					this.$store.commit('disableSettings');
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
+				}
 			}
 		},
 		
