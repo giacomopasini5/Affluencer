@@ -31,23 +31,23 @@
 					<v-btn @click="applySettings" color="primary">Salva</v-btn>
 				</v-col>
 			</v-row>
-			<v-row v-else justify="center">
-				<v-col cols="10">
+			<v-row v-else justify="center" class="text-left">
+				<v-col cols="10" class="pa-2">
 					<span class="text-body-1">{{ storeData.address }}</span>
 				</v-col>
-				<v-col cols="10">
+				<v-col cols="10" class="pa-2">
 					<span class="text-body-1">{{ storeData.city }}</span>
 				</v-col>
-				<v-col cols="10">
+				<v-col cols="10" class="pa-2">
 					<span class="text-body-1">Apre alle {{ storeData.openTime }}</span>
 				</v-col>
-				<v-col cols="10">
+				<v-col cols="10" class="pa-2">
 					<span class="text-body-1">Chiude alle {{ storeData.closeTime }}</span>
 				</v-col>
-				<v-col cols="10">
+				<v-col cols="10" class="pa-2">
 					<span class="text-body-1">Capienza: {{ storeData.capacity }}</span>
 				</v-col>
-				<v-col cols="10">
+				<v-col cols="10" class="pa-2">
 					<span class="text-body-1">Affluenza: {{ storeData.influx }}</span>
 				</v-col>
 			</v-row>
