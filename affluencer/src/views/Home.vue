@@ -42,7 +42,8 @@
       right
       x-large
       color="primary"
-      style="z-index: 9999; margin-bottom: 50px"
+	  class="ma-5"
+      style="z-index: 9999"
     >
       <v-icon large color="yellow">mdi-star</v-icon>
     </v-btn>
