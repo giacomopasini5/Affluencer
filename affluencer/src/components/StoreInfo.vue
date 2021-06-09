@@ -31,7 +31,7 @@
 					<v-btn @click="applySettings" color="primary">Salva</v-btn>
 				</v-col>
 			</v-row>
-			<v-row v-else justify="center" class="text-left">
+			<v-row v-else justify="center" class="text-md-left">
 				<v-col cols="10" class="pa-2">
 					<span class="text-body-1">{{ storeData.address }}</span>
 				</v-col>
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-	import {minValue, email} from "vuelidate/lib/validators"
+	import {minValue, email} from 'vuelidate/lib/validators'
 	
 	export default {
 		name: 'storeInfo',
@@ -75,16 +75,21 @@
 		data: function() {
 			return {
 				storeSettings: {
-					name: '',
-					email: '',
-					address: '',
-					city: '',
-					openTime: '',
-					closeTime: '',
-					capacity: ''
+					name: this.storeData.name,
+					email: this.storeData.email,
+					address: this.storeData.address,
+					city: this.storeData.city,
+					openTime: this.storeData.openTime,
+					closeTime: this.storeData.closeTime,
+					capacity: this.storeData.capacity
 				},
 				currentCustomers: ''
 			}
+		},
+		
+		created: function() {
+			this.$store.watch((state) => {return this.$store.state.config.settings},
+			() => {this.syncSettings(this.storeSettings, this.storeData)});
 		},
 		
 		methods: {
@@ -92,13 +97,10 @@
 				this.$v.$touch();
 				if(this.$v.$invalid) return;
 				
-				for(var key in this.storeSettings)
-					if(this.storeSettings[key] != '') {
-						this.storeData[key] = this.storeSettings[key];
-						this.storeSettings[key] = '';
-					}
+				this.formatSettings(this.storeSettings, this.storeData);
 				try {
 					var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeData);
+					this.saveSettings(this.storeSettings, this.storeData);
 					this.$store.commit('disableSettings');
 				} catch(error) {
 					console.log('failure');

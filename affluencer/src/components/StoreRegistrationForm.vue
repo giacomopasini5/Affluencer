@@ -54,7 +54,7 @@
 </template>
 
 <script>
-	import {required, minValue, email, minLength, sameAs} from "vuelidate/lib/validators"
+	import {required, minValue, email, minLength, sameAs} from 'vuelidate/lib/validators'
 	
 	export default {
 		name: 'registerStore',

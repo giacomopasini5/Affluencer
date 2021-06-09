@@ -38,7 +38,7 @@
 </template>
 
 <script>
-	import {required, email, minLength, sameAs} from "vuelidate/lib/validators"
+	import {required, email, minLength, sameAs} from 'vuelidate/lib/validators'
 	
 	export default {
 		name: 'registerClient',

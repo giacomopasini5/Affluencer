@@ -3,7 +3,9 @@
 		<navbar :navLinks="navLinks"/>
 		<v-main>
 			<v-container fluid class="pa-0">
-				<router-view/>
+				<v-slide-x-transition>
+					<router-view/>
+				</v-slide-x-transition>
 			</v-container>
 		</v-main>
 	</v-app>

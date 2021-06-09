@@ -1,6 +1,6 @@
 <template>
 	<v-row justify="center" class="text-center pa-5">
-		<v-col cols="10">
+		<v-col v-if="!$store.state.config.settings" cols="10">
 			<span class="text-h4">{{ userData.name }}</span>
 		</v-col>
 		<v-col cols="10">
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-	import {email} from "vuelidate/lib/validators"
+	import {email} from 'vuelidate/lib/validators'
 	
 	export default {
 		name: 'userInfo',
@@ -39,11 +39,16 @@
 		data: function() {
 			return {
 				userSettings: {
-					name: '',
-					email: '',
-					city: ''
+					name: this.userData.name,
+					email: this.userData.email,
+					city: this.userData.city
 				}
 			}
+		},
+		
+		created: function() {
+			this.$store.watch((state) => {return this.$store.state.config.settings},
+			() => {this.syncSettings(this.userSettings, this.userData)});
 		},
 		
 		methods: {
@@ -51,14 +56,10 @@
 				this.$v.$touch();
 				if(this.$v.$invalid) return;
 				
-				this.$store.commit('disableSettings');
-				for(var key in this.userSettings)
-					if(this.userSettings[key] != '') {
-						this.userData[key] = this.userSettings[key];
-						this.userSettings[key] = '';
-					}
+				this.formatSettings(this.userSettings, this.userData);
 				try {
-					var res = await this.axios.put('/clients/' + this.$route.params.id, this.userData);
+					var res = await this.axios.put('/clients/' + this.$route.params.id, this.userSettings);
+					this.saveSettings(this.userSettings, this.userData);
 					this.$store.commit('disableSettings');
 				} catch(error) {
 					console.log('failure');
