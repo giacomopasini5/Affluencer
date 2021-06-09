@@ -8,16 +8,16 @@
 				<v-btn v-if="isClient()" fab absolute top left @click="isFavorite ? removeFavorite : setFavorite" color="primary" class="mt-10">
 					<v-icon color="isFavorite ? yellow : white">mdi-star</v-icon>
 				</v-btn>
-				<v-row justify="center">
+				<v-row v-if="!$store.state.config.settings" justify="center">
 					<v-col cols="10" class="mt-5">
 						<span class="text-h4">{{ storeData.name }}</span>
 					</v-col>
 				</v-row>
 				<v-row justify="center">
-					<v-col cols="8" md="5" lg="4" class="mt-5">
+					<v-col cols="8" md="5" lg="4">
 						<storeInfo :storeData="storeData"/>
 					</v-col>
-					<v-col cols="10" md="7" lg="8" class="mt-5">
+					<v-col cols="10" md="7" lg="8">
 						<storeStats/>
 					</v-col>
 				</v-row>

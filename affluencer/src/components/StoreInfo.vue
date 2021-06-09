@@ -99,7 +99,7 @@
 				
 				this.formatSettings(this.storeSettings, this.storeData);
 				try {
-					var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeData);
+					var res = await this.axios.put('/shops/' + this.$route.params.id, this.storeSettings);
 					this.saveSettings(this.storeSettings, this.storeData);
 					this.$store.commit('disableSettings');
 				} catch(error) {
