@@ -51,12 +51,12 @@
 					<span class="text-body-1">Affluenza: {{ storeData.influx }}</span>
 				</v-col>
 			</v-row>
-			<v-row v-if="isClient()">
-				<v-col cols="6">
+			<v-row v-if="isClient()" justify="center">
+				<v-col cols="5" md="7">
 					<v-text-field type="number" v-model="currentCustomers" label="Segnala N.°" hide-details="auto" outlined dense :error="$v.currentCustomers.$error"
 					:rules="!$v.currentCustomers.$error ? [] : [$v.currentCustomers.minValue || 'L\'affluenza deve essere maggiore di 0']"></v-text-field>
 				</v-col>
-				<v-col cols="6">
+				<v-col cols="3">
 					<v-btn @click="signalCustomers" color="primary">Invia</v-btn>
 				</v-col>
 			</v-row>
@@ -109,7 +109,10 @@
 			},
 			
 			signalCustomers: function() {
-				//axios
+				this.$v.$touch();
+				if(this.$v.$invalid) return;
+				
+				
 			}
 		},
 		
