@@ -57,7 +57,7 @@
 					:rules="!$v.currentCustomers.$error ? [] : [$v.currentCustomers.minValue || 'L\'affluenza deve essere maggiore di 0']"></v-text-field>
 				</v-col>
 				<v-col cols="3">
-					<v-btn @click="signalCustomers" color="primary">Invia</v-btn>
+					<v-btn @click="signalCustomers" :disabled="customersSignaled" color="primary">Invia</v-btn>
 				</v-col>
 			</v-row>
 		</v-col>
@@ -83,7 +83,8 @@
 					closeTime: this.storeData.closeTime,
 					capacity: this.storeData.capacity
 				},
-				currentCustomers: ''
+				currentCustomers: '',
+				customersSignaled: false
 			}
 		},
 		
@@ -108,11 +109,18 @@
 				}
 			},
 			
-			signalCustomers: function() {
+			signalCustomers: async function() {
 				this.$v.$touch();
 				if(this.$v.$invalid) return;
 				
-				
+				if(this.currentCustomers != '')
+					try {
+						var res = await this.axios.post('/communications/', this.currentCustomers);
+						this.customersSignaled = true;
+					} catch(error) {
+						console.log('failure');
+						console.log(error);
+					}
 			}
 		},
 		

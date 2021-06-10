@@ -5,7 +5,7 @@
 				<v-btn v-if="isOwner" fab absolute top right @click="$store.commit('toggleSettings')" color="primary" class="mt-10">
 					<v-icon>mdi-cog</v-icon>
 				</v-btn>
-				<v-btn v-if="isClient()" fab absolute top left @click="setFavorite" color="primary" class="mt-10">
+				<v-btn v-if="isClient()" fab absolute top right @click="setFavorite" color="primary" class="mt-10">
 					<v-icon v-if="isFavorite" color="yellow">mdi-star</v-icon>
 					<v-icon v-else color="white">mdi-star</v-icon>
 				</v-btn>
