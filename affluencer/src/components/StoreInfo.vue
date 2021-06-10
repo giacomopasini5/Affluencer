@@ -51,12 +51,12 @@
 					<span class="text-body-1">Affluenza: {{ storeData.influx }}</span>
 				</v-col>
 			</v-row>
-			<v-row v-if="isClient()" justify="center">
-				<v-col cols="10">
-					<v-text-field type="number" v-model="currentCustomers" label="Segnala affluenza" hide-details="auto" outlined dense :error="$v.currentCustomers.$error"
+			<v-row v-if="isClient()">
+				<v-col cols="6">
+					<v-text-field type="number" v-model="currentCustomers" label="Segnala N.°" hide-details="auto" outlined dense :error="$v.currentCustomers.$error"
 					:rules="!$v.currentCustomers.$error ? [] : [$v.currentCustomers.minValue || 'L\'affluenza deve essere maggiore di 0']"></v-text-field>
 				</v-col>
-				<v-col cols="2">
+				<v-col cols="6">
 					<v-btn @click="signalCustomers" color="primary">Invia</v-btn>
 				</v-col>
 			</v-row>

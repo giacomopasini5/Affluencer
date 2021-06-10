@@ -5,8 +5,9 @@
 				<v-btn v-if="isOwner" fab absolute top right @click="$store.commit('toggleSettings')" color="primary" class="mt-10">
 					<v-icon>mdi-cog</v-icon>
 				</v-btn>
-				<v-btn v-if="isClient()" fab absolute top left @click="isFavorite ? removeFavorite : setFavorite" color="primary" class="mt-10">
-					<v-icon color="isFavorite ? yellow : white">mdi-star</v-icon>
+				<v-btn v-if="isClient()" fab absolute top left @click="setFavorite" color="primary" class="mt-10">
+					<v-icon v-if="isFavorite" color="yellow">mdi-star</v-icon>
+					<v-icon v-else color="white">mdi-star</v-icon>
 				</v-btn>
 				<v-row v-if="!$store.state.config.settings" justify="center">
 					<v-col cols="10" class="mt-5">
@@ -79,25 +80,25 @@
 			},
 			
 			setFavorite: async function() {
-				try {
-					var res = await this.axios.post('/clients/' + $cookies.get('userid') + '/favorite_shops', {
-						shop_id: this.$route.params.id,
-						shop_name: this.storeData.name
-					});
-					this.isFavorite = true;
-				} catch(error) {
-					console.log('failure');
-					console.log(error);
-				}
-			},
-			
-			removeFavorite: async function() {
-				try {
-					var res = await this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + this.$route.params.id);
-					this.isFavorite = false;
-				} catch(error) {
-					console.log('failure');
-					console.log(error);
+				if(!this.isFavorite) {
+					try {
+						var res = await this.axios.post('/clients/' + $cookies.get('userid') + '/favorite_shops', {
+							shop_id: this.$route.params.id,
+							shop_name: this.storeData.name
+						});
+						this.isFavorite = true;
+					} catch(error) {
+						console.log('failure');
+						console.log(error);
+					}
+				} else {
+					try {
+						var res = await this.axios.delete('/clients/' + $cookies.get('userid') + '/favorite_shops/' + this.$route.params.id);
+						this.isFavorite = false;
+					} catch(error) {
+						console.log('failure');
+						console.log(error);
+					}
 				}
 			}
 		}
