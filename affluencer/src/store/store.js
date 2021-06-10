@@ -35,7 +35,7 @@ const config = {
 		},
 		
 		toggleSettings(state) {
-			state.settings ? state.settings = false : state.settings = true;
+			state.settings  = !state.settings;
 		}
 	}
 }

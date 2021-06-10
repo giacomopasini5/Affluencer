@@ -29,6 +29,6 @@ new Vue({
 	vuetify: new Vuetify({
 		icons: {
 			iconfont: 'mdi'
-		},
+		}
 	}),
 }).$mount('#app');

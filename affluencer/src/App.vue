@@ -1,5 +1,8 @@
 <template>
 	<v-app id="app">
+		<v-btn fab fixed top left small @click="toggleTheme" class="mt-12" style="z-index: 9999">
+			<v-icon>mdi-theme-light-dark</v-icon>
+		</v-btn>
 		<navbar :navLinks="navLinks"/>
 		<v-main>
 			<v-container fluid class="pa-0">

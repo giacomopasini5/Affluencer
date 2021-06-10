@@ -48,6 +48,10 @@ export default {
 			for(var key in settings)
 				if(settings[key] != data[key])
 					settings[key] = data[key];
+		},
+		
+		toggleTheme: function() {
+			this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
 		}
 	}
 }
