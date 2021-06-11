@@ -1,110 +1,103 @@
-module.exports = function(app) {
-    var clientsController = require('../controllers/clientsController');
-    var shopsController = require('../controllers/shopsController.js');
-    var sensorsController = require('../controllers/sensorsController.js');
-    var notificationsController = require('../controllers/notificationsController.js');
-    var reviewsController = require('../controllers/reviewsController.js');
-    var reservationsController = require('../controllers/reservationsController.js');
-    var communicationsController = require('../controllers/communicationsController.js');
+module.exports = function(App, server) {
 
-    var loginController = require('../controllers/loginController.js');
+    const ctrl = App.controllers;
 
     // SHOPS
 
-    app.route('/api/shops')
-        .get(shopsController.list_shops)
-        .post(shopsController.create_shop);
+    server.route('/api/shops')
+        .get(ctrl.shops.list_shops)
+        .post(ctrl.shops.create_shop);
     
-    app.route('/api/shops/:id')
-        .get(shopsController.get_shop)
-        .put(shopsController.update_shop)
-        //.delete(shopsController.delete_shop);
+    server.route('/api/shops/:id')
+        .get(ctrl.shops.get_shop)
+        .put(ctrl.shops.update_shop)
+        //.delete(ctrl.shops.delete_shop);
     
-    app.route('/api/shops/:id/posts')
-        .get(shopsController.list_shop_posts)
-        .post(shopsController.create_shop_post);
+    server.route('/api/shops/:id/posts')
+        .get(ctrl.shops.list_shop_posts)
+        .post(ctrl.shops.create_shop_post);
     
-    app.route('/api/shops/:id/posts/:datetime')
-        .get(shopsController.get_shop_post)
-        .put(shopsController.update_shop_post)
-        //.delete(shopsController.delete_shop_post);
+    server.route('/api/shops/:id/posts/:datetime')
+        .get(ctrl.shops.get_shop_post)
+        .put(ctrl.shops.update_shop_post)
+        //.delete(ctrl.shops.delete_shop_post);
 
     // CLIENTS
 
-    app.route('/api/clients')
-        .get(clientsController.list_clients)
-        .post(clientsController.create_client);
+    server.route('/api/clients')
+        .get(ctrl.clients.list_clients)
+        .post(ctrl.clients.create_client);
 
-    app.route('/api/clients/:id')
-        .get(clientsController.get_client)
-        .put(clientsController.update_client)
-        //.delete(clientsController.delete_client);
+    server.route('/api/clients/:id')
+        .get(ctrl.clients.get_client)
+        .put(ctrl.clients.update_client)
+        //.delete(ctrl.clients.delete_client);
 
-    app.route('/api/clients/:id/favorite_shops')
-        .get(clientsController.list_client_favorite_shops)
-        .post(clientsController.add_client_favorite_shop);
+    server.route('/api/clients/:id/favorite_shops')
+        .get(ctrl.clients.list_client_favorite_shops)
+        .post(ctrl.clients.add_client_favorite_shop);
 
-    app.route('/api/clients/:id/favorite_shops/:shop_id')
-        .delete(clientsController.remove_client_favorite_shop);
+    server.route('/api/clients/:id/favorite_shops/:shop_id')
+        .delete(ctrl.clients.remove_client_favorite_shop);
 
     // SENSORS
 
-    app.route('/api/sensors')
-        .get(sensorsController.list_shop_sensor_infos)
-        .post(sensorsController.create_shop_sensor_info);
+    server.route('/api/sensors')
+        .get(ctrl.sensors.list_shop_sensor_infos)
+        .post(ctrl.sensors.create_shop_sensor_info);
 
-    app.route('/api/sensors/:id')
-        .get(sensorsController.get_shop_sensor_infos)
-        .put(sensorsController.update_shop_sensor_infos);
+    server.route('/api/sensors/:id')
+        .get(ctrl.sensors.get_shop_sensor_infos)
+        .put(ctrl.sensors.update_shop_sensor_infos);
 
     // NOTIFICATIONS
 
-    app.route('/api/notifications/:user_id')
-        .get(notificationsController.list_user_notifications)
-        .post(notificationsController.create_user_notification);
+    server.route('/api/notifications/:user_id')
+        .get(ctrl.notifications.list_user_notifications)
+        .post(ctrl.notifications.create_user_notification);
 
-    app.route('/api/notifications/:user_id/:id')
-        .get(notificationsController.get_user_notification)
-        .put(notificationsController.update_user_notification);
+    server.route('/api/notifications/:user_id/:id')
+        .get(ctrl.notifications.get_user_notification)
+        .put(ctrl.notifications.update_user_notification);
 
     // REVIEWS
 
-    app.route('/api/reviews')
-        .get(reviewsController.list_reviews)
-        .post(reviewsController.create_review);
+    server.route('/api/reviews')
+        .get(ctrl.reviews.list_reviews)
+        .post(ctrl.reviews.create_review);
 
-    app.route('/api/reviews/:id')
-        .get(reviewsController.get_review)
-        .put(reviewsController.update_review)
-        .delete(reviewsController.delete_review);
+    server.route('/api/reviews/:id')
+        .get(ctrl.reviews.get_review)
+        .put(ctrl.reviews.update_review)
+        .delete(ctrl.reviews.delete_review);
 
-    app.route('/api/reviews/:id/:datetime')
-        .get(reviewsController.get_review_comment)
-        .put(reviewsController.update_review_comment)
-        .delete(reviewsController.delete_review_comment);
+    server.route('/api/reviews/:id/:datetime')
+        .get(ctrl.reviews.get_review_comment)
+        .put(ctrl.reviews.update_review_comment)
+        .delete(ctrl.reviews.delete_review_comment);
 
     // RESERVATIONS
 
-    app.route('/api/reservations')
-        .get(reservationsController.list_reservations)
-        .post(reservationsController.create_reservation);
+    server.route('/api/reservations')
+        .get(ctrl.reservations.list_reservations)
+        .post(ctrl.reservations.create_reservation);
 
-    app.route('/api/reservations/:id')
-        .get(reservationsController.get_reservation)
-        .put(reservationsController.update_reservation)
-        .delete(reservationsController.delete_reservation);
+    server.route('/api/reservations/:id')
+        .get(ctrl.reservations.get_reservation)
+        .put(ctrl.reservations.update_reservation)
+        .delete(ctrl.reservations.delete_reservation);
 
     // COMMUNICATIONS
 
-    app.route('/api/communications')
-        .get(communicationsController.list_communications)
-        .post(communicationsController.create_communication);
+    server.route('/api/communications')
+        .get(ctrl.communications.list_communications)
+        .post(ctrl.communications.create_communication);
 
-    app.route('/api/communications/:id')
-        .get(communicationsController.get_communication)
-        .put(communicationsController.update_communication)
-        .delete(communicationsController.delete_communication);
+    server.route('/api/communications/:id')
+        .get(ctrl.communications.get_communication)
+        .put(ctrl.communications.update_communication)
+        .delete(ctrl.communications.delete_communication);
 
-    app.route('/api/login')
-        .post(loginController.login);
+    server.route('/api/login')
+        .post(ctrl.login.login);
 };

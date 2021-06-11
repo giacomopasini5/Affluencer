@@ -1,176 +1,185 @@
-const mongoose = require('mongoose');
-const utils = require('../common.js');
 
-var Review = require("../models/reviewsModel.js")(mongoose);
+module.exports = function(App) {
+    const Review = App.models.Review;
+    const utils = App.utils;
+    var ctrl = {};
 
-exports.list_reviews = function(req, res) {
-    var body = req.body;
-    if (body == null)
-        return res.status(400).send("Empty body");
-    var obj = null;
-    if (!utils.emptyField(body.client_id)) {
-        obj = {client_id: body.client_id};
-    }
-    if (!utils.emptyField(body.shop_id)) {
-        obj = {shop_id: body.shop_id};
-    }
+    ctrl.list_reviews = function(req, res) {
+        if (req.body == null)
+            return res.status(400).send("Empty body");
+        var obj = null;
+        if (!utils.emptyField(req.body.client_id)) {
+            obj = {client_id: req.body.client_id};
+        }
+        if (!utils.emptyField(req.body.shop_id)) {
+            obj = {shop_id: req.body.shop_id};
+        }
 
-    Review.find(obj, (err, reviews) => {
-        if (err)
-            res.status(404).send(err);
-        res.json(reviews);
-    });
-};
-
-/*
-exports.list_shop_reviews = function(req, res) {
-    if (req.body == null)
-        return res.status(400).send("Empty body");
-
-    Review.find({ shop_id: req.body.shop_id }, (err, reviews) => {
-        if (err)
-            res.status(404).send(err);
-        res.json(reviews);
-    });
-};
-*/
-
-exports.create_review = function(req, res) {
-    if (req.body == null)
-        return res.status(400).send("Empty body");
-
-    (new Review(req.body)).save((err, review) => {
-        if (err)
-            res.status(400).send(err);
-    });
-};
-
-exports.get_review = function(req, res) {
-    var id = req.params.id;
-    if (utils.emptyField(id))
-        return res.status(400).send("Missing id");
-
-    Review.findById(id, (err, review) => {
-        if (err || review == null)
-            res.status(404).send("Review not found: "+err);
-        res.json(review);
-    });
-};
-
-exports.update_review = function(req, res) {
-    var id = req.params.id;
-    if (utils.emptyField(id))
-        return res.status(400).send("Missing id");
-    if (req.body == null)
-        return res.status(400).send("Empty body");
-
-    Review.findOneAndUpdate(
-        id,
-        req.body,
-        { new: true, useFindAndModify: false },
-        (err, review) => {
+        Review.find(obj, (err, reviews) => {
             if (err)
-                res.send(err)
+                return res.status(404).send(err);
+            res.json(reviews);
+        });
+    };
+
+    /*
+    ctrl.list_shop_reviews = function(req, res) {
+        if (req.body == null)
+            return res.status(400).send("Empty body");
+
+        Review.find({ shop_id: req.body.shop_id }, (err, reviews) => {
+            if (err)
+                res.status(404).send(err);
+            res.json(reviews);
+        });
+    };
+    */
+
+    ctrl.create_review = function(req, res) {
+        if (req.body == null)
+            return res.status(400).send("Empty body");
+        var body = req.body;
+        body.client_id = mongoose.Types.ObjectId(body.client_id);
+        body.shop_id = mongoose.Types.ObjectId(body.shop_id);
+
+        (new Review(body)).save((err, review) => {
+            if (err)
+                return res.status(400).send(err);
+            res.status(201).json(review);
+        });
+    };
+
+    ctrl.get_review = function(req, res) {
+        var id = req.params.id;
+        if (utils.emptyField(id))
+            return res.status(400).send("Missing id");
+
+        Review.findById(id, (err, review) => {
+            if (err || review == null)
+                return res.status(404).send("Review not found: "+err);
             res.json(review);
-        }
-    );
-};
+        });
+    };
 
-exports.delete_review = function(req, res) {
-    var id = req.params.id;
-    if (utils.emptyField(id))
-        return res.status(400).send("Missing id");
+    ctrl.update_review = function(req, res) {
+        var id = req.params.id;
+        if (utils.emptyField(id))
+            return res.status(400).send("Missing id");
+        if (req.body == null)
+            return res.status(400).send("Empty body");
 
-    Review.findByIdAndRemove(id, (err, review) => {
-        if (err)
-            res.send(err);
-        res.send("Deleted");
-    });
-};
+        Review.findByIdAndUpdate(
+            id,
+            req.body,
+            { new: true },
+            (err, review) => {
+                if (err)
+                    return res.send(err)
+                res.json(review);
+            }
+        );
+    };
 
-exports.list_review_comments = function(req, res) {
-    var id = req.params.id;
-    if (utils.emptyField(id))
-        return res.status(400).send("Missing id");
+    ctrl.delete_review = function(req, res) {
+        var id = req.params.id;
+        if (utils.emptyField(id))
+            return res.status(400).send("Missing id");
 
-    Review.findById(id, "comments", (err, comments) => {
-        if (err)
-            res.send(err);
-        res.json(comments);
-    });
-};
-
-exports.create_review_comment = function(req, res) {
-    var id = req.params.id;
-    if (utils.emptyField(id))
-        return res.status(400).send("Missing id");
-    if (req.body == null)
-        return res.status(400).send("Empty body");
-
-    Review.findByIdAndUpdate(
-        id,
-        { $push: { comments: req.body }},
-        (err, review) => {
+        Review.findByIdAndRemove(id, (err, review) => {
             if (err)
-                res.send(err);
-            res.json(review.comments[review.comments.length-1]);
-        }
-    );
-};
-
-exports.get_review_comment = function(req, res) {
-    var id = req.params.id;
-    if (utils.emptyField(id))
-        return res.status(400).send("Missing id");
-    var dt = req.params.datetime;
-    if (utils.emptyField(dt))
-        return res.status(400).send("Missing comment id");
-
-    Review.findById(
-        id,
-        { comments: { $elemMatch: { datetime: dt }}},
-        (err, comment) => {
-            if (err)
-                res.send(err);
-            res.json(comment);
-        }
-    );
-};
-
-exports.update_review_comment = function(req, res) {
-    var id = req.params.id;
-    if (utils.emptyField(id))
-        return res.status(400).send("Missing id");
-    var dt = req.params.datetime;
-    if (utils.emptyField(dt))
-        return res.status(400).send("Missing comment id");
-
-    Review.findOneAndUpdate(
-        { "_id": id, "comments.datetime": dt },
-        { $set: { "comments.$.text" : req.body.text }},
-        (err, comment) => {
-            if (err)
-                res.send(err);
-            res.json(comment);
-        }
-    );
-};
-
-exports.delete_review_comment = function(req, res) {
-    var id = req.params.id;
-    if (utils.emptyField(id))
-        return res.status(400).send("Missing review id");
-    var dt = req.params.datetime;
-    if (utils.emptyField(dt))
-        return res.status(400).send("Missing comment id");
-
-    Review.findByIdAndUpdate(
-        id,
-        {$pull: {comments: {datetime: dt}}},
-        (err, review) => {
-            if (err)
-                res.send(err);
+                return res.send(err);
             res.send("Deleted");
-        }
-    );
-};
+        });
+    };
+
+    ctrl.list_review_comments = function(req, res) {
+        var id = req.params.id;
+        if (utils.emptyField(id))
+            return res.status(400).send("Missing id");
+
+        Review.findById(id, "comments", (err, comments) => {
+            if (err)
+                return res.send(err);
+            res.json(comments);
+        });
+    };
+
+    ctrl.create_review_comment = function(req, res) {
+        var id = req.params.id;
+        if (utils.emptyField(id))
+            return res.status(400).send("Missing id");
+        if (req.body == null)
+            return res.status(400).send("Empty body");
+        var body = req.body;
+        body.client_id = mongoose.Types.ObjectId(body.client_id);
+
+        Review.findByIdAndUpdate(
+            id,
+            { $push: { comments: body }},
+            (err, review) => {
+                if (err)
+                    return res.send(err);
+                res.json(review.comments);
+            }
+        );
+    };
+
+    ctrl.get_review_comment = function(req, res) {
+        var id = req.params.id;
+        if (utils.emptyField(id))
+            return res.status(400).send("Missing id");
+        var dt = req.params.datetime;
+        if (utils.emptyField(dt))
+            return res.status(400).send("Missing comment id");
+
+        Review.findById(
+            id,
+            { comments: { $elemMatch: { datetime: dt }}},
+            (err, comment) => {
+                if (err)
+                    return res.send(err);
+                res.json(comment);
+            }
+        );
+    };
+
+    ctrl.update_review_comment = function(req, res) {
+        var id = req.params.id;
+        if (utils.emptyField(id))
+            return res.status(400).send("Missing id");
+        var dt = req.params.datetime;
+        if (utils.emptyField(dt))
+            return res.status(400).send("Missing comment id");
+
+        Review.findOneAndUpdate(
+            { "_id": id, "comments.datetime": dt },
+            { $set: { "comments.$.text" : req.body.text }},
+            (err, comment) => {
+                if (err)
+                    return res.send(err);
+                res.json(comment);
+            }
+        );
+    };
+
+    ctrl.delete_review_comment = function(req, res) {
+        var id = req.params.id;
+        if (utils.emptyField(id))
+            return res.status(400).send("Missing review id");
+        var dt = req.params.datetime;
+        if (utils.emptyField(dt))
+            return res.status(400).send("Missing comment id");
+
+        Review.findByIdAndUpdate(
+            id,
+            {$pull: {comments: {datetime: dt}}},
+            (err, review) => {
+                if (err)
+                    return res.send(err);
+                res.send("Deleted");
+            }
+        );
+    };
+
+    return ctrl;
+}

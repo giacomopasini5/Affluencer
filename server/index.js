@@ -3,22 +3,31 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const routes = require('./routes/config');
+var App = {};
+App.db = mongoose;
+App.db.connect(
+    'mongodb://localhost/affluencer',
+    { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true }
+);
 
-mongoose.connect('mongodb://localhost/affluencer', { useNewUrlParser: true, useFindAndModify: false });
-
+const server = express();
 const port = 3000;
-const app = express();
 
-app.use(cors({ origin: ['http://localhost:8080'] }));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+server.use(cors({ origin: ['http://localhost:8080'] }));
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(bodyParser.json());
 
-routes(app);
-app.listen(port);
+App.utils = require('./common.js');
+App.models = require('./models/models.js')(App);
+App.controllers = require('./controllers/controllers.js')(App);
 
-app.use((req, res) => {
-  res.status(404).send({ url: `${req.originalUrl} not found` });
+const routes = require('./routes/config.js');
+routes(App, server);
+server.listen(port);
+
+server.use((req, res) => {
+    res.status(404).send({ url: `${req.originalUrl} not found` });
 });
 
 console.log(`Affluencer server started on port ${port}`);
+
