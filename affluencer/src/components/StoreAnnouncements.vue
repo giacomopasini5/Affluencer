@@ -4,6 +4,6 @@
 
 <script>
 	export default {
-		name: 'storeStats'
+		name: 'storeAnnouncements'
 	}
 </script>

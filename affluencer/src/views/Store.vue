@@ -19,6 +19,12 @@
 						<storeInfo :storeData="storeData"/>
 					</v-col>
 					<v-col cols="10" md="7" lg="8">
+						<storeAnnouncements/>
+						<storeReviews/>
+					</v-col>
+				</v-row>
+				<v-row justify="center">
+					<v-col cols="10">
 						<storeStats/>
 					</v-col>
 				</v-row>
@@ -29,6 +35,8 @@
 
 <script>
 	import storeInfo from '@/components/StoreInfo.vue'
+	import storeAnnouncements from '@/components/StoreAnnouncements.vue'
+	import storeReviews from '@/components/StoreReviews.vue'
 	import storeStats from '@/components/StoreStats.vue'
 	
 	export default {
@@ -36,6 +44,8 @@
 		
 		components: {
 			storeInfo,
+			storeAnnouncements,
+			storeReviews,
 			storeStats
 		},
 		
