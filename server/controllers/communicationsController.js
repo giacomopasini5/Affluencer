@@ -42,6 +42,7 @@ module.exports = function(App) {
         var body = req.body;
         body.client_id = mongoose.Types.ObjectId(body.client_id);
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
+        body.datetime = new Date();
 
         (new Communication(body)).save((err, com) => {
             if (err)
@@ -68,9 +69,6 @@ module.exports = function(App) {
             return res.status(400).send("Missing id");
         if (req.body == null)
             return res.status(400).send("Empty body");
-        var body = req.body;
-        body.client_id = mongoose.Types.ObjectId(body.client_id);
-        body.shop_id = mongoose.Types.ObjectId(body.shop_id);
 
         Communication.findByIdAndUpdate(
             id,

@@ -109,15 +109,16 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing shop id");
+        var body = req.body;
+        body.datetime = new Date();
 
-        //Shop.update(id, { $push: { posts: req.body }})
         Shop.findByIdAndUpdate(
             id,
-            { $push: { posts: req.body }},
+            { $push: { posts: body }},
             (err, shop) => {
                 if (err)
                     return res.send(err);
-                res.json(shop.posts[shop.posts.length-1]);
+                res.json(shop.posts);
             }
         );
     };
@@ -129,6 +130,7 @@ module.exports = function(App) {
         var dt = req.params.datetime;
         if (utils.emptyField(dt))
             return res.status(400).send("Missing post id");
+        dt = new Date(dt);
 
         Shop.findById(
             id,
@@ -148,14 +150,15 @@ module.exports = function(App) {
         var dt = req.params.datetime;
         if (utils.emptyField(dt))
             return res.status(400).send("Missing post id");
+        dt = new Date(dt);
 
         Shop.findOneAndUpdate(
             { "_id": id, "posts.datetime": dt },
             { $set: { "posts.$.text" : req.body.text }},
-            (err, post) => {
+            (err, shop) => {
                 if (err)
                     return res.send(err);
-                res.json(post);
+                res.send("Updated");
             }
         );
     };
@@ -167,6 +170,7 @@ module.exports = function(App) {
         var dt = req.params.datetime;
         if (utils.emptyField(dt))
             return res.status(400).send("Missing post id");
+        dt = new Date(dt);
 
         Shop.findByIdAndUpdate(
             id,

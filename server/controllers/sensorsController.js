@@ -24,6 +24,7 @@ module.exports = function(App) {
             return res.status(400).send("Empty body");
         var body = req.body;
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
+        body.datetime = new Date();
 
         (new Sensor(body)).save((err, sensor) => {
             if (err)

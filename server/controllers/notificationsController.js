@@ -24,6 +24,7 @@ module.exports = function(App) {
             return res.status(400).send("Empty body");
         var body = req.body;
         body.user_id = mongoose.Types.ObjectId(body.user_id);
+        body.datetime = new Date();
 
         (new Notification(body)).save((err, notification) => {
             if (err)
@@ -51,9 +52,6 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing id");
-        var user_id = req.params.user_id;
-        if (utils.emptyField(user_id))
-            return res.status(400).send("Missing user id");
 
         Notification.findByIdAndUpdate(
             id,

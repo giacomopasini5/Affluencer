@@ -41,6 +41,7 @@ module.exports = function(App) {
         var body = req.body;
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
         body.client_id = mongoose.Types.ObjectId(body.client_id);
+        body.datetime = new Date();
 
         (new Reservation(body)).save((err, reservation) => {
             if (err)
@@ -92,5 +93,5 @@ module.exports = function(App) {
         });
     }
     
-    return ctrl;;
+    return ctrl;
 }

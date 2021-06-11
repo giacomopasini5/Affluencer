@@ -44,6 +44,7 @@ module.exports = function(App) {
         var body = req.body;
         body.client_id = mongoose.Types.ObjectId(body.client_id);
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
+        body.datetime = new Date();
 
         (new Review(body)).save((err, review) => {
             if (err)
@@ -115,6 +116,7 @@ module.exports = function(App) {
             return res.status(400).send("Empty body");
         var body = req.body;
         body.client_id = mongoose.Types.ObjectId(body.client_id);
+        body.datetime = new Date();
 
         Review.findByIdAndUpdate(
             id,
@@ -134,6 +136,7 @@ module.exports = function(App) {
         var dt = req.params.datetime;
         if (utils.emptyField(dt))
             return res.status(400).send("Missing comment id");
+        dt = new Date(dt);
 
         Review.findById(
             id,
@@ -153,6 +156,7 @@ module.exports = function(App) {
         var dt = req.params.datetime;
         if (utils.emptyField(dt))
             return res.status(400).send("Missing comment id");
+        dt = new Date(dt);
 
         Review.findOneAndUpdate(
             { "_id": id, "comments.datetime": dt },
@@ -172,6 +176,7 @@ module.exports = function(App) {
         var dt = req.params.datetime;
         if (utils.emptyField(dt))
             return res.status(400).send("Missing comment id");
+        dt = new Date(dt);
 
         Review.findByIdAndUpdate(
             id,
