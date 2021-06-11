@@ -9,13 +9,6 @@ module.exports = function(mongoose) {
         capacity: Number,
         openTime: String,
         closeTime: String,
-        /*
-        working_hours: [{
-            _id: false,
-            day: String,
-            hours: String
-        }],
-        */
         location: {
             _id: false,
             type: {type: String},
@@ -24,6 +17,7 @@ module.exports = function(mongoose) {
         posts: [{
             _id: false,
             datetime: Date,
+            title: String,
             text: String
         }],
         enabled: Boolean

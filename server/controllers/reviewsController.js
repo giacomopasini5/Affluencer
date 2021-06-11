@@ -10,10 +10,12 @@ module.exports = function(App) {
             return res.status(400).send("Empty body");
         var obj = null;
         if (!utils.emptyField(req.body.client_id)) {
-            obj = {client_id: req.body.client_id};
+            var id = mongoose.Types.ObjectId(req.body.client_id);
+            obj = {client_id: id};
         }
         if (!utils.emptyField(req.body.shop_id)) {
-            obj = {shop_id: req.body.shop_id};
+            var id = mongoose.Types.ObjectId(req.body.shop_id);
+            obj = {shop_id: id};
         }
 
         Review.find(obj, (err, reviews) => {

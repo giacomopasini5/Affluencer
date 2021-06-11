@@ -12,7 +12,10 @@ module.exports = function(App, server) {
         .get(ctrl.shops.get_shop)
         .put(ctrl.shops.update_shop)
         //.delete(ctrl.shops.delete_shop);
-    
+
+    server.route('/api/shops/:id/info')
+        .get(ctrl.shops.get_shop_short_info);
+
     server.route('/api/shops/:id/posts')
         .get(ctrl.shops.list_shop_posts)
         .post(ctrl.shops.create_shop_post);

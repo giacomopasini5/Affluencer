@@ -1,5 +1,6 @@
 module.exports = function(App) {
     const Shop = App.models.Shop;
+    const Sensor = App.models.Sensor;
     const utils = App.utils;
     const bcrypt = require('bcrypt');
     const saltRound = 10;
@@ -48,6 +49,32 @@ module.exports = function(App) {
             res.json(shop);
         });
     };
+
+    ctrl.get_shop_short_info = function(req, res) {
+        var id = req.params.id;
+        if (utils.emptyField(id))
+            return res.status(400).send("Missing id");
+
+        Shop.findById(id, (err, shop) => {
+            if (err || shop == null)
+                return res.status(404).send("Shop not found");
+            delete shop.email;
+            delete shop.password;
+            delete shop.location;
+            delete shop.posts;
+            delete shop.enabled;
+
+            Sensor.find(
+                {shop_id: mongoose.Types.ObjectId(id)},
+                (err, sensors) => {
+                    if (err || sensors == null)
+                        return res.send(err);
+                    shop.sensors = sensors;
+                    res.json(shop);
+                }
+            );
+        });
+    }
 
     ctrl.update_shop = function(req, res) {
         var id = req.params.id;
