@@ -1,6 +1,7 @@
 module.exports = function(App) {
     const Reservation = App.models.Reservation;
     const utils = App.utils;
+    const mongoose = App.db;
     var ctrl = {};
 
     ctrl.list_reservations = function(req, res) {

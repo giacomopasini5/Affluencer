@@ -1,6 +1,7 @@
 module.exports = function(App) {
     const Notification = App.models.Notification;
     const utils = App.utils;
+    const mongoose = App.db;
     var ctrl = {};
 
     ctrl.list_user_notifications = function(req, res) {

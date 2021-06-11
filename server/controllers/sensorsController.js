@@ -1,6 +1,7 @@
 module.exports = function(App) {
     const Sensor = App.models.Sensor;
     const utils = App.utils;
+    const mongoose = App.db;
     var ctrl = {};
 
     ctrl.list_shop_sensor_infos = function(req, res) {

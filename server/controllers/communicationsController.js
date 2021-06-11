@@ -1,6 +1,7 @@
 module.exports = function(App) {
     const Communication = App.models.Communication;
     const utils = App.utils;
+    const mongoose = App.db;
     var ctrl = {};
 
     ctrl.list_communications = function(req, res) {

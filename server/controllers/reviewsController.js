@@ -2,6 +2,7 @@
 module.exports = function(App) {
     const Review = App.models.Review;
     const utils = App.utils;
+    const mongoose = App.db;
     var ctrl = {};
 
     ctrl.list_reviews = function(req, res) {

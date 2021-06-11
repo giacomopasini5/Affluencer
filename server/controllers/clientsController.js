@@ -1,6 +1,7 @@
 module.exports = function(App) {
     const Client = App.models.Client;
     const utils = App.utils;
+    const mongoose = App.db;
     const bcrypt = require('bcrypt');
     const saltRound = 10;
 
