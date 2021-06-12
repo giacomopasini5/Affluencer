@@ -6,6 +6,7 @@ module.exports = function(mongoose) {
         password: String,
         address: String,
 		city: String,
+        category: String,
         capacity: Number,
         openTime: String,
         closeTime: String,
