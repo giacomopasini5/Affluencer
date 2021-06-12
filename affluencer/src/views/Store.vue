@@ -59,33 +59,42 @@
 		
 		created: function() {
 			this.initializeStore();
-			this.initializeFavorite();
 			this.$store.commit('disableSettings');
 		},
 		
 		methods: {
 			initializeStore: async function() {
-				try {
-					var res = await this.axios.get('/shops/' + this.$route.params.id);
-					this.storeData = res.data;
-					this.hasStoreData = true;
-				} catch(error) {
-					console.log('failure');
-					console.log(error);
-				}
-			},
-			
-			initializeFavorite: async function() {
 				if(this.isClient()) {
 					try {
-						var res = await this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops');
-						for(var store of res.data)
-							if(store.shop_id == this.$route.params.id)
-								this.isFavorite = true;
+						var res = await this.axios.get('/shops/' + this.$route.params.id + '/info');
+						this.storeData = res.data;
+						this.hasStoreData = true;
 					} catch(error) {
 						console.log('failure');
 						console.log(error);
 					}
+					this.initializeFavorite();
+				} else {
+					try {
+						var res = await this.axios.get('/shops/' + this.$route.params.id);
+						this.storeData = res.data;
+						this.hasStoreData = true;
+					} catch(error) {
+						console.log('failure');
+						console.log(error);
+					}
+				}
+			},
+			
+			initializeFavorite: async function() {
+				try {
+					var res = await this.axios.get('/clients/' + $cookies.get('userid') + '/favorite_shops');
+					for(var store of res.data)
+						if(store.shop_id == this.$route.params.id)
+							this.isFavorite = true;
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
 				}
 			},
 			

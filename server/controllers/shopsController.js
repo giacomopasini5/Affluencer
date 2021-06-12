@@ -61,7 +61,6 @@ module.exports = function(App) {
             delete shop.email;
             delete shop.password;
             delete shop.location;
-            delete shop.posts;
             delete shop.enabled;
 
             Sensor.find(
