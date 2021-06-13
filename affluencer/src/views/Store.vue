@@ -19,7 +19,7 @@
 						<storeInfo :storeData="storeData"/>
 					</v-col>
 					<v-col cols="10" md="7" lg="8">
-						<storeAnnouncements/>
+						<storeAnnouncements :announcements="storeData.posts"/>
 						<storeReviews/>
 					</v-col>
 				</v-row>
