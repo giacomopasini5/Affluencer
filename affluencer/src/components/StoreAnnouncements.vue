@@ -1,5 +1,5 @@
 <template>
-	<v-card v-if="!$store.state.config.settings" flat class="text-left mr-10">
+	<v-card v-if="!$store.state.config.settings" flat class="text-left mr-md-10">
 		<v-card v-if="isOwner" outlined>
 			<v-card-title>Scrivi un annuncio</v-card-title>
 			<v-text-field label="Titolo" hide-details="auto" outlined dense class="ma-5"></v-text-field>
