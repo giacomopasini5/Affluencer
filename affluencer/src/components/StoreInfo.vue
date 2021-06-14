@@ -56,8 +56,10 @@
 					<v-text-field type="number" v-model="currentCustomers" label="Segnala N.°" hide-details="auto" outlined dense :error="$v.currentCustomers.$error"
 					:rules="!$v.currentCustomers.$error ? [] : [$v.currentCustomers.minValue || 'L\'affluenza deve essere maggiore di 0']"></v-text-field>
 				</v-col>
-				<v-col cols="3">
-					<v-btn @click="signalCustomers" :disabled="customersSignaled" color="primary">Invia</v-btn>
+				<v-col cols="2">
+					<v-btn @click="signalCustomers" :disabled="customersSignaled" icon>
+						<v-icon color="primary">mdi-send</v-icon>
+					</v-btn>
 				</v-col>
 			</v-row>
 		</v-col>

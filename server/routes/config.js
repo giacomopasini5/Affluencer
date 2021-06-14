@@ -23,7 +23,7 @@ module.exports = function(App, server) {
     server.route('/api/shops/:id/posts/:datetime')
         .get(ctrl.shops.get_shop_post)
         .put(ctrl.shops.update_shop_post)
-        //.delete(ctrl.shops.delete_shop_post);
+        .delete(ctrl.shops.delete_shop_post);
 
     // CLIENTS
 
