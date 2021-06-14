@@ -18,6 +18,7 @@ module.exports = function(App) {
         Reservation.find(obj, (err, reservations) => {
             if (err)
                 return res.status(404).send(err);
+            utils.addTimestampField(reservations);
             res.json(reservations);
         });
     };
@@ -41,11 +42,11 @@ module.exports = function(App) {
         var body = req.body;
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
         body.client_id = mongoose.Types.ObjectId(body.client_id);
-        body.datetime = new Date();
 
         (new Reservation(body)).save((err, reservation) => {
             if (err)
                 return res.status(400).send(err);
+            utils.addTimestampField(reservation);
             res.send("Created");
         });
     };
@@ -58,6 +59,7 @@ module.exports = function(App) {
         Reservation.findById(id, (err, reservation) => {
             if (err || reservation == null)
                 return res.status(404).send("Reservation not found: "+err);
+            utils.addTimestampField(reservation);
             res.json(reservation);
         });
     };
@@ -76,6 +78,7 @@ module.exports = function(App) {
             (err, reservation) => {
                 if (err)
                     return res.send(err)
+                utils.addTimestampField(reservation);
                 res.json(reservation);
             }
         );

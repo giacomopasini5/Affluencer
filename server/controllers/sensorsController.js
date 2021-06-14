@@ -14,6 +14,7 @@ module.exports = function(App) {
             (err, sensors) => {
                 if (err || sensors == null)
                     return res.send(err);
+                utils.addTimestampField(sensors);
                 res.json(sensors);
             }
         );    
@@ -24,7 +25,6 @@ module.exports = function(App) {
             return res.status(400).send("Empty body");
         var body = req.body;
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
-        body.datetime = new Date();
 
         (new Sensor(body)).save((err, sensor) => {
             if (err)
@@ -37,15 +37,11 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing id");
-        /*
-        var shop_id = req.params.shop_id;
-        if (utils.emptyField(shop_id))
-            res.status(400).send("Missing post id");
-        */
 
         Sensor.findById(id, (err, sensor) => {
             if (err)
                 return res.json(err);
+            utils.addTimestampField(sensor);
             res.json(sensor);
         });
     };
@@ -54,11 +50,6 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing id");
-        /*
-        var shop_id = req.params.shop_id;
-        if (utils.emptyField(shop_id))
-            res.status(400).send("Missing post id");
-        */
 
         Sensor.findByIdAndUpdate(
             id,
@@ -67,6 +58,7 @@ module.exports = function(App) {
             (err, sensor) => {
                 if (err)
                     return res.json(err);
+                utils.addTimestampField(sensor);
                 res.json(sensor);
             }
         );

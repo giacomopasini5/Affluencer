@@ -5,7 +5,7 @@ module.exports = function(App) {
     var ctrl = {};
 
     ctrl.list_user_notifications = function(req, res) {
-        var id = req.body.id;
+        var id = req.body.user_id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing user id");
 
@@ -14,6 +14,7 @@ module.exports = function(App) {
             (err, notifications) => {
                 if (err || notifications == null)
                     res.send(err);
+                utils.addTimestampField(notifications);
                 res.json(notifications);
             }
         );    
@@ -24,11 +25,11 @@ module.exports = function(App) {
             return res.status(400).send("Empty body");
         var body = req.body;
         body.user_id = mongoose.Types.ObjectId(body.user_id);
-        body.datetime = new Date();
 
         (new Notification(body)).save((err, notification) => {
             if (err)
                 return res.json(err);
+            utils.addTimestampField(notification);
             res.status(201).json(notification);
         });
     };
@@ -44,6 +45,7 @@ module.exports = function(App) {
         Notification.findById(id, (err, notification) => {
             if (err)
                 return res.json(err);
+            utils.addTimestampField(notification);
             res.json(notification);
         });
     };
@@ -60,6 +62,7 @@ module.exports = function(App) {
             (err, notification) => {
                 if (err)
                     return res.json(err);
+                utils.addTimestampField(notification);
                 res.json(notification);
             }
         );

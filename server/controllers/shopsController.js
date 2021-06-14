@@ -2,6 +2,7 @@ module.exports = function(App) {
     const Shop = App.models.Shop;
     const Sensor = App.models.Sensor;
     const utils = App.utils;
+    const mongoose = App.db;
     const bcrypt = require('bcrypt');
     const saltRound = 10;
     var ctrl = {};
@@ -100,6 +101,7 @@ module.exports = function(App) {
         Shop.findById(id, "posts", (err, posts) => {
             if (err)
                 return res.send(err);
+            utils.addTimestampField(posts);
             res.json(posts);
         });
     };
@@ -108,15 +110,15 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing shop id");
-        var body = req.body;
-        body.datetime = new Date();
 
         Shop.findByIdAndUpdate(
             id,
-            { $push: { posts: body }},
+            { $push: { posts: req.body }},
+            { new: true },
             (err, shop) => {
                 if (err)
                     return res.send(err);
+                utils.addTimestampField(shop.posts);
                 res.json(shop.posts);
             }
         );
@@ -126,17 +128,17 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing shop id");
-        var dt = req.params.datetime;
-        if (utils.emptyField(dt))
-            return res.status(400).send("Missing post id");
-        dt = new Date(dt);
+        var comment_id = req.params.comment_id;
+        if (utils.emptyField(comment_id))
+            return res.status(400).send("Missing comment id");
 
         Shop.findById(
             id,
-            { posts: { $elemMatch: { datetime: dt }}},
+            { posts: { $elemMatch: { _id: mongoose.Types.ObjectId(comment_id) }}},
             (err, post) => {
                 if (err || post == null)
                     return res.send(err);
+                utils.addTimestampField(post);
                 res.json(post);
             }
         );
@@ -146,13 +148,15 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing shop id");
-        var dt = req.params.datetime;
-        if (utils.emptyField(dt))
-            return res.status(400).send("Missing post id");
-        dt = new Date(dt);
+        var comment_id = req.params.comment_id;
+        if (utils.emptyField(comment_id))
+            return res.status(400).send("Missing comment id");
 
         Shop.findOneAndUpdate(
-            { "_id": id, "posts.datetime": dt },
+            {
+                "_id": mongoose.Types.ObjectId(id),
+                "posts._id": mongoose.Types.ObjectId(comment_id)
+            },
             { $set: { "posts.$.text" : req.body.text }},
             (err, shop) => {
                 if (err)
@@ -166,14 +170,13 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing shop id");
-        var dt = req.params.datetime;
-        if (utils.emptyField(dt))
-            return res.status(400).send("Missing post id");
-        dt = new Date(dt);
+        var comment_id = req.params.comment_id;
+        if (utils.emptyField(comment_id))
+            return res.status(400).send("Missing comment id");
 
         Shop.findByIdAndUpdate(
             id,
-            { $pull: { posts: { datetime: dt }}},
+            { $pull: { posts: { _id: mongoose.Types.ObjectId(comment_id) }}},
             (err, post) => {
                 if (err)
                     return res.send(err);

@@ -16,8 +16,6 @@ module.exports = function(mongoose) {
             coordinates: [Number]
         },
         posts: [{
-            _id: false,
-            datetime: Date,
             title: String,
             text: String
         }],

@@ -3,7 +3,6 @@ module.exports = function(mongoose) {
     var ResSchema = new Schema({
         shop_id: mongoose.Types.ObjectId,
         client_id: mongoose.Types.ObjectId,
-        datetime: Date,
         people: Number
     });
 

@@ -19,22 +19,10 @@ module.exports = function(App) {
         Communication.find(obj, (err, com) => {
             if (err)
                 return res.status(404).send(err);
+            utils.addTimestampField(com);
             res.json(com);
         });
     };
-
-    /*
-    ctrl.list_client_communications = function(req, res) {
-        if (req.body == null)
-            return res.status(400).send("Empty body");
-
-        Communication.find({client_id: req.body.client_id}, (err, com) => {
-            if (err)
-                res.status(404).send(err);
-            res.json(com);
-        });
-    };
-    */
 
     ctrl.create_communication = function(req, res) {
         if (req.body == null)
@@ -42,11 +30,11 @@ module.exports = function(App) {
         var body = req.body;
         body.client_id = mongoose.Types.ObjectId(body.client_id);
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
-        body.datetime = new Date();
 
         (new Communication(body)).save((err, com) => {
             if (err)
                 return res.status(400).send(err);
+            utils.addTimestampField(com);
             res.send("Created");
         });
     };
@@ -59,6 +47,7 @@ module.exports = function(App) {
         Communication.findById(id, (err, com) => {
             if (err || com == null)
                 return res.status(404).send("Communication not found: "+err);
+            utils.addTimestampField(com);
             res.json(com);
         });
     };
@@ -77,6 +66,7 @@ module.exports = function(App) {
             (err, com) => {
                 if (err)
                     return res.send(err)
+                utils.addTimestampField(com);                    
                 res.json(com);
             }
         );

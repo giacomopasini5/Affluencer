@@ -20,7 +20,7 @@ module.exports = function(App, server) {
         .get(ctrl.shops.list_shop_posts)
         .post(ctrl.shops.create_shop_post);
     
-    server.route('/api/shops/:id/posts/:datetime')
+    server.route('/api/shops/:id/posts/:post_id')
         .get(ctrl.shops.get_shop_post)
         .put(ctrl.shops.update_shop_post)
         .delete(ctrl.shops.delete_shop_post);
@@ -55,11 +55,11 @@ module.exports = function(App, server) {
 
     // NOTIFICATIONS
 
-    server.route('/api/notifications/:user_id')
+    server.route('/api/notifications/')
         .get(ctrl.notifications.list_user_notifications)
         .post(ctrl.notifications.create_user_notification);
 
-    server.route('/api/notifications/:user_id/:id')
+    server.route('/api/notifications/:id')
         .get(ctrl.notifications.get_user_notification)
         .put(ctrl.notifications.update_user_notification);
 
@@ -74,8 +74,12 @@ module.exports = function(App, server) {
         .put(ctrl.reviews.update_review)
         .delete(ctrl.reviews.delete_review);
 
-    server.route('/api/reviews/:id/:datetime')
-        .get(ctrl.reviews.get_review_comment)
+    server.route('/api/reviews/:id/comments')
+        .get(ctrl.reviews.list_review_comments)
+        .post(ctrl.reviews.create_review_commet);
+
+    server.route('/api/reviews/:id/comments/:comment_id')
+        .get(ctrl.get_review_comment)
         .put(ctrl.reviews.update_review_comment)
         .delete(ctrl.reviews.delete_review_comment);
 

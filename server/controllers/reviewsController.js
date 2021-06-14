@@ -21,22 +21,13 @@ module.exports = function(App) {
         Review.find(obj, (err, reviews) => {
             if (err)
                 return res.status(404).send(err);
+            utils.addTimestampField(reviews);
+            for (var idx = 0; idx < reviews.length; idx++) {
+                utils.addTimestampField(reviews[i].comments);
+            }
             res.json(reviews);
         });
     };
-
-    /*
-    ctrl.list_shop_reviews = function(req, res) {
-        if (req.body == null)
-            return res.status(400).send("Empty body");
-
-        Review.find({ shop_id: req.body.shop_id }, (err, reviews) => {
-            if (err)
-                res.status(404).send(err);
-            res.json(reviews);
-        });
-    };
-    */
 
     ctrl.create_review = function(req, res) {
         if (req.body == null)
@@ -44,11 +35,11 @@ module.exports = function(App) {
         var body = req.body;
         body.client_id = mongoose.Types.ObjectId(body.client_id);
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
-        body.datetime = new Date();
 
         (new Review(body)).save((err, review) => {
             if (err)
                 return res.status(400).send(err);
+            utils.addTimestampField(review);
             res.status(201).json(review);
         });
     };
@@ -61,6 +52,8 @@ module.exports = function(App) {
         Review.findById(id, (err, review) => {
             if (err || review == null)
                 return res.status(404).send("Review not found: "+err);
+            utils.addTimestampField(review);
+            utils.addTimestampField(review.comments);
             res.json(review);
         });
     };
@@ -79,6 +72,8 @@ module.exports = function(App) {
             (err, review) => {
                 if (err)
                     return res.send(err)
+                utils.addTimestampField(review);
+                utils.addTimestampField(review.comments);
                 res.json(review);
             }
         );
@@ -104,6 +99,7 @@ module.exports = function(App) {
         Review.findById(id, "comments", (err, comments) => {
             if (err)
                 return res.send(err);
+            utils.addTimestampField(comments);
             res.json(comments);
         });
     };
@@ -116,14 +112,15 @@ module.exports = function(App) {
             return res.status(400).send("Empty body");
         var body = req.body;
         body.client_id = mongoose.Types.ObjectId(body.client_id);
-        body.datetime = new Date();
 
         Review.findByIdAndUpdate(
             id,
             { $push: { comments: body }},
+            { new: true },
             (err, review) => {
                 if (err)
                     return res.send(err);
+                utils.addTimestampField(review.comments);
                 res.json(review.comments);
             }
         );
@@ -133,17 +130,17 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing id");
-        var dt = req.params.datetime;
-        if (utils.emptyField(dt))
+        var comment_id = req.params.comment_id;
+        if (utils.emptyField(comment_id))
             return res.status(400).send("Missing comment id");
-        dt = new Date(dt);
 
         Review.findById(
             id,
-            { comments: { $elemMatch: { datetime: dt }}},
+            { comments: { $elemMatch: { _id: mongoose.Types.ObjectId(comment_id) }}},
             (err, comment) => {
                 if (err)
                     return res.send(err);
+                utils.addTimestampField(comment);
                 res.json(comment);
             }
         );
@@ -153,17 +150,20 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing id");
-        var dt = req.params.datetime;
-        if (utils.emptyField(dt))
+        var comment_id = req.params.comment_id;
+        if (utils.emptyField(comment_id))
             return res.status(400).send("Missing comment id");
-        dt = new Date(dt);
 
         Review.findOneAndUpdate(
-            { "_id": id, "comments.datetime": dt },
+            {
+                "_id": mongoose.Types.ObjectId(id),
+                "comments._id": mongoose.Types.ObjectId(comment_id)
+            },
             { $set: { "comments.$.text" : req.body.text }},
             (err, comment) => {
                 if (err)
                     return res.send(err);
+                    utils.addTimestampField(comment);
                 res.json(comment);
             }
         );
@@ -173,14 +173,13 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing review id");
-        var dt = req.params.datetime;
-        if (utils.emptyField(dt))
+        var comment_id = req.params.comment_id;
+        if (utils.emptyField(comment_id))
             return res.status(400).send("Missing comment id");
-        dt = new Date(dt);
 
         Review.findByIdAndUpdate(
             id,
-            {$pull: {comments: {datetime: dt}}},
+            { $pull: { comments: { _id: mongoose.Types.ObjectId(comment_id) }}},
             (err, review) => {
                 if (err)
                     return res.send(err);

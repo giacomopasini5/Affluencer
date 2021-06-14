@@ -34,5 +34,5 @@ module.exports = function(App) {
         });
     }
 
-    setInterval(generate, 40000 + getRandomInt(40000)); // every 60(+-20) seconds
+    setInterval(generate, 60000); // every 60 seconds
 }
