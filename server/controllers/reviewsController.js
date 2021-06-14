@@ -23,7 +23,7 @@ module.exports = function(App) {
                 return res.status(404).send(err);
             utils.addTimestampField(reviews);
             for (var idx = 0; idx < reviews.length; idx++) {
-                utils.addTimestampField(reviews[i].comments);
+                utils.addTimestampField(reviews[idx].comments);
             }
             res.json(reviews);
         });
