@@ -128,13 +128,13 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing shop id");
-        var comment_id = req.params.comment_id;
-        if (utils.emptyField(comment_id))
-            return res.status(400).send("Missing comment id");
+        var post_id = req.params.post_id;
+        if (utils.emptyField(post_id))
+            return res.status(400).send("Missing post id");
 
         Shop.findById(
             id,
-            { posts: { $elemMatch: { _id: mongoose.Types.ObjectId(comment_id) }}},
+            { posts: { $elemMatch: { _id: mongoose.Types.ObjectId(post_id) }}},
             (err, post) => {
                 if (err || post == null)
                     return res.send(err);
@@ -148,14 +148,14 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing shop id");
-        var comment_id = req.params.comment_id;
-        if (utils.emptyField(comment_id))
-            return res.status(400).send("Missing comment id");
+        var post_id = req.params.post_id;
+        if (utils.emptyField(post_id))
+            return res.status(400).send("Missing post id");
 
         Shop.findOneAndUpdate(
             {
                 "_id": mongoose.Types.ObjectId(id),
-                "posts._id": mongoose.Types.ObjectId(comment_id)
+                "posts._id": mongoose.Types.ObjectId(post_id)
             },
             { $set: { "posts.$.text" : req.body.text }},
             (err, shop) => {
@@ -170,13 +170,13 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing shop id");
-        var comment_id = req.params.comment_id;
-        if (utils.emptyField(comment_id))
-            return res.status(400).send("Missing comment id");
+        var post_id = req.params.post_id;
+        if (utils.emptyField(post_id))
+            return res.status(400).send("Missing post id");
 
         Shop.findByIdAndUpdate(
             id,
-            { $pull: { posts: { _id: mongoose.Types.ObjectId(comment_id) }}},
+            { $pull: { posts: { _id: mongoose.Types.ObjectId(post_id) }}},
             (err, post) => {
                 if (err)
                     return res.send(err);
