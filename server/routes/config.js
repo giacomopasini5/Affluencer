@@ -76,10 +76,10 @@ module.exports = function(App, server) {
 
     server.route('/api/reviews/:id/comments')
         .get(ctrl.reviews.list_review_comments)
-        .post(ctrl.reviews.create_review_commet);
+        .post(ctrl.reviews.create_review_comment);
 
     server.route('/api/reviews/:id/comments/:comment_id')
-        .get(ctrl.get_review_comment)
+        .get(ctrl.reviews.get_review_comment)
         .put(ctrl.reviews.update_review_comment)
         .delete(ctrl.reviews.delete_review_comment);
 
