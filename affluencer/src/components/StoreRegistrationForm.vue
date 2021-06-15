@@ -12,11 +12,11 @@
 							:rules="!$v.store.name.$error ? [] : [$v.store.name.required || 'Il nome è obbligatorio']"></v-text-field>
 						</v-col>
 						<v-col cols="10">
-							<v-text-field v-model="store.address" label="Indirizzo" hide-details="auto" outlined dense :error="$v.store.address.$error"
+							<v-text-field v-model="store.address" v-on:blur="searchCoordinates()" label="Indirizzo" hide-details="auto" outlined dense :error="$v.store.address.$error"
 							:rules="!$v.store.address.$error ? [] : [$v.store.address.required || 'L\'indirizzo è obbligatorio']"></v-text-field>
 						</v-col>
 						<v-col cols="10">
-							<v-text-field v-model="store.city" label="Città" hide-details="auto" outlined dense :error="$v.store.city.$error"
+							<v-text-field v-model="store.city" v-on:blur="searchCoordinates()" label="Città" hide-details="auto" outlined dense :error="$v.store.city.$error"
 							:rules="!$v.store.city.$error ? [] : [$v.store.city.required || 'La città è obbligatoria']"></v-text-field>
 						</v-col>
 						<v-col cols="5">
@@ -70,7 +70,8 @@
 					capacity: '',
 					email: '',
 					password: '',
-					confirmPassword: ''
+					confirmPassword: '',
+					coordinates: null
 				},
 				registerStoreLoading: false
 			}
@@ -104,6 +105,18 @@
 					console.log('failure');
 					console.log(error);
 				});
+			},
+
+			searchCoordinates: function() {
+				if (this.store.address != "" && this.store.city != "") {
+					this.axios.get('https://nominatim.openstreetmap.org/search?q='+encodeURI(this.store.address + ', ' + this.store.city)+'&format=jsonv2')
+					.then(res => {
+						if (res.data.length != 0) {
+							var point = res.data[0];
+							this.store.coordinates = [point.lat, point.lon];
+						}
+					});
+				}
 			}
 		}
 	}

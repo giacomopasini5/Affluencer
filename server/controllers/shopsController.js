@@ -19,6 +19,12 @@ module.exports = function(App) {
         if (req.body == null)
             return res.status(400).send("Empty body");
         var body = req.body;
+        if (body.coordinates != null) {
+            body.location = {
+                type: "Point",
+                coordinates: body.coordinates
+            };
+        }
         body.enabled = true;
 
         bcrypt.genSalt(saltRound)
