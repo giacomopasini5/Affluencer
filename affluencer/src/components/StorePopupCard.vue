@@ -1,39 +1,46 @@
 <template>
-    <v-card elevation="0">
-      <v-card-title>
-        <v-icon color="blue">mdi-home</v-icon>
-        Titolo
-      </v-card-title>
+  <v-card elevation="0">
+    <v-card-title class="justify-center">
+      {{ storeData.name }}
+    </v-card-title>
 
-      <v-card-text>
-        <v-row align="center" class="mx-0">
-          <v-rating
-            :value="3.5"
-            color="amber"
-            dense
-            half-increments
-            readonly
-            size="14"
-          ></v-rating>
-        </v-row>
+    <v-card-text>
+      <v-row class="mx-0">
+        <v-rating 
+          :value="2.5"
+          color="amber"
+          dense
+          half-increments
+          readonly
+          size="20"
+        ></v-rating>
+      </v-row>
 
-        <div class="my-4 text-subtitle-1">
-          Testo
-        </div>
+      <div class="my-4 text-subtitle-1">
+        Open: {{ storeData.openTime }} <br />
+        Close: {{ storeData.closeTime }} <br />
+      </div>
 
-        <div>
-          Descrizione
-        </div>
-      </v-card-text>
-    </v-card>
+      <v-progress-linear
+        rounded
+        color="green"
+        height="25"
+        :value="storeData.peopleInside"
+      >
+        <strong>{{ storeData.peopleInside }}</strong>
+      </v-progress-linear>
+    </v-card-text>
+    
+  </v-card>
 </template>
 
 <script>
 export default {
   name: "storePopupCard",
+  props: ["storeData"],
 };
 </script>
 
 <style>
-	@import "../styles/home.css";
+@import "../styles/home.css";
 </style>

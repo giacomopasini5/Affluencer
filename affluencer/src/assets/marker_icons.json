@@ -1,0 +1,51 @@
+[
+  {
+    "id": "posizione",
+    "name": "Posizione",
+    "symbol": "child",
+    "color": "2151ff",
+    "strokecolor": "000000",
+    "type": "circle"
+  },
+  {
+    "id": "pub",
+    "name": "Pub & Bar",
+    "symbol": "cocktail", 
+    "color": "ff4242", 
+    "strokecolor": "5b4040",
+    "type": "awesome"
+  },
+  {
+    "id": "farmacia",
+    "name": "Farmacia",
+    "symbol": "prescription-bottle-alt",
+    "color": "4270ff",
+    "strokecolor": "000737",
+    "type": "awesome"
+  },
+  {
+    "id": "biblioteca",
+    "name": "Biblioteca",
+    "symbol": "book",
+    "color": "cf04c5",
+    "strokecolor": "761260",
+    "type": "awesome"
+  },
+  {
+    "id": "ristorante",
+    "name": "Ristorante",
+    "symbol": "utensils",
+    "color": "04cf39",
+    "strokecolor": "076236",
+    "type": "awesome"
+  },
+  {
+    "id": "supermercato",
+    "name": "Supermercato",
+    "symbol": "shopping-cart",
+    "color": "ffab00",
+    "strokecolor": "986600",
+    "type": "awesome"
+  }
+  
+]
