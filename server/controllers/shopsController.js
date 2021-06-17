@@ -59,26 +59,26 @@ module.exports = function(App) {
 
     ctrl.get_shop_short_info = function(req, res) {
         var id = req.params.id;
+        var json = {};
         if (utils.emptyField(id))
             return res.status(400).send("Missing id");
 
         Shop.findById(id, (err, shop) => {
             if (err || shop == null)
                 return res.status(404).send("Shop not found");
-            delete shop.email;
-            delete shop.password;
-            delete shop.location;
-            delete shop.enabled;
+            Object.assign(json, shop._doc);
+            delete json.email;
+            delete json.password;
 
-            Sensor.find(
-                {shop_id: mongoose.Types.ObjectId(id)},
-                (err, sensors) => {
-                    if (err || sensors == null)
-                        return res.send(err);
-                    shop.sensors = sensors;
-                    res.json(shop);
-                }
-            );
+            Sensor.find({shop_id: shop._id}).sort({ _id: -1}).limit(1)
+            .exec()
+            .then(sensor => {
+                if (sensor == null)
+                    return res.send("Sensor error");
+                utils.addTimestampField(sensor);
+                json.lastSensorActivity = sensor;
+                res.json(json);
+            });
         });
     }
 

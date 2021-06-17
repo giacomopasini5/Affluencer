@@ -1,19 +1,19 @@
 exports.emptyField = function(f) {
-    return f == null || f == "";
+    return f == undefined || f == null || f == "";
 }
 
 exports.addTimestampField = function(object) {
     
-    function addTimestamp(e) {
-        e.timestamp = e._id.getTimestamp();
+    function addTimestamp(doc) {
+        doc.timestamp = doc._id.getTimestamp();
     }
 
     if (object instanceof Array) {
         var idx;
         for (idx = 0; idx < object.length; idx++) {
-            addTimestamp(object[idx]);
+            addTimestamp(object[idx]._doc);
         }
     } else {
-        addTimestamp(object);
+        addTimestamp(object._doc);
     }
 }

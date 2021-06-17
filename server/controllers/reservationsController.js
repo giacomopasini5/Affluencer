@@ -9,10 +9,12 @@ module.exports = function(App) {
             return res.status(400).send("Empty body");
         var obj = null;
         if (!utils.emptyField(req.body.client_id)) {
-            obj = {client_id: req.body.client_id};
+            var id = req.body.client_id;
+            obj = {client_id: mongoose.Types.ObjectId(id)};
         }
         if (!utils.emptyField(req.body.shop_id)) {
-            obj = {shop_id: req.body.shop_id};
+            var id = req.body.shop_id;
+            obj = {shop_id: mongoose.Types.ObjectId(id)};
         }
 
         Reservation.find(obj, (err, reservations) => {
@@ -40,6 +42,12 @@ module.exports = function(App) {
         if (req.body == null)
             return res.status(400).send("Empty body");
         var body = req.body;
+        if (utils.emptyField(body.shop_id)) {
+            return res.status(400).send("Missing shop id");
+        }
+        if (utils.emptyField(body.client_id)) {
+            return res.status(400).send("Missing client id");
+        }
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
         body.client_id = mongoose.Types.ObjectId(body.client_id);
 

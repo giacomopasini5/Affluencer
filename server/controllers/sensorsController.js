@@ -5,7 +5,7 @@ module.exports = function(App) {
     var ctrl = {};
 
     ctrl.list_shop_sensor_infos = function(req, res) {
-        var id = req.body.id;
+        var id = req.body.shop_id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing shop id");
 
@@ -24,6 +24,9 @@ module.exports = function(App) {
         if (req.body == null)
             return res.status(400).send("Empty body");
         var body = req.body;
+        if (utils.emptyField(body.shop_id)) {
+            return res.status(400).send("Missing shop id");
+        }
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
 
         (new Sensor(body)).save((err, sensor) => {

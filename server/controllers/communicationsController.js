@@ -9,11 +9,17 @@ module.exports = function(App) {
         if (body == null)
             return res.status(400).send("Empty body");
         var obj = null;
+        var set = false;
         if (!utils.emptyField(body.client_id)) {
-            obj = {client_id: body.client_id};
+            obj = {client_id: mongoose.Types.ObjectId(body.client_id)};
+            set = true;
         }
         if (!utils.emptyField(body.shop_id)) {
-            obj = {shop_id: body.shop_id};
+            obj = {shop_id: mongoose.Types.ObjectId(body.shop_id)};
+            set = true;
+        }
+        if (!set) {
+            return res.status(400).send("Missing shop or client id");
         }
 
         Communication.find(obj, (err, com) => {
