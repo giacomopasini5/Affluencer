@@ -63,11 +63,11 @@
 		},
 		
 		created: function() {
-			this.initializeAnnouncements();
+			this.formatAnnouncements();
 		},
 		
 		methods: {
-			initializeAnnouncements: function() {
+			formatAnnouncements: function() {
 				this.latestPost = this.announcements[0];
 				this.otherPosts = this.announcements;
 				this.otherPosts.shift();
@@ -88,7 +88,7 @@
 					var res = await this.axios.delete('/shops/' + this.$route.params.id + '/posts/' + post.datetime);
 					var index = this.announcements.indexOf(post);
 					this.announcements.splice(index, 1);
-					this.initializeAnnouncements();
+					this.formatAnnouncements();
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
