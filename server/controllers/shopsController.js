@@ -104,11 +104,11 @@ module.exports = function(App) {
         if (utils.emptyField(id))
             return res.status(400).send("Missing shop id");
         
-        Shop.findById(id, "posts", (err, posts) => {
+        Shop.findById(id, "posts", (err, shop) => {
             if (err)
                 return res.send(err);
-            utils.addTimestampField(posts);
-            res.json(posts);
+            utils.addTimestampField(shop.posts);
+            res.json(shop.posts);
         });
     };
 
@@ -141,11 +141,11 @@ module.exports = function(App) {
         Shop.findById(
             id,
             { posts: { $elemMatch: { _id: mongoose.Types.ObjectId(post_id) }}},
-            (err, post) => {
-                if (err || post == null)
+            (err, shop) => {
+                if (err || shop == null)
                     return res.send(err);
-                utils.addTimestampField(post);
-                res.json(post);
+                utils.addTimestampField(shop.posts[0]);
+                res.json(shop.posts[0]);
             }
         );
     };
