@@ -1,6 +1,6 @@
 <template>
 	<v-app id="app">
-		<v-btn fab fixed top left small @click="toggleTheme" class="mt-12" style="z-index: 9999">
+		<v-btn fab fixed bottom left small @click="toggleTheme" style="z-index: 9999">
 			<v-icon>mdi-theme-light-dark</v-icon>
 		</v-btn>
 		<navbar :navLinks="navLinks"/>
