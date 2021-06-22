@@ -49,6 +49,9 @@ module.exports = function(App, server) {
         .get(ctrl.sensors.list_shop_sensor_infos)
         .post(ctrl.sensors.create_shop_sensor_info);
 
+    server.route('/api/sensors/last')
+        .get(ctrl.sensors.get_last_shop_sensor_info);
+
     server.route('/api/sensors/:id')
         .get(ctrl.sensors.get_shop_sensor_infos)
         .put(ctrl.sensors.update_shop_sensor_infos);
@@ -74,6 +77,7 @@ module.exports = function(App, server) {
         .put(ctrl.reviews.update_review)
         .delete(ctrl.reviews.delete_review);
 
+    /*
     server.route('/api/reviews/:id/comments')
         .get(ctrl.reviews.list_review_comments)
         .post(ctrl.reviews.create_review_comment);
@@ -82,6 +86,7 @@ module.exports = function(App, server) {
         .get(ctrl.reviews.get_review_comment)
         .put(ctrl.reviews.update_review_comment)
         .delete(ctrl.reviews.delete_review_comment);
+    */
 
     // RESERVATIONS
 

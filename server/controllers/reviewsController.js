@@ -22,9 +22,6 @@ module.exports = function(App) {
             if (err)
                 return res.status(404).send(err);
             utils.addTimestampField(reviews);
-            for (var idx = 0; idx < reviews.length; idx++) {
-                utils.addTimestampField(reviews[idx].comments);
-            }
             res.json(reviews);
         });
     };
@@ -53,7 +50,6 @@ module.exports = function(App) {
             if (err || review == null)
                 return res.status(404).send("Review not found: "+err);
             utils.addTimestampField(review);
-            utils.addTimestampField(review.comments);
             res.json(review);
         });
     };
@@ -73,7 +69,6 @@ module.exports = function(App) {
                 if (err)
                     return res.send(err)
                 utils.addTimestampField(review);
-                utils.addTimestampField(review.comments);
                 res.json(review);
             }
         );
@@ -91,6 +86,7 @@ module.exports = function(App) {
         });
     };
 
+    /*
     ctrl.list_review_comments = function(req, res) {
         var id = req.params.id;
         if (utils.emptyField(id))
@@ -187,6 +183,7 @@ module.exports = function(App) {
             }
         );
     };
+    */
 
     return ctrl;
 }

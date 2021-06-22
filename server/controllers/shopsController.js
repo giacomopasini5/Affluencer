@@ -94,6 +94,7 @@ module.exports = function(App) {
             (err, shop) => {
                 if (err)
                     return res.send(err)
+                //utils.addTimestampField(shop.posts);
                 res.json(shop);
             }
         );
@@ -124,8 +125,8 @@ module.exports = function(App) {
             (err, shop) => {
                 if (err)
                     return res.send(err);
-                utils.addTimestampField(shop.posts);
-                res.json(shop.posts);
+                utils.addTimestampField(shop.posts[0]);
+                res.json(shop.posts[0]);
             }
         );
     };
@@ -164,10 +165,13 @@ module.exports = function(App) {
                 "posts._id": mongoose.Types.ObjectId(post_id)
             },
             { $set: { "posts.$.text" : req.body.text }},
+            { new: true },
             (err, shop) => {
                 if (err)
                     return res.send(err);
-                res.send("Updated");
+                var post = shop.posts[shop.posts.length-1];
+                utils.addTimestampField(post);
+                res.json(post);
             }
         );
     };
