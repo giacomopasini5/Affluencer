@@ -1,5 +1,5 @@
 <template>
-	<v-card flat class="text-left mr-md-10 mt-2">
+	<v-card v-if="!$store.state.config.settings" flat class="text-left mr-md-10 mt-2">
 		<v-list class="pa-0">
 			<v-list-group v-if="isClient()" v-model="writeReview">
 				<template v-slot:activator>
@@ -14,10 +14,10 @@
 					</v-card-actions>
 				</v-card>
 			</v-list-group>
-			<v-card outlined class="mt-2">
+			<v-card v-if="reviews != ''" outlined class="mt-2">
 				<v-card-text>{{ latestReview.text }}</v-card-text>
 			</v-card>
-			<v-list-group class="mt-2">
+			<v-list-group v-if="reviews != ''" class="mt-2">
 				<template v-slot:activator>
 					<v-list-item-title>Mostra più recensioni</v-list-item-title>
 				</template>
@@ -35,7 +35,7 @@
 		
 		data: function() {
 			return {
-				reviews: [],
+				reviews: '',
 				writeReview: false,
 				latestReview: '',
 				otherReviews: '',

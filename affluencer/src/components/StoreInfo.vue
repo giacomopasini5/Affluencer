@@ -51,10 +51,21 @@
 					<span class="text-body-1">Affluenza: {{ storeData.influx }}</span>
 				</v-col>
 			</v-row>
+			<v-row v-if="isClient()" justify="center" class="mt-5">
+				<v-col cols="5" md="7">
+					<v-text-field type="number" v-model="customers_inside" label="N.° all'interno" hide-details="auto" outlined dense :error="$v.customers_inside.$error"
+					:rules="!$v.customers_inside.$error ? [] : [$v.customers_inside.minValue || 'L\'affluenza deve essere maggiore di 0']"></v-text-field>
+				</v-col>
+				<v-col cols="2">
+					<v-btn @click="signalCustomers" :disabled="customersSignaled" icon>
+						<v-icon color="primary">mdi-send</v-icon>
+					</v-btn>
+				</v-col>
+			</v-row>
 			<v-row v-if="isClient()" justify="center">
 				<v-col cols="5" md="7">
-					<v-text-field type="number" v-model="currentCustomers" label="Segnala N.°" hide-details="auto" outlined dense :error="$v.currentCustomers.$error"
-					:rules="!$v.currentCustomers.$error ? [] : [$v.currentCustomers.minValue || 'L\'affluenza deve essere maggiore di 0']"></v-text-field>
+					<v-text-field type="number" v-model="customers_queue" label="N.° in coda" hide-details="auto" outlined dense :error="$v.customers_queue.$error"
+					:rules="!$v.customers_queue.$error ? [] : [$v.customers_queue.minValue || 'L\'affluenza deve essere maggiore di 0']"></v-text-field>
 				</v-col>
 				<v-col cols="2">
 					<v-btn @click="signalCustomers" :disabled="customersSignaled" icon>
@@ -85,7 +96,8 @@
 					closeTime: this.storeData.closeTime,
 					capacity: this.storeData.capacity
 				},
-				currentCustomers: '',
+				customers_inside: '',
+				customers_queue: '',
 				customersSignaled: false
 			}
 		},
@@ -117,7 +129,12 @@
 				
 				if(this.currentCustomers != '')
 					try {
-						var res = await this.axios.post('/communications/', this.currentCustomers);
+						var res = await this.axios.post('/communications/', {
+							shop_id: mongoose.Types.ObjectId,
+							client_id: mongoose.Types.ObjectId,
+							people_inside: Number,
+							people_queue: Number
+						});
 						this.customersSignaled = true;
 					} catch(error) {
 						console.log('failure');
@@ -131,7 +148,8 @@
 				email: {email},
 				capacity: {minValue: minValue(1)}
 			},
-			currentCustomers: {minValue: minValue(1)}
+			customers_inside: {minValue: minValue(1)},
+			customers_queue: {minValue: minValue(1)}
 		}
 	}
 </script>

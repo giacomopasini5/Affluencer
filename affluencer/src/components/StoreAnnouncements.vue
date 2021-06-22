@@ -15,7 +15,7 @@
 					</v-card-actions>
 				</v-card>
 			</v-list-group>
-			<v-card outlined class="mt-2">
+			<v-card v-if="announcements != ''" outlined class="mt-2">
 				<v-card-title>{{ latestPost.title }}</v-card-title>
 				<v-card-subtitle>{{ latestPost.datetime }}</v-card-subtitle>
 				<v-card-text>{{ latestPost.text }}</v-card-text>
@@ -25,11 +25,11 @@
 					</v-btn>
 				</v-card-actions>
 			</v-card>
-			<v-list-group class="mt-2">
+			<v-list-group v-if="announcements != ''" class="mt-2">
 				<template v-slot:activator>
 					<v-list-item-title>Mostra più annunci</v-list-item-title>
 				</template>
-				<v-card v-for="post in otherPosts" :key="post.datetime" outlined class="mt-2">
+				<v-card v-for="post in otherPosts" :key="post._id" outlined class="mt-2">
 					<v-card-title>{{ post.title }}</v-card-title>
 					<v-card-subtitle>{{ post.datetime }}</v-card-subtitle>
 					<v-card-text>{{ post.text }}</v-card-text>
