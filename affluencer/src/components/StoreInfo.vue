@@ -53,22 +53,22 @@
 			</v-row>
 			<v-row v-if="isClient()" justify="center" class="mt-5">
 				<v-col cols="5" md="7">
-					<v-text-field type="number" v-model="customers_inside" label="N.° all'interno" hide-details="auto" outlined dense :error="$v.customers_inside.$error"
-					:rules="!$v.customers_inside.$error ? [] : [$v.customers_inside.minValue || 'L\'affluenza deve essere maggiore di 0']"></v-text-field>
+					<v-text-field type="number" v-model="customersInside" label="N.° all'interno" hide-details="auto" outlined dense :error="$v.customersInside.$error"
+					:rules="!$v.customersInside.$error ? [] : [$v.customersInside.minValue || 'L\'affluenza deve essere maggiore di 0']"></v-text-field>
 				</v-col>
 				<v-col cols="2">
-					<v-btn @click="signalCustomers" :disabled="customersSignaled" icon>
+					<v-btn @click="signalCustomers" :disabled="customersInsideSignaled" icon>
 						<v-icon color="primary">mdi-send</v-icon>
 					</v-btn>
 				</v-col>
 			</v-row>
 			<v-row v-if="isClient()" justify="center">
 				<v-col cols="5" md="7">
-					<v-text-field type="number" v-model="customers_queue" label="N.° in coda" hide-details="auto" outlined dense :error="$v.customers_queue.$error"
-					:rules="!$v.customers_queue.$error ? [] : [$v.customers_queue.minValue || 'L\'affluenza deve essere maggiore di 0']"></v-text-field>
+					<v-text-field type="number" v-model="customersQueue" label="N.° in coda" hide-details="auto" outlined dense :error="$v.customersQueue.$error"
+					:rules="!$v.customersQueue.$error ? [] : [$v.customersQueue.minValue || 'L\'affluenza deve essere maggiore di 0']"></v-text-field>
 				</v-col>
 				<v-col cols="2">
-					<v-btn @click="signalCustomers" :disabled="customersSignaled" icon>
+					<v-btn @click="signalCustomers" :disabled="customersQueueSignaled" icon>
 						<v-icon color="primary">mdi-send</v-icon>
 					</v-btn>
 				</v-col>
@@ -96,9 +96,10 @@
 					closeTime: this.storeData.closeTime,
 					capacity: this.storeData.capacity
 				},
-				customers_inside: '',
-				customers_queue: '',
-				customersSignaled: false
+				customersInside: '',
+				customersQueue: '',
+				customersInsideSignaled: false,
+				customersQueueSignaled: false
 			}
 		},
 		
@@ -127,19 +128,19 @@
 				this.$v.$touch();
 				if(this.$v.$invalid) return;
 				
-				if(this.currentCustomers != '')
-					try {
-						var res = await this.axios.post('/communications/', {
-							shop_id: mongoose.Types.ObjectId,
-							client_id: mongoose.Types.ObjectId,
-							people_inside: Number,
-							people_queue: Number
-						});
-						this.customersSignaled = true;
-					} catch(error) {
-						console.log('failure');
-						console.log(error);
-					}
+				try {
+					var res = await this.axios.post('/communications/', {
+						shop_id: this.$route.params.id,
+						client_id: $cookies.get('userid'),
+						people_inside: this.customersInside,
+						people_queue: this.customersQueue
+					});
+					if(this.customersInside != '') this.customersInsideSignaled = true;
+					if(this.customersQueue != '') this.customersQueueSignaled = true;
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
+				}
 			}
 		},
 		
@@ -148,8 +149,8 @@
 				email: {email},
 				capacity: {minValue: minValue(1)}
 			},
-			customers_inside: {minValue: minValue(1)},
-			customers_queue: {minValue: minValue(1)}
+			customersInside: {minValue: minValue(1)},
+			customersQueue: {minValue: minValue(1)}
 		}
 	}
 </script>

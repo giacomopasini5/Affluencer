@@ -15,9 +15,9 @@
 					</v-card-actions>
 				</v-card>
 			</v-list-group>
-			<v-card v-if="announcements != ''" outlined class="mt-2">
+			<v-card v-if="announcements.length" outlined class="mt-2">
 				<v-card-title>{{ latestPost.title }}</v-card-title>
-				<v-card-subtitle>{{ latestPost.datetime }}</v-card-subtitle>
+				<v-card-subtitle>{{ latestPost.timestamp }}</v-card-subtitle>
 				<v-card-text>{{ latestPost.text }}</v-card-text>
 				<v-card-actions v-if="isOwner">
 					<v-btn @click="removeAnnouncement(latestPost)" icon>
@@ -25,13 +25,13 @@
 					</v-btn>
 				</v-card-actions>
 			</v-card>
-			<v-list-group v-if="announcements != ''" class="mt-2">
+			<v-list-group v-if="announcements.length" class="mt-2">
 				<template v-slot:activator>
 					<v-list-item-title>Mostra più annunci</v-list-item-title>
 				</template>
 				<v-card v-for="post in otherPosts" :key="post._id" outlined class="mt-2">
 					<v-card-title>{{ post.title }}</v-card-title>
-					<v-card-subtitle>{{ post.datetime }}</v-card-subtitle>
+					<v-card-subtitle>{{ post.timestamp }}</v-card-subtitle>
 					<v-card-text>{{ post.text }}</v-card-text>
 					<v-card-actions v-if="isOwner">
 						<v-btn @click="removeAnnouncement(post)" icon>
