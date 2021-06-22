@@ -68,9 +68,9 @@
 		
 		methods: {
 			formatAnnouncements: function() {
-				this.latestPost = this.announcements[0];
+				this.latestPost = this.announcements[this.announcements.length - 1];
 				this.otherPosts = this.announcements;
-				this.otherPosts.shift();
+				this.otherPosts.pop();
 			},
 			
 			postAnnouncement: async function() {

@@ -9,7 +9,7 @@
 					<v-text-field v-model="storeReview.title" label="Titolo" hide-details="auto" outlined dense class="ma-5"></v-text-field>
 					<v-textarea v-model="storeReview.text" label="Recensione" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>
 					<v-card-actions>
-						<v-rating hover clearable color="yellow"/>
+						<v-rating v-model="storeReview.score" hover clearable color="yellow"/>
 						<v-btn @click="postReview" icon class="ml-5">
 							<v-icon color="primary">mdi-send</v-icon>
 						</v-btn>
@@ -20,6 +20,9 @@
 				<v-card-title>{{ latestReview.text }}</v-card-title>
 				<v-card-subtitle>{{ latestReview.text }}</v-card-subtitle>
 				<v-card-text>{{ latestReview.text }}</v-card-text>
+				<v-card-actions>
+					<v-rating :value="latestReview.score" readonly color="yellow"/>
+				</v-card-actions>
 			</v-card>
 			<v-list-group v-if="reviews.length" class="mt-2">
 				<template v-slot:activator>
@@ -29,6 +32,9 @@
 					<v-card-title>{{ review.text }}</v-card-title>
 					<v-card-subtitle>{{ review.text }}</v-card-subtitle>
 					<v-card-text>{{ review.text }}</v-card-text>
+					<v-card-actions>
+						<v-rating :value="review.score" readonly color="yellow"/>
+					</v-card-actions>
 				</v-card>
 			</v-list-group>
 		</v-list>
@@ -48,8 +54,8 @@
 				storeReview: {
 					title: '',
 					text: '',
-					score: '',
-					comment: ''
+					score: 0/*,
+					comment: ''*/
 				}
 			}
 		},
@@ -71,16 +77,17 @@
 			},
 			
 			formatReviews: function() {
-				this.latestReview = this.reviews[0];
+				this.latestReview = this.reviews[this.reviews.length - 1];
 				this.otherReviews = this.reviews;
-				this.otherReviews.shift();
+				this.otherReviews.pop();
 			},
 			
 			postReview: async function() {
-				/*try {
+				try {
 					var res = await this.axios.post('/reviews', {
-						client_id: ,
+						client_id: $cookies.get('userid'),
 						shop_id: this.$route.params.id,
+						/*title: this.storeReview.title,*/
 						text: this.storeReview.text,
 						score: this.storeReview.score
 					});
@@ -88,7 +95,7 @@
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
-				}*/
+				}
 			}
 		}
 	}
