@@ -6,15 +6,19 @@
 					<v-list-item-title>Scrivi una recensione</v-list-item-title>
 				</template>
 				<v-card outlined class="mt-2">
-					<v-textarea v-model="storeReview.text" label="Recensione" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>
+					<v-text-field v-model="storeReview.title" label="Titolo" hide-details="auto" outlined dense class="ma-5"></v-text-field>
+					<v-textarea v-model="storeReview.text" label="Recensione" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>
 					<v-card-actions>
-						<v-btn @click="postReview" icon>
+						<v-rating hover clearable color="yellow"/>
+						<v-btn @click="postReview" icon class="ml-5">
 							<v-icon color="primary">mdi-send</v-icon>
 						</v-btn>
 					</v-card-actions>
 				</v-card>
 			</v-list-group>
 			<v-card v-if="reviews.length" outlined class="mt-2">
+				<v-card-title>{{ latestReview.text }}</v-card-title>
+				<v-card-subtitle>{{ latestReview.text }}</v-card-subtitle>
 				<v-card-text>{{ latestReview.text }}</v-card-text>
 			</v-card>
 			<v-list-group v-if="reviews.length" class="mt-2">
@@ -22,6 +26,8 @@
 					<v-list-item-title>Mostra più recensioni</v-list-item-title>
 				</template>
 				<v-card v-for="review in otherReviews" :key="review._id" outlined class="mt-2">
+					<v-card-title>{{ review.text }}</v-card-title>
+					<v-card-subtitle>{{ review.text }}</v-card-subtitle>
 					<v-card-text>{{ review.text }}</v-card-text>
 				</v-card>
 			</v-list-group>
@@ -40,8 +46,10 @@
 				latestReview: '',
 				otherReviews: '',
 				storeReview: {
+					title: '',
 					text: '',
-					score: ''
+					score: '',
+					comment: ''
 				}
 			}
 		},

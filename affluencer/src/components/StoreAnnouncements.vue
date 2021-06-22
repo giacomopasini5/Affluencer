@@ -7,7 +7,7 @@
 				</template>
 				<v-card outlined class="mt-2">
 					<v-text-field v-model="storePost.title" label="Titolo" hide-details="auto" outlined dense class="ma-5"></v-text-field>
-					<v-textarea v-model="storePost.text" label="Annuncio" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>
+					<v-textarea v-model="storePost.text" label="Annuncio" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>
 					<v-card-actions>
 						<v-btn @click="postAnnouncement" icon>
 							<v-icon color="primary">mdi-send</v-icon>
@@ -85,7 +85,7 @@
 			
 			removeAnnouncement: async function(post) {
 				try {
-					var res = await this.axios.delete('/shops/' + this.$route.params.id + '/posts/' + post.datetime);
+					var res = await this.axios.delete('/shops/' + this.$route.params.id + '/posts/' + post._id);
 					var index = this.announcements.indexOf(post);
 					this.announcements.splice(index, 1);
 					this.formatAnnouncements();
