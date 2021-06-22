@@ -53,5 +53,11 @@ export default {
 		toggleTheme: function() {
 			this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
 		}
+	},
+	
+	filters: {
+		date: function(text) {
+			return new Date(text).toLocaleDateString();
+		}
 	}
 }

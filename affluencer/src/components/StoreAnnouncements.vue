@@ -1,5 +1,6 @@
 <template>
 	<v-card v-if="!$store.state.config.settings" flat class="text-left mr-md-10">
+		<v-card-title v-if="isOwner || (isClient() && announcements.length)">Annunci</v-card-title>
 		<v-list class="pa-0">
 			<v-list-group v-if="isOwner" v-model="writePost">
 				<template v-slot:activator>
@@ -9,6 +10,7 @@
 					<v-text-field v-model="storePost.title" label="Titolo" hide-details="auto" outlined dense class="ma-5"></v-text-field>
 					<v-textarea v-model="storePost.text" label="Annuncio" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>
 					<v-card-actions>
+						<v-spacer></v-spacer>
 						<v-btn @click="postAnnouncement" icon>
 							<v-icon color="primary">mdi-send</v-icon>
 						</v-btn>
@@ -17,7 +19,7 @@
 			</v-list-group>
 			<v-card v-if="announcements.length" outlined class="mt-2">
 				<v-card-title>{{ latestPost.title }}</v-card-title>
-				<v-card-subtitle>{{ latestPost.timestamp }}</v-card-subtitle>
+				<v-card-subtitle>{{ latestPost.timestamp | date }} - Più recente</v-card-subtitle>
 				<v-card-text>{{ latestPost.text }}</v-card-text>
 				<v-card-actions v-if="isOwner">
 					<v-btn @click="removeAnnouncement(latestPost)" icon>
@@ -31,7 +33,7 @@
 				</template>
 				<v-card v-for="post in otherPosts" :key="post._id" outlined class="mt-2">
 					<v-card-title>{{ post.title }}</v-card-title>
-					<v-card-subtitle>{{ post.timestamp }}</v-card-subtitle>
+					<v-card-subtitle>{{ post.timestamp | date }}</v-card-subtitle>
 					<v-card-text>{{ post.text }}</v-card-text>
 					<v-card-actions v-if="isOwner">
 						<v-btn @click="removeAnnouncement(post)" icon>
