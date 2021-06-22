@@ -11,7 +11,7 @@
 					<v-textarea v-model="storePost.text" label="Annuncio" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn @click="postAnnouncement" icon>
+						<v-btn @click="postAnnouncement" :disabled="announcementPosted" icon>
 							<v-icon color="primary">mdi-send</v-icon>
 						</v-btn>
 					</v-card-actions>
@@ -60,7 +60,8 @@
 				storePost: {
 					title: '',
 					text: ''
-				}
+				},
+				announcementPosted: false
 			}
 		},
 		
@@ -79,6 +80,7 @@
 				try {
 					var res = await this.axios.post('/shops/' + this.$route.params.id + '/posts', this.storePost);
 					this.writePost = false;
+					this.announcementPosted = true;
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
