@@ -1,17 +1,9 @@
 [
   {
-    "id": "posizione",
-    "name": "Posizione",
-    "symbol": "child",
-    "color": "2151ff",
-    "strokecolor": "000000",
-    "type": "circle"
-  },
-  {
     "id": "pub",
     "name": "Pub & Bar",
-    "symbol": "cocktail", 
-    "color": "ff4242", 
+    "symbol": "cocktail",
+    "color": "ff4242",
     "strokecolor": "5b4040",
     "type": "awesome"
   },
@@ -47,5 +39,4 @@
     "strokecolor": "986600",
     "type": "awesome"
   }
-  
 ]

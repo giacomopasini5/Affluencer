@@ -1,8 +1,8 @@
 <template>
   <div id="home">
     <l-map
-      :zoom="zoom"
       :center="userLocation"
+      :zoom="zoom"
       ref="myMap"
       :options="{ zoomControl: false }"
     >
@@ -21,37 +21,54 @@
         class="ma-7"
       >
         <v-autocomplete
-          :items="markersSearch"
+          :items="markers"
           v-model="selected"
-          cache-items
           class="mx-4"
           flat
           hide-no-data
           hide-details
-          label="Inserisci il nome del negozio..."
+          label="Seleziona..."
           solo-inverted
-          @change="centerMarker(selected, true, false)"
+          @change="centerMarker(selected, 16, false)"
         ></v-autocomplete>
-        <v-btn icon @click="centerMarker(userLocation, false, false)">
-          <v-icon>mdi-crosshairs-gps</v-icon>
-        </v-btn>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              icon
+              @click="centerMarker(userLocation, 16, false)"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-crosshairs-gps</v-icon>
+            </v-btn>
+          </template>
+          <span>Centra posizione</span>
+        </v-tooltip>
 
         <!-- Menu categories filter TODO-->
         <v-menu :close-on-content-click="false" offset-x>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn icon dark v-bind="attrs" v-on="on">
-              <v-icon>mdi-lead-pencil</v-icon>
-            </v-btn>
+          <template v-slot:activator="{ on: menu, attrs }">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on: tooltip }">
+                <v-btn icon dark v-bind="attrs" v-on="{ ...tooltip, ...menu }">
+                  <v-icon>mdi-lead-pencil</v-icon>
+                </v-btn>
+              </template>
+              <span>Filtro categorie</span>
+            </v-tooltip>
           </template>
 
           <v-card>
             <v-card-title>Legenda</v-card-title>
-            <v-list v-for="checkbox in mIconsData" :key="checkbox.id">
+            <v-list v-for="checkbox in mCategoryData" :key="checkbox.id">
               <v-checkbox
+                v-model="selectedCategories"
                 :label="checkbox.name"
+                :value="checkbox.id"
                 :color="'#' + checkbox.color"
-                input-value="1"
                 class="mx-4 my-n2"
+                @change="addMarkers(true)"
               ></v-checkbox>
             </v-list>
           </v-card>
@@ -62,8 +79,8 @@
       <l-marker
         v-for="item in markers"
         :key="item.id"
-        :lat-lng="item.latlng"
-        @click="centerMarker(item.latlng, false, true)"
+        :lat-lng="item.value"
+        @click="centerMarker(item.value, false, true)"
       >
         <l-icon
           :icon-url="getCategoriesMarkerIcon(item.category)"
@@ -73,15 +90,10 @@
           :tooltipAnchor="[20, -35]"
         />
 
-        <l-tooltip>{{ item.name }}: {{ item.peopleInside }}</l-tooltip>
+        <l-tooltip>{{ item.text }}</l-tooltip>
 
         <l-popup :options="{ autoPan: false }">
           <storePopupCard :storeData="item" />
-
-          <v-btn color="primary" dark>
-            MORE
-            <v-icon color="black">mdi-plus</v-icon>
-          </v-btn>
         </l-popup>
       </l-marker>
 
@@ -91,17 +103,17 @@
         @click="centerMarker(userLocation, false, false)"
       >
         <l-icon
-          :icon-url="getCategoriesMarkerIcon('posizione')"
-          :iconSize="[30, 30]"
+          icon-url="https://api.geoapify.com/v1/icon/?type=circle&color=%232151ff&size=xx-large&icon=child&iconType=awesome&textSize=small&strokeColor=%23000000&shadowColor=%23512424&noWhiteCircle&scaleFactor=2&apiKey=e8873d9bad1940369371492948fb43e2"
+          :iconSize="[20, 20]"
           :iconAnchor="[15, 15]"
           :tooltipAnchor="[15, 0]"
         />
-        <l-tooltip>You</l-tooltip>
+        <l-tooltip>Tu sei qui</l-tooltip>
       </l-marker>
     </l-map>
 
     <!-- fab notifications -->
-    <v-btn
+    <!--<v-btn
       fab
       fixed
       bottom
@@ -111,9 +123,9 @@
       style="z-index: 9999; margin-bottom:150px"
     >
       <v-icon large>mdi-bell</v-icon>
-    </v-btn>
+    </v-btn>-->
 
-    <!-- fab favourite -->
+    <!-- fab favourite 
     <v-btn
       fab
       fixed
@@ -121,10 +133,11 @@
       right
       x-large
       color="primary"
-      style="z-index: 9999; margin-bottom:50px"
+      class= "ma-5"
+      style="z-index: 9999;"
     >
       <v-icon large>mdi-star</v-icon>
-    </v-btn>
+    </v-btn>-->
   </div>
 </template>
 
@@ -140,7 +153,7 @@ import {
 import { latLng, icon } from "leaflet";
 
 import storePopupCard from "@/components/StorePopupCard.vue";
-import markerIconsData from "@/assets/marker_icons.json";
+import categoryMarkerData from "@/assets/category_marker_icons.json";
 
 export default {
   name: "home",
@@ -163,36 +176,37 @@ export default {
       userLocation: latLng(44.422452145133896, 12.20347570657797),
       markers: [],
       markersSearch: [],
+      selectedCategories: [],
       storeDialog: false,
       storeData: "",
       selected: "",
-      mIconsData: markerIconsData,
+      mCategoryData: categoryMarkerData,
     };
   },
 
   mounted() {
-    // Default open popup
     this.getUserPosition();
-    this.addMarkers();
-  },
+    this.initCategories();
+    this.addMarkers(false);
 
-  /*watch: {
-    selected(newValue, oldValue) {
-      console.log("watching..");
-      console.log(newValue);
-      console.log(oldValue);
-    },
-  },*/
+    setInterval(
+      function() {
+        this.getUserPosition();
+        this.addMarkers(true);
+      }.bind(this),
+      60000
+    );
+  },
 
   methods: {
     // get icon from name
-    getCategoriesMarkerIcon(iconName) {
+    getCategoriesMarkerIcon: function(iconName) {
       var symbol = "ff6565";
       var color = "cloud";
       var strokeColor = "000000";
       var type = "awesome";
 
-      for (var icon of markerIconsData) {
+      for (var icon of categoryMarkerData) {
         if (iconName == icon.id) {
           symbol = icon.symbol;
           color = icon.color;
@@ -215,45 +229,46 @@ export default {
     },
 
     // center marker
-    centerMarker(latLng, zoom, popup) {
+    centerMarker: function(latLng, zoom, popup) {
       //this.$refs.myMap.mapObject.panTo(latLng);
       var map = this.$refs.myMap.mapObject;
       var px = map.project(latLng); // find the pixel location on the map where the popup anchor is
       if (popup) {
         px.y -= 400 / 2; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
       }
-      if (zoom) {
-        map.setView(map.unproject(px), 18, { animate: true }); // set view and zoom to new center
+      if (zoom != false) {
+        map.setView(map.unproject(px), zoom, { animate: true }); // set view and zoom to new center
       } else {
         map.panTo(map.unproject(px), { animate: true }); // set pan to new center
       }
     },
 
     // Add markers to map
-    async addMarkers() {
+    addMarkers: async function(clear) {
       try {
-        var storeList = await this.axios.get("/shops/");
-        //var sensorData = await this.axios.get("/sensors/");
-        //console.log(sensorData);
+        var storeList = await this.axios.get("/shops");
+
+        if (clear) {
+          this.markers = [];
+          //this.markersSearch = [];
+        }
 
         for (var store of storeList.data) {
-          var people = 15; //sensorData.data;
+          for (var category of this.selectedCategories) {
+            if (category == store.category) {
+              this.markers.push({
+                id: store._id,
+                text: store.name,
+                value: latLng(store.location.coordinates),
+                category: store.category,
+              });
 
-          this.markers.push({
-            id: store._id,
-            name: store.name,
-            latlng: latLng(store.location.coordinates),
-            openTime: store.openTime, //da spostare
-            closeTime: store.closeTime, //da spostare
-            capacity: store.capacity, //da spostare
-            peopleInside: this.getSensorData(store._id),
-            category: store.category,
-          });
-
-          this.markersSearch.push({
-            text: store.name,
-            value: latLng(store.location.coordinates),
-          });
+              /*this.markersSearch.push({
+                text: store.name,
+                value: latLng(store.location.coordinates),
+              });*/
+            }
+          }
         }
       } catch (error) {
         console.log("failure");
@@ -262,12 +277,23 @@ export default {
     },
 
     // get data from one sensor
-    getSensorData(storeId) {
-      return 10;
+    getSensorData: async function(storeId) {
+      try {
+        var sensorData = await this.axios.get("/shops/" + storeId + "/info");
+
+        console.log(sensorData.data);
+
+        for (var sensor in sensorData.data) {
+        }
+      } catch (error) {
+        console.log("failure");
+        console.log(error);
+      }
+      return sensorData;
     },
 
     // Get user location if available
-    async getUserPosition() {
+    getUserPosition: async function() {
       // check if API is supported
       if (navigator.geolocation) {
         // get  geolocation
@@ -275,6 +301,12 @@ export default {
           // set user location
           this.userLocation = latLng(pos.coords.latitude, pos.coords.longitude);
         });
+      }
+    },
+
+    initCategories: function() {
+      for (var category of categoryMarkerData) {
+        this.selectedCategories.push(category.id);
       }
     },
   },

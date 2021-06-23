@@ -1,18 +1,18 @@
 #home {
-    height: calc(100vh - 8vh);
-    width: 100vw;
+  height: calc(100vh - 8vh);
+  width: 100vw;
 }
 
 .v-dialog {
-    position: absolute;
-    /*left: 0;*/
+  position: absolute;
+  /*left: 0;*/
 }
 
 .leaflet-popup-content {
-    min-width: 200px;
-    max-height: fit-content;
+  min-width: 250px;
+  max-height: fit-content;
 }
 
 .leaflet-popup-close-button {
-    display: none; 
+  display: none;
 }
