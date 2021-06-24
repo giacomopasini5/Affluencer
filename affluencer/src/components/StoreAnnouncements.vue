@@ -1,8 +1,8 @@
 <template>
 	<v-card v-if="!$store.state.config.settings" flat class="text-left mr-md-10">
-		<v-card-title v-if="isOwner || (isClient() && announcements.length)">Annunci</v-card-title>
+		<v-card-title v-if="isOwner || (isClient() && latestPost)">Annunci</v-card-title>
 		<v-list class="pa-0">
-			<v-list-group v-if="isOwner" v-model="writePost">
+			<v-list-group v-if="isOwner" v-model="announcementPosted">
 				<template v-slot:activator>
 					<v-list-item-title>Scrivi un annuncio</v-list-item-title>
 				</template>
@@ -11,13 +11,13 @@
 					<v-textarea v-model="storePost.text" label="Annuncio" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn @click="postAnnouncement" :disabled="announcementPosted" icon>
+						<v-btn @click="postAnnouncement" icon>
 							<v-icon color="primary">mdi-send</v-icon>
 						</v-btn>
 					</v-card-actions>
 				</v-card>
 			</v-list-group>
-			<v-card v-if="announcements.length" outlined class="mt-2">
+			<v-card v-if="latestPost" outlined class="mt-2">
 				<v-card-title>{{ latestPost.title }}</v-card-title>
 				<v-card-subtitle>{{ latestPost.timestamp | date }} - Più recente</v-card-subtitle>
 				<v-card-text>{{ latestPost.text }}</v-card-text>
@@ -27,7 +27,7 @@
 					</v-btn>
 				</v-card-actions>
 			</v-card>
-			<v-list-group v-if="announcements.length" class="mt-2">
+			<v-list-group v-if="otherPosts.length" class="mt-2">
 				<template v-slot:activator>
 					<v-list-item-title>Mostra più annunci</v-list-item-title>
 				</template>
@@ -50,11 +50,8 @@
 	export default {
 		name: 'storeAnnouncements',
 		
-		props: ['announcements'],
-		
 		data: function() {
 			return {
-				writePost: false,
 				latestPost: '',
 				otherPosts: '',
 				storePost: {
@@ -66,21 +63,27 @@
 		},
 		
 		created: function() {
-			this.formatAnnouncements();
+			this.initializeAnnouncements();
 		},
 		
 		methods: {
-			formatAnnouncements: function() {
-				this.latestPost = this.announcements[this.announcements.length - 1];
-				this.otherPosts = this.announcements;
-				this.otherPosts.pop();
+			initializeAnnouncements: async function() {
+				try {
+					var res = await this.axios.get('/shops/' + this.$route.params.id + '/posts');
+					this.latestPost = res.data[res.data.length - 1];
+					this.otherPosts = res.data;
+					this.otherPosts.pop();
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
+				}
 			},
 			
 			postAnnouncement: async function() {
 				try {
 					var res = await this.axios.post('/shops/' + this.$route.params.id + '/posts', this.storePost);
-					this.writePost = false;
-					this.announcementPosted = true;
+					this.initializeAnnouncements();
+					this.announcementPosted = false;
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
@@ -90,9 +93,7 @@
 			removeAnnouncement: async function(post) {
 				try {
 					var res = await this.axios.delete('/shops/' + this.$route.params.id + '/posts/' + post._id);
-					var index = this.announcements.indexOf(post);
-					this.announcements.splice(index, 1);
-					this.formatAnnouncements();
+					this.initializeAnnouncements();
 				} catch(error) {
 					console.log('failure');
 					console.log(error);

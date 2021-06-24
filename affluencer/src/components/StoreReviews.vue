@@ -1,8 +1,8 @@
 <template>
 	<v-card v-if="!$store.state.config.settings" flat class="text-left mr-md-10 mt-2">
-		<v-card-title v-if="isClient() || (isOwner && reviews.length)">Recensioni</v-card-title>
+		<v-card-title v-if="isClient() || (isOwner && latestReview)">Recensioni</v-card-title>
 		<v-list class="pa-0">
-			<v-list-group v-if="isClient()" v-model="writeReview">
+			<v-list-group v-if="isClient()" v-model="reviewPosted">
 				<template v-slot:activator>
 					<v-list-item-title>Scrivi una recensione</v-list-item-title>
 				</template>
@@ -12,13 +12,13 @@
 					<v-card-actions>
 						<v-rating v-model="storeReview.score" hover clearable color="yellow"/>
 						<v-spacer></v-spacer>
-						<v-btn @click="postReview" :disabled="reviewPosted" icon>
+						<v-btn @click="postReview" icon>
 							<v-icon color="primary">mdi-send</v-icon>
 						</v-btn>
 					</v-card-actions>
 				</v-card>
 			</v-list-group>
-			<v-card v-if="reviews.length" outlined class="mt-2">
+			<v-card v-if="latestReview" outlined class="mt-2">
 				<v-card-title>{{ latestReview.text }}</v-card-title>
 				<v-card-subtitle>{{ latestReview.timestamp | date }} - Più recente</v-card-subtitle>
 				<v-card-text>{{ latestReview.text }}</v-card-text>
@@ -34,13 +34,13 @@
 					<v-card-actions>
 						<v-spacer></v-spacer>
 						<v-textarea v-model="storeComment" label="Rispondi alla recensione" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>	
-						<v-btn @click="postComment" :disabled="commentPosted" icon>
+						<v-btn @click="postComment" icon>
 							<v-icon color="primary">mdi-send</v-icon>
 						</v-btn>
 					</v-card-actions>
 				</v-card>
 			</v-card>
-			<v-list-group v-if="reviews.length" class="mt-2">
+			<v-list-group v-if="otherReviews.length" class="mt-2">
 				<template v-slot:activator>
 					<v-list-item-title>Mostra più recensioni</v-list-item-title>
 				</template>
@@ -60,7 +60,7 @@
 						<v-card-actions>
 							<v-spacer></v-spacer>
 							<v-textarea v-model="storeComment" label="Rispondi alla recensione" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>	
-							<v-btn @click="postComment" :disabled="commentPosted" icon>
+							<v-btn @click="postComment" icon>
 								<v-icon color="primary">mdi-send</v-icon>
 							</v-btn>
 						</v-card-actions>
@@ -77,8 +77,6 @@
 		
 		data: function() {
 			return {
-				reviews: '',
-				writeReview: false,
 				latestReview: '',
 				otherReviews: '',
 				storeReview: {
@@ -87,8 +85,7 @@
 					score: 0
 				},
 				storeComment: '',
-				reviewPosted: false,
-				commentPosted: false
+				reviewPosted: false
 			}
 		},
 		
@@ -100,18 +97,13 @@
 			initializeReviews: async function() {
 				try {
 					var res = await this.axios.get('/reviews', { shop_id: this.$route.params.id });
-					this.reviews = res.data;
-					this.formatReviews();
+					this.latestReview = res.data[res.data.length - 1];
+					this.otherReviews = res.data;
+					this.otherReviews.pop();
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
 				}
-			},
-			
-			formatReviews: function() {
-				this.latestReview = this.reviews[this.reviews.length - 1];
-				this.otherReviews = this.reviews;
-				this.otherReviews.pop();
 			},
 			
 			postReview: async function() {
@@ -123,8 +115,8 @@
 						text: this.storeReview.text,
 						score: this.storeReview.score
 					});
-					this.writeReview = false;
-					this.reviewPosted = true;
+					this.initializeReviews();
+					this.reviewPosted = false;
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
@@ -137,7 +129,7 @@
 						client_id: this.$route.params.id,
 						text: this.storeComment,
 					});
-					this.commentPosted = true;
+					this.initializeReviews();
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
