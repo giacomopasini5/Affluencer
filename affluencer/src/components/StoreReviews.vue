@@ -19,22 +19,21 @@
 				</v-card>
 			</v-list-group>
 			<v-card v-if="latestReview" outlined class="mt-2">
-				<v-card-title>{{ latestReview.text }}</v-card-title>
+				<v-card-title>{{ latestReview.title }}</v-card-title>
 				<v-card-subtitle>{{ latestReview.timestamp | date }} - Più recente</v-card-subtitle>
 				<v-card-text>{{ latestReview.text }}</v-card-text>
 				<v-card-actions>
 					<v-rating :value="latestReview.score" readonly color="yellow"/>
 				</v-card-actions>
-				<v-card v-if="latestReview.comments.length">
+				<v-card v-if="latestReview.comment">
 					<v-card-title>Il titolare ha risposto</v-card-title>
-					<v-card-subtitle>{{ latestReview.text }}</v-card-subtitle>
-					<v-card-text>{{ latestReview.text }}</v-card-text>
+					<v-card-text>{{ latestReview.comment }}</v-card-text>
 				</v-card>
 				<v-card v-else-if="isOwner" flat>
 					<v-card-actions>
 						<v-spacer></v-spacer>
 						<v-textarea v-model="storeComment" label="Rispondi alla recensione" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>	
-						<v-btn @click="postComment" icon>
+						<v-btn @click="postComment(latestReview._id)" icon>
 							<v-icon color="primary">mdi-send</v-icon>
 						</v-btn>
 					</v-card-actions>
@@ -45,22 +44,21 @@
 					<v-list-item-title>Mostra più recensioni</v-list-item-title>
 				</template>
 				<v-card v-for="review in otherReviews" :key="review._id" outlined class="mt-2">
-					<v-card-title>{{ review.text }}</v-card-title>
+					<v-card-title>{{ review.title }}</v-card-title>
 					<v-card-subtitle>{{ review.timestamp | date }}</v-card-subtitle>
 					<v-card-text>{{ review.text }}</v-card-text>
 					<v-card-actions>
 						<v-rating :value="review.score" readonly color="yellow"/>
 					</v-card-actions>
-					<v-card v-if="review.comments.length">
+					<v-card v-if="review.comment">
 						<v-card-title>Il titolare ha risposto</v-card-title>
-						<v-card-subtitle>{{ latestReview.text }}</v-card-subtitle>
-						<v-card-text>{{ latestReview.text }}</v-card-text>
+						<v-card-text>{{ review.comment }}</v-card-text>
 					</v-card>
 					<v-card v-else-if="isOwner" flat>
 						<v-card-actions>
 							<v-spacer></v-spacer>
 							<v-textarea v-model="storeComment" label="Rispondi alla recensione" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>	
-							<v-btn @click="postComment" icon>
+							<v-btn @click="postComment(review._id)" icon>
 								<v-icon color="primary">mdi-send</v-icon>
 							</v-btn>
 						</v-card-actions>
@@ -96,7 +94,7 @@
 		methods: {
 			initializeReviews: async function() {
 				try {
-					var res = await this.axios.get('/reviews', { shop_id: this.$route.params.id });
+					var res = await this.axios.get('/reviews', { params: { shop_id: this.$route.params.id } });
 					this.latestReview = res.data[res.data.length - 1];
 					this.otherReviews = res.data;
 					this.otherReviews.pop();
@@ -116,6 +114,9 @@
 						score: this.storeReview.score
 					});
 					this.initializeReviews();
+					this.storeReview.title = '';
+					this.storeReview.text = '';
+					this.storeReview.score = 0;
 					this.reviewPosted = false;
 				} catch(error) {
 					console.log('failure');
@@ -123,17 +124,15 @@
 				}
 			},
 			
-			postComment: async function() {
-				/*try {
-					var res = await this.axios.post('/reviews/' + this.$route.params.id + '/comments', {
-						client_id: this.$route.params.id,
-						text: this.storeComment,
-					});
+			postComment: async function(reviewId) {
+				try {
+					var res = await this.axios.put('/reviews/' + reviewId, { comment: this.storeComment });
 					this.initializeReviews();
+					this.storeComment = '';
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
-				}*/
+				}
 			}
 		}
 	}

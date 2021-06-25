@@ -83,6 +83,8 @@
 				try {
 					var res = await this.axios.post('/shops/' + this.$route.params.id + '/posts', this.storePost);
 					this.initializeAnnouncements();
+					this.storePost.title = '';
+					this.storePost.text = '';
 					this.announcementPosted = false;
 				} catch(error) {
 					console.log('failure');
