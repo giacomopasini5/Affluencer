@@ -33,6 +33,10 @@
 			</v-row>
 			<v-row v-else justify="center" class="text-md-left">
 				<v-col cols="10" class="pa-1">
+					<span v-if="checkTime()" class="text-body-1 green--text">Aperto</span>
+					<span v-else class="text-body-1 red--text">Chiuso</span>
+				</v-col>
+				<v-col cols="10" class="pa-1">
 					<span class="text-body-1">{{ storeData.address }}</span>
 				</v-col>
 				<v-col cols="10" class="pa-1">
@@ -141,6 +145,15 @@
 					console.log('failure');
 					console.log(error);
 				}
+			},
+			
+			checkTime: function() {
+				var now = new Date();
+				var ot = this.storeData.openTime.split(':');
+				var ct = this.storeData.closeTime.split(':');
+				var openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), ot[0], ot[1]);
+				var closeTime= new Date(now.getFullYear(), now.getMonth(), now.getDate(), ct[0], ct[1]);
+				return (now > openTime && now < closeTime);
 			}
 		},
 		
