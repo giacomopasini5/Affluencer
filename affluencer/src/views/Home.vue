@@ -167,7 +167,7 @@ export default {
     storePopupCard,
   },
 
-  data() {
+  data: function() {
     return {
       zoom: 14,
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -184,7 +184,7 @@ export default {
     };
   },
 
-  mounted() {
+  mounted: function() {
     this.getUserPosition();
     this.initCategories();
     this.addMarkers(false);
