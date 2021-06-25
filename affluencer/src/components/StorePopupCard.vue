@@ -89,7 +89,8 @@ export default {
 
     setInterval(
       function() {
-        this.getShopData(this.storeData.id);
+        //this.getShopData(this.storeData.id);
+        this.getSensorData(this.storeData.id);
       }.bind(this),
       30000
     );
@@ -108,6 +109,16 @@ export default {
         this.closeTime = sensor.data.closeTime;
         this.capacity = sensor.data.capacity;
         this.peopleInside = sensor.data.lastSensorActivity[0].people_inside;
+      } catch (error) {
+        console.log("failure");
+        console.log(error);
+      }
+    },
+
+    getSensorData: async function(storeId) {
+      try {
+        var req = await this.axios.get("/sensors/last", { params: { shop_id: storeId }});
+        this.peopleInside = req.data.people_inside;
       } catch (error) {
         console.log("failure");
         console.log(error);

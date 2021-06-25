@@ -5,17 +5,14 @@ module.exports = function(App) {
     var ctrl = {};
 
     ctrl.list_communications = function(req, res) {
-        var body = req.body;
-        if (body == null)
-            return res.status(400).send("Empty body");
         var obj = null;
         var set = false;
-        if (!utils.emptyField(body.client_id)) {
-            obj = {client_id: mongoose.Types.ObjectId(body.client_id)};
+        if (!utils.emptyField(req.query.client_id)) {
+            obj = {client_id: mongoose.Types.ObjectId(req.query.client_id)};
             set = true;
         }
-        if (!utils.emptyField(body.shop_id)) {
-            obj = {shop_id: mongoose.Types.ObjectId(body.shop_id)};
+        if (!utils.emptyField(req.query.shop_id)) {
+            obj = {shop_id: mongoose.Types.ObjectId(req.query.shop_id)};
             set = true;
         }
         if (!set) {

@@ -5,7 +5,7 @@ module.exports = function(App) {
     var ctrl = {};
 
     ctrl.list_shop_sensor_infos = function(req, res) {
-        var id = req.body.shop_id;
+        var id = req.query.shop_id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing shop id");
 
@@ -50,9 +50,10 @@ module.exports = function(App) {
     };
 
     ctrl.get_last_shop_sensor_info = function(req, res) {
-        var id = req.body.shop_id;
-        if (utils.emptyField(id))
+        var id = req.query.shop_id;
+        if (utils.emptyField(id)) {
             return res.status(400).send("Missing shop id");
+        }
 
         Sensor.find({shop_id: mongoose.Types.ObjectId(id)}).sort({ _id: -1}).limit(1)
         .exec()

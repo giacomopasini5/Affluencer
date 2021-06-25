@@ -5,7 +5,7 @@ module.exports = function(App) {
     var ctrl = {};
 
     ctrl.list_user_notifications = function(req, res) {
-        var id = req.body.user_id;
+        var id = req.query.user_id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing user id");
 
@@ -38,9 +38,6 @@ module.exports = function(App) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing id");
-        var user_id = req.params.user_id;
-        if (utils.emptyField(user_id))
-            return res.status(400).send("Missing user id");
 
         Notification.findById(id, (err, notification) => {
             if (err)

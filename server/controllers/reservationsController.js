@@ -5,15 +5,13 @@ module.exports = function(App) {
     var ctrl = {};
 
     ctrl.list_reservations = function(req, res) {
-        if (req.body == null)
-            return res.status(400).send("Empty body");
         var obj = null;
-        if (!utils.emptyField(req.body.client_id)) {
-            var id = req.body.client_id;
+        if (!utils.emptyField(req.query.client_id)) {
+            var id = req.query.client_id;
             obj = {client_id: mongoose.Types.ObjectId(id)};
         }
-        if (!utils.emptyField(req.body.shop_id)) {
-            var id = req.body.shop_id;
+        if (!utils.emptyField(req.query.shop_id)) {
+            var id = req.query.shop_id;
             obj = {shop_id: mongoose.Types.ObjectId(id)};
         }
 
