@@ -83,10 +83,14 @@ module.exports = function(App) {
             return res.status(400).send("Missing id");
         if (req.body == null)
             return res.status(400).send("Empty body");
+        var body = req.body;
+        if (!utils.emptyField(body.date)) {
+            body.date = new Date(body.date);
+        }
 
         Reservation.findByIdAndUpdate(
             id,
-            req.body,
+            body,
             { new: true },
             (err, reservation) => {
                 if (err)
