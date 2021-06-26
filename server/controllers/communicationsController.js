@@ -38,7 +38,7 @@ module.exports = function(App) {
             if (err)
                 return res.status(400).send(err);
             utils.addTimestampField(com);
-            res.send("Created");
+            res.send(com);
         });
     };
 

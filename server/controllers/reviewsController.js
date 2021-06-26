@@ -7,13 +7,19 @@ module.exports = function(App) {
 
     ctrl.list_reviews = function(req, res) {
         var obj = null;
+        var set = false;
         if (!utils.emptyField(req.query.client_id)) {
             var id = mongoose.Types.ObjectId(req.query.client_id);
             obj = {client_id: id};
+            set = true;
         }
         if (!utils.emptyField(req.query.shop_id)) {
             var id = mongoose.Types.ObjectId(req.query.shop_id);
             obj = {shop_id: id};
+            set = true;
+        }
+        if (!set) {
+            return res.status(400).send("Missing shop or client id");
         }
 
         Review.find(obj, (err, reviews) => {

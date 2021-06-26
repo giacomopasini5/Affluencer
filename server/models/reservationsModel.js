@@ -3,7 +3,8 @@ module.exports = function(mongoose) {
     var ResSchema = new Schema({
         shop_id: mongoose.Types.ObjectId,
         client_id: mongoose.Types.ObjectId,
-        people: Number
+        date: Date,
+        people: Number,
     });
 
     return mongoose.model('reservationmodel', ResSchema, 'Reservations');

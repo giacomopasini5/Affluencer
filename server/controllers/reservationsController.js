@@ -6,13 +6,19 @@ module.exports = function(App) {
 
     ctrl.list_reservations = function(req, res) {
         var obj = null;
+        var set = false;
         if (!utils.emptyField(req.query.client_id)) {
             var id = req.query.client_id;
             obj = {client_id: mongoose.Types.ObjectId(id)};
+            set = true;
         }
         if (!utils.emptyField(req.query.shop_id)) {
             var id = req.query.shop_id;
             obj = {shop_id: mongoose.Types.ObjectId(id)};
+            set = true;
+        }
+        if (!set) {
+            return res.status(400).send("Missing shop or client id");
         }
 
         Reservation.find(obj, (err, reservations) => {
@@ -48,12 +54,13 @@ module.exports = function(App) {
         }
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
         body.client_id = mongoose.Types.ObjectId(body.client_id);
+        body.date = new Date(body.date);
 
         (new Reservation(body)).save((err, reservation) => {
             if (err)
                 return res.status(400).send(err);
             utils.addTimestampField(reservation);
-            res.send("Created");
+            res.send(reservation);
         });
     };
 

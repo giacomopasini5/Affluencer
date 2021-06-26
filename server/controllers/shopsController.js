@@ -63,12 +63,10 @@ module.exports = function(App) {
         if (utils.emptyField(id))
             return res.status(400).send("Missing id");
 
-        Shop.findById(id, (err, shop) => {
+        Shop.findById(id, "-email -password -posts", (err, shop) => {
             if (err || shop == null)
                 return res.status(404).send("Shop not found");
             Object.assign(json, shop._doc);
-            delete json.email;
-            delete json.password;
 
             Sensor.find({shop_id: shop._id}).sort({ _id: -1}).limit(1)
             .exec()
