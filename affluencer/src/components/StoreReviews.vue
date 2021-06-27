@@ -1,5 +1,5 @@
 <template>
-	<v-card v-if="!$store.state.config.settings" flat class="text-left mr-md-10 mt-2">
+	<v-card flat class="text-left mr-md-10 mt-2">
 		<v-card-title v-if="isClient() || (isOwner && latestReview)">Recensioni</v-card-title>
 		<v-list class="pa-0">
 			<v-list-group v-if="isClient()" v-model="reviewPosted">
@@ -25,11 +25,17 @@
 				<v-card-actions>
 					<v-rating :value="latestReview.score" readonly color="yellow"/>
 				</v-card-actions>
-				<v-card v-if="latestReview.comment" flat>
-					<v-card-title>Il titolare ha risposto</v-card-title>
+				<v-card v-if="latestReview.comment" flat class="text-right">
+					<v-card-title class="justify-end">Il titolare ha risposto</v-card-title>
 					<v-card-text>{{ latestReview.comment }}</v-card-text>
+					<v-card-actions v-if="$store.state.config.settings">
+						<v-spacer></v-spacer>
+						<v-btn @click="removeComment(latestReview._id)" icon>
+							<v-icon color="red">mdi-delete</v-icon>
+						</v-btn>
+					</v-card-actions>
 				</v-card>
-				<v-card v-else-if="isOwner" flat>
+				<v-card v-else-if="isOwner && !$store.state.config.settings" flat>
 					<v-card-actions>
 						<v-spacer></v-spacer>
 						<v-textarea v-model="storeComment" label="Rispondi alla recensione" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>	
@@ -50,11 +56,17 @@
 					<v-card-actions>
 						<v-rating :value="review.score" readonly color="yellow"/>
 					</v-card-actions>
-					<v-card v-if="review.comment" flat>
-						<v-card-title>Il titolare ha risposto</v-card-title>
+					<v-card v-if="review.comment" flat class="text-right">
+						<v-card-title class="justify-end">Il titolare ha risposto</v-card-title>
 						<v-card-text>{{ review.comment }}</v-card-text>
+						<v-card-actions v-if="$store.state.config.settings">
+							<v-spacer></v-spacer>
+							<v-btn @click="removeComment(review._id)" icon>
+								<v-icon color="red">mdi-delete</v-icon>
+							</v-btn>
+						</v-card-actions>
 					</v-card>
-					<v-card v-else-if="isOwner" flat>
+					<v-card v-else-if="isOwner && !$store.state.config.settings" flat>
 						<v-card-actions>
 							<v-spacer></v-spacer>
 							<v-textarea v-model="storeComment" label="Rispondi alla recensione" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>	
@@ -129,6 +141,16 @@
 					var res = await this.axios.put('/reviews/' + reviewId, { comment: this.storeComment });
 					this.initializeReviews();
 					this.storeComment = '';
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
+				}
+			},
+			
+			removeComment: async function(reviewId) {
+				try {
+					var res = await this.axios.put('/reviews/' + reviewId, { comment: '' });
+					this.initializeReviews();
 				} catch(error) {
 					console.log('failure');
 					console.log(error);

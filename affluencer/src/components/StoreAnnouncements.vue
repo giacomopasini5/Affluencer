@@ -1,8 +1,8 @@
 <template>
-	<v-card v-if="!$store.state.config.settings" flat class="text-left mr-md-10">
+	<v-card flat class="text-left mr-md-10">
 		<v-card-title v-if="isOwner || (isClient() && latestPost)">Annunci</v-card-title>
 		<v-list class="pa-0">
-			<v-list-group v-if="isOwner" v-model="announcementPosted">
+			<v-list-group v-if="isOwner && !$store.state.config.settings" v-model="announcementPosted">
 				<template v-slot:activator>
 					<v-list-item-title>Scrivi un annuncio</v-list-item-title>
 				</template>
@@ -21,7 +21,7 @@
 				<v-card-title>{{ latestPost.title }}</v-card-title>
 				<v-card-subtitle>{{ latestPost.timestamp | date }} - Più recente</v-card-subtitle>
 				<v-card-text>{{ latestPost.text }}</v-card-text>
-				<v-card-actions v-if="isOwner">
+				<v-card-actions v-if="$store.state.config.settings">
 					<v-spacer></v-spacer>
 					<v-btn @click="removeAnnouncement(latestPost._id)" icon>
 						<v-icon color="red">mdi-delete</v-icon>
@@ -36,7 +36,7 @@
 					<v-card-title>{{ post.title }}</v-card-title>
 					<v-card-subtitle>{{ post.timestamp | date }}</v-card-subtitle>
 					<v-card-text>{{ post.text }}</v-card-text>
-					<v-card-actions v-if="isOwner">
+					<v-card-actions v-if="$store.state.config.settings">
 						<v-spacer></v-spacer>
 						<v-btn @click="removeAnnouncement(post._id)" icon>
 							<v-icon color="red">mdi-delete</v-icon>

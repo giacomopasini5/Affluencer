@@ -15,8 +15,8 @@
 								<v-icon color="red">mdi-delete</v-icon>
 							</v-btn>
 						</v-card-actions>
-						<v-card v-if="review.comment" flat>
-							<v-card-title>Il titolare ha risposto</v-card-title>
+						<v-card v-if="review.comment" flat class="text-right">
+							<v-card-title class="justify-end">Il titolare ha risposto</v-card-title>
 							<v-card-text>{{ review.comment }}</v-card-text>
 						</v-card>
 					</v-card>
