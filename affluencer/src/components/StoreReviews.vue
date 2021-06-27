@@ -62,7 +62,7 @@
 								<v-icon color="primary">mdi-send</v-icon>
 							</v-btn>
 						</v-card-actions>
-				</v-card>
+					</v-card>
 				</v-card>		
 			</v-list-group>
 		</v-list>

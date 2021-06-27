@@ -15,10 +15,10 @@
 					</v-col>
 				</v-row>
 				<v-row justify="center">
-					<v-col cols="8" md="5" lg="4">
+					<v-col cols="10" md="4">
 						<storeInfo :storeData="storeData"/>
 					</v-col>
-					<v-col cols="10" md="7" lg="8">
+					<v-col cols="10" md="8">
 						<storeAnnouncements/>
 						<storeReviews/>
 					</v-col>

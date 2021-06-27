@@ -1,12 +1,13 @@
 <template>
 	<v-row v-if="hasUserData" justify="center" class="text-center pa-10">
-		<v-col sm="10" md="8" lg="6">
+		<v-col cols="10" md="8" lg="6">
 			<v-card elevation="5">
 				<v-btn fab absolute top right @click="$store.commit('toggleSettings')" color="primary" class="mt-10">
 					<v-icon>mdi-cog</v-icon>
 				</v-btn>
 				<userInfo :userData="userData"/>
-				<favoriteStoresList :favoriteStores="userData.favorite_shops"/>
+				<userFavoriteStores/>
+				<userReviews/>
 			</v-card>
 		</v-col>
 	</v-row>
@@ -14,14 +15,16 @@
 
 <script>
 	import userInfo from '@/components/UserInfo.vue'
-	import favoriteStoresList from '@/components/FavoriteStoresList.vue'
+	import userFavoriteStores from '@/components/UserFavoriteStores.vue'
+	import userReviews from '@/components/UserReviews.vue'
 	
 	export default {
 		name: 'profile',
 		
 		components: {
 			userInfo,
-			favoriteStoresList
+			userFavoriteStores,
+			userReviews
 		},
 		
 		data: function() {
