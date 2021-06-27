@@ -95,6 +95,7 @@
 					this.storePost.title = '';
 					this.storePost.text = '';
 					this.announcementPosted = false;
+					this.$v.$reset();
 				} catch(error) {
 					console.log('failure');
 					console.log(error);

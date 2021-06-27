@@ -43,8 +43,8 @@
 				<v-card v-else-if="isOwner && !$store.state.config.settings" flat>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-textarea v-model="storeComment" label="Rispondi alla recensione" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>	
-						<v-btn @click="postComment(latestReview._id)" icon>
+						<v-textarea v-model="storeComments[0].comment" label="Rispondi alla recensione" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>	
+						<v-btn @click="postComment(latestReview._id, 0)" icon>
 							<v-icon color="primary">mdi-send</v-icon>
 						</v-btn>
 					</v-card-actions>
@@ -74,8 +74,8 @@
 					<v-card v-else-if="isOwner && !$store.state.config.settings" flat>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-textarea v-model="storeComment" label="Rispondi alla recensione" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>	
-							<v-btn @click="postComment(review._id)" icon>
+							<v-textarea v-model="storeComments[otherReviews.indexOf(review) + 1].comment" label="Rispondi alla recensione" rows="1" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>	
+							<v-btn @click="postComment(review._id, otherReviews.indexOf(review) + 1)" icon>
 								<v-icon color="primary">mdi-send</v-icon>
 							</v-btn>
 						</v-card-actions>
@@ -101,7 +101,7 @@
 					text: '',
 					score: 0
 				},
-				storeComment: '',
+				storeComments: [],
 				reviewPosted: false
 			}
 		},
@@ -114,6 +114,9 @@
 			initializeReviews: async function() {
 				try {
 					var res = await this.axios.get('/reviews', { params: { shop_id: this.$route.params.id } });
+					this.storeComments = [];
+					for(var i of res.data)
+						this.storeComments.push({ comment: '' });
 					this.latestReview = res.data[res.data.length - 1];
 					this.otherReviews = res.data;
 					this.otherReviews.pop();
@@ -140,20 +143,17 @@
 					this.storeReview.text = '';
 					this.storeReview.score = 0;
 					this.reviewPosted = false;
+					this.$v.$reset();
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
 				}
 			},
 			
-			postComment: async function(reviewId) {
-				this.$v.$touch();
-        		if (this.$v.$invalid) return;
-				
+			postComment: async function(reviewId, commentIndex) {
 				try {
-					var res = await this.axios.put('/reviews/' + reviewId, { comment: this.storeComment });
+					var res = await this.axios.put('/reviews/' + reviewId, this.storeComments[commentIndex]);
 					this.initializeReviews();
-					this.storeComment = '';
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
