@@ -19,6 +19,7 @@
         color="primary"
         style="z-index: 9999;"
         class="ma-7"
+        rounded
       >
         <v-autocomplete
           :items="markers"
@@ -45,6 +46,23 @@
           </template>
           <span>Centra posizione</span>
         </v-tooltip>
+
+        <!--<v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-badge
+              bordered
+              color="red"
+              content="10"
+              overlap
+              style="z-index: 9999;"
+            >
+              <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon>mdi-bell</v-icon>
+              </v-btn>
+            </v-badge>
+          </template>
+          <span>Notifiche</span>
+        </v-tooltip>-->
 
         <!-- Menu categories filter TODO-->
         <v-menu :close-on-content-click="false" offset-x>
@@ -93,7 +111,7 @@
         <l-tooltip>{{ item.text }}</l-tooltip>
 
         <l-popup :options="{ autoPan: false }">
-          <storePopupCard :storeData="item" />
+          <storePopupCard :storePopup="item" />
         </l-popup>
       </l-marker>
 
@@ -103,7 +121,7 @@
         @click="centerMarker(userLocation, false, false)"
       >
         <l-icon
-          icon-url="https://api.geoapify.com/v1/icon/?type=circle&color=%232151ff&size=xx-large&icon=child&iconType=awesome&textSize=small&strokeColor=%23000000&shadowColor=%23512424&noWhiteCircle&scaleFactor=2&apiKey=e8873d9bad1940369371492948fb43e2"
+          icon-url="https://api.geoapify.com/v1/icon/?type=circle&color=%232151ff&size=xx-large&icon=child&iconType=awesome&textSize=small&strokeColor=%23000000&shadowColor=%23512424&noWhiteCircle&scaleFactor=2&apiKey=3dbb1a68d2234e5aaf1143bd2e8e8c67"
           :iconSize="[20, 20]"
           :iconAnchor="[15, 15]"
           :tooltipAnchor="[15, 0]"
@@ -178,7 +196,7 @@ export default {
       markersSearch: [],
       selectedCategories: [],
       storeDialog: false,
-      storeData: "",
+      storePopup: "",
       selected: "",
       mCategoryData: categoryMarkerData,
     };
@@ -224,7 +242,7 @@ export default {
         symbol +
         "&iconType=awesome&textSize=small&strokeColor=%23" +
         strokeColor +
-        "&shadowColor=%23512424&noWhiteCircle&scaleFactor=2&apiKey=e8873d9bad1940369371492948fb43e2"
+        "&shadowColor=%23512424&noWhiteCircle&scaleFactor=2&apiKey=3dbb1a68d2234e5aaf1143bd2e8e8c67"
       );
     },
 
@@ -234,7 +252,7 @@ export default {
       var map = this.$refs.myMap.mapObject;
       var px = map.project(latLng); // find the pixel location on the map where the popup anchor is
       if (popup) {
-        px.y -= 400 / 2; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+        px.y -= 600 / 2; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
       }
       if (zoom != false) {
         map.setView(map.unproject(px), zoom, { animate: true }); // set view and zoom to new center

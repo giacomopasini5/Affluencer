@@ -12,6 +12,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import globalMixin from './mixins/globalMixin.js'
 
+
 Vue.config.productionTip = false;
 Vue.use(VueCookies);
 Vue.use(Vuelidate);
@@ -21,6 +22,8 @@ axios.defaults.baseURL = 'http://localhost:3000/api';
 Vue.use(VueAxios, axios);
 
 Vue.mixin(globalMixin);
+Vue.use(require('vue-moment'));
+
 
 new Vue({
 	router,

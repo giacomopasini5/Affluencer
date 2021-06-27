@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card-title class="justify-center">
-      {{ storeName }}
+      <strong>{{ storeName }}</strong>
     </v-card-title>
     <v-card-subtitle class="text-center">
       {{ address }}, {{ city }}
@@ -66,20 +66,51 @@
               <v-icon v-else color="grey">mdi-star</v-icon>
             </v-btn>
           </template>
-          <span>Aggiungi a Preferiti</span>
+          <span>Preferiti</span>
         </v-tooltip>
+
+        <v-dialog v-model="dialog" max-width="400px">
+          <template v-slot:activator="{ on: dialog, attrs }">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on: tooltip }">
+                <v-btn
+                  v-if="isClient()"
+                  icon
+                  x-large
+                  v-bind="attrs"
+                  v-on="{ ...tooltip, ...dialog }"
+                >
+                  <v-icon color="primary">mdi-notebook-plus</v-icon>
+                </v-btn>
+              </template>
+              <span>Prenota</span>
+            </v-tooltip>
+          </template>
+          <storeReservationsDialog
+            v-on:close-dialog="closeDialog()"
+            :storeRes="storeShortInfo"
+          />
+        </v-dialog>
       </v-card-actions>
     </v-card-text>
   </div>
 </template>
 
 <script>
+import storeReservationsDialog from "@/components/StoreReservationsDialog.vue";
+
 export default {
   name: "storePopupCard",
-  props: ["storeData"],
+  props: ["storePopup"],
+
+  components: {
+    storeReservationsDialog,
+  },
 
   data: function() {
     return {
+      storeShortInfo: "",
+
       storeName: "",
       address: "",
       city: "",
@@ -90,31 +121,55 @@ export default {
       storeRoute: "",
       isFavorite: false,
       averageScore: 0,
+      storeRes: "",
+
+      dialog: false,
     };
   },
 
   mounted: function() {
     this.getShopData();
     this.getReviews();
-    this.initializeFavorite();
 
-    setInterval(
-      function() {
-        //this.getShopData(this.storeData.id);
-        this.getSensorData();
-        this.getReviews();
+    if (
+      $cookies.get("usertype") == "client" ||
+      $cookies.get("usertype") == "store"
+    ) {
+      if ($cookies.get("usertype") == "client") {
         this.initializeFavorite();
-      }.bind(this),
-      30000
-    );
+      }
+
+      setInterval(
+        function() {
+          this.getSensorData();
+          this.getReviews();
+          if ($cookies.get("usertype") == "client") {
+            this.initializeFavorite();
+          }
+        }.bind(this),
+        30000
+      );
+    }
   },
 
   methods: {
+    closeDialog: function() {
+      this.dialog = false;
+    },
+
     getShopData: async function() {
       try {
         var sensor = await this.axios.get(
-          "/shops/" + this.storeData.id + "/info"
+          "/shops/" + this.storePopup.id + "/info"
         );
+
+        this.storeShortInfo = new Object({
+          id: sensor.data._id,
+          name: sensor.data.name,
+          openTime: sensor.data.openTime,
+          closeTime: sensor.data.closeTime,
+          capacity: sensor.data.capacity,
+        });
 
         this.storeRoute = "/store/" + sensor.data._id;
         this.storeName = sensor.data.name;
@@ -132,7 +187,9 @@ export default {
 
     getSensorData: async function() {
       try {
-        var req = await this.axios.get("/sensors/last", { params: { shop_id: storeId }});
+        var req = await this.axios.get("/sensors/last", {
+          params: { shop_id: this.storePopup.id },
+        });
         this.peopleInside = req.data.people_inside;
       } catch (error) {
         console.log("failure");
@@ -158,11 +215,14 @@ export default {
 
     initializeFavorite: async function() {
       try {
-        var res = await this.axios.get(
+        var favorites = await this.axios.get(
           "/clients/" + $cookies.get("userid") + "/favorite_shops"
         );
-        for (var store of res.data)
-          if (store.shop_id == this.storeData.id) this.isFavorite = true;
+
+        //console.log(favorites);
+
+        for (var store of favorites.data)
+          if (store.shop_id == this.storePopup.id) this.isFavorite = true;
       } catch (error) {
         console.log("failure");
         console.log(error);
@@ -175,7 +235,7 @@ export default {
           var res = await this.axios.post(
             "/clients/" + $cookies.get("userid") + "/favorite_shops",
             {
-              shop_id: this.storeData.id,
+              shop_id: this.storePopup.id,
               shop_name: this.storeName,
             }
           );
@@ -190,7 +250,7 @@ export default {
             "/clients/" +
               $cookies.get("userid") +
               "/favorite_shops/" +
-              this.storeData.id
+              this.storePopup.id
           );
           this.isFavorite = false;
         } catch (error) {
@@ -204,15 +264,18 @@ export default {
       var tmp = 0;
       try {
         var reviews = await this.axios.get("/reviews", {
-          params: { shop_id: this.storeData.id }
+          params: { shop_id: this.storePopup.id },
         });
+
+        //console.log(reviews);
+
         for (var review of reviews.data) {
           tmp += review.score;
         }
         this.averageScore = tmp / reviews.data.length;
-        console.log(averageScore);
+        //console.log(averageScore);
       } catch (error) {
-        console.log("failure");
+        console.log("failure: no data");
         console.log(error);
       }
     },
