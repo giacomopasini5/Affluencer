@@ -22,7 +22,8 @@
 				<v-card-subtitle>{{ latestPost.timestamp | date }} - Più recente</v-card-subtitle>
 				<v-card-text>{{ latestPost.text }}</v-card-text>
 				<v-card-actions v-if="isOwner">
-					<v-btn @click="removeAnnouncement(latestPost)" icon>
+					<v-spacer></v-spacer>
+					<v-btn @click="removeAnnouncement(latestPost._id)" icon>
 						<v-icon color="red">mdi-delete</v-icon>
 					</v-btn>
 				</v-card-actions>
@@ -36,7 +37,8 @@
 					<v-card-subtitle>{{ post.timestamp | date }}</v-card-subtitle>
 					<v-card-text>{{ post.text }}</v-card-text>
 					<v-card-actions v-if="isOwner">
-						<v-btn @click="removeAnnouncement(post)" icon>
+						<v-spacer></v-spacer>
+						<v-btn @click="removeAnnouncement(post._id)" icon>
 							<v-icon color="red">mdi-delete</v-icon>
 						</v-btn>
 					</v-card-actions>
@@ -92,9 +94,9 @@
 				}
 			},
 			
-			removeAnnouncement: async function(post) {
+			removeAnnouncement: async function(postId) {
 				try {
-					var res = await this.axios.delete('/shops/' + this.$route.params.id + '/posts/' + post._id);
+					var res = await this.axios.delete('/shops/' + this.$route.params.id + '/posts/' + postId);
 					this.initializeAnnouncements();
 				} catch(error) {
 					console.log('failure');

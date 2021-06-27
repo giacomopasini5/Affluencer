@@ -25,7 +25,7 @@
 				<v-card-actions>
 					<v-rating :value="latestReview.score" readonly color="yellow"/>
 				</v-card-actions>
-				<v-card v-if="latestReview.comment">
+				<v-card v-if="latestReview.comment" flat>
 					<v-card-title>Il titolare ha risposto</v-card-title>
 					<v-card-text>{{ latestReview.comment }}</v-card-text>
 				</v-card>
@@ -50,7 +50,7 @@
 					<v-card-actions>
 						<v-rating :value="review.score" readonly color="yellow"/>
 					</v-card-actions>
-					<v-card v-if="review.comment">
+					<v-card v-if="review.comment" flat>
 						<v-card-title>Il titolare ha risposto</v-card-title>
 						<v-card-text>{{ review.comment }}</v-card-text>
 					</v-card>
