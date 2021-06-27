@@ -7,8 +7,10 @@
 					<v-list-item-title>Scrivi un annuncio</v-list-item-title>
 				</template>
 				<v-card outlined class="mt-2">
-					<v-text-field v-model="storePost.title" label="Titolo" hide-details="auto" outlined dense class="ma-5"></v-text-field>
-					<v-textarea v-model="storePost.text" label="Annuncio" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>
+					<v-text-field v-model="storePost.title" label="Titolo" hide-details="auto" outlined dense class="ma-5" :error="$v.storePost.title.$error"
+					:rules="!$v.storePost.title.$error ? [] : [$v.storePost.title.required || 'Il titolo è obbligatorio']"></v-text-field>
+					<v-textarea v-model="storePost.text" label="Annuncio" hide-details="auto" outlined dense auto-grow clearable class="ma-5" :error="$v.storePost.text.$error"
+					:rules="!$v.storePost.text.$error ? [] : [$v.storePost.text.required || 'Il testo è obbligatorio']"></v-textarea>
 					<v-card-actions>
 						<v-spacer></v-spacer>
 						<v-btn @click="postAnnouncement" icon>
@@ -49,6 +51,8 @@
 </template>
 
 <script>
+	import {required} from 'vuelidate/lib/validators'
+	
 	export default {
 		name: 'storeAnnouncements',
 		
@@ -82,6 +86,9 @@
 			},
 			
 			postAnnouncement: async function() {
+				this.$v.$touch();
+        		if (this.$v.$invalid) return;
+				
 				try {
 					var res = await this.axios.post('/shops/' + this.$route.params.id + '/posts', this.storePost);
 					this.initializeAnnouncements();
@@ -102,6 +109,13 @@
 					console.log('failure');
 					console.log(error);
 				}
+			}
+		},
+		
+		validations: {
+			storePost: {
+				title: {required},
+				text: {required}
 			}
 		}
 	}

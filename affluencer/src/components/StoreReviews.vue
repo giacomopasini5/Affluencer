@@ -7,10 +7,15 @@
 					<v-list-item-title>Scrivi una recensione</v-list-item-title>
 				</template>
 				<v-card outlined class="mt-2">
-					<v-text-field v-model="storeReview.title" label="Titolo" hide-details="auto" outlined dense class="ma-5"></v-text-field>
-					<v-textarea v-model="storeReview.text" label="Recensione" hide-details="auto" outlined dense auto-grow clearable class="ma-5"></v-textarea>
+					<v-text-field v-model="storeReview.title" label="Titolo" hide-details="auto" outlined dense class="ma-5" :error="$v.storeReview.title.$error"
+					:rules="!$v.storeReview.title.$error ? [] : [$v.storeReview.title.required || 'Il titolo è obbligatorio']"></v-text-field>
+					<v-textarea v-model="storeReview.text" label="Recensione" hide-details="auto" outlined dense auto-grow clearable class="ma-5" :error="$v.storeReview.text.$error"
+					:rules="!$v.storeReview.text.$error ? [] : [$v.storeReview.text.required || 'Il testo è obbligatorio']"></v-textarea>
 					<v-card-actions>
-						<v-rating v-model="storeReview.score" hover clearable color="yellow"/>
+						<v-input hide-details="auto" :error="$v.storeReview.score.$error"
+						:rules="!$v.storeReview.score.$error ? [] : [$v.storeReview.score.minValue || 'Il voto è obbligatorio']">
+							<v-rating v-model="storeReview.score" hover clearable color="yellow"/>
+						</v-input>
 						<v-spacer></v-spacer>
 						<v-btn @click="postReview" icon>
 							<v-icon color="primary">mdi-send</v-icon>
@@ -82,6 +87,8 @@
 </template>
 
 <script>
+	import {required, minValue} from 'vuelidate/lib/validators'
+	
 	export default {
 		name: 'storeReviews',
 		
@@ -117,6 +124,9 @@
 			},
 			
 			postReview: async function() {
+				this.$v.$touch();
+        		if (this.$v.$invalid) return;
+				
 				try {
 					var res = await this.axios.post('/reviews', {
 						client_id: $cookies.get('userid'),
@@ -137,6 +147,9 @@
 			},
 			
 			postComment: async function(reviewId) {
+				this.$v.$touch();
+        		if (this.$v.$invalid) return;
+				
 				try {
 					var res = await this.axios.put('/reviews/' + reviewId, { comment: this.storeComment });
 					this.initializeReviews();
@@ -155,6 +168,14 @@
 					console.log('failure');
 					console.log(error);
 				}
+			}
+		},
+		
+		validations: {
+			storeReview: {
+				title: {required},
+				text: {required},
+				score: {minValue: minValue(1)}
 			}
 		}
 	}
