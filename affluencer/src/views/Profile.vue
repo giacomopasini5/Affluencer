@@ -7,8 +7,8 @@
 				</v-btn>
 				<userInfo :userData="userData"/>
 				<userFavoriteStores/>
+				<userReservations/>
 				<userReviews/>
-				<storeReservationsList :storeReservations="userData"/>
 			</v-card>
 		</v-col>
 	</v-row>
@@ -17,8 +17,8 @@
 <script>
 	import userInfo from '@/components/UserInfo.vue'
 	import userFavoriteStores from '@/components/UserFavoriteStores.vue'
+	import userReservations from '@/components/UserReservations.vue'
 	import userReviews from '@/components/UserReviews.vue'
-	import storeReservationsList from '@/components/StoreReservationsList.vue'
 	
 	export default {
 		name: 'profile',
@@ -27,7 +27,7 @@
 			userInfo,
 			userFavoriteStores,
 			userReviews,
-			storeReservationsList,
+			userReservations,
 		},
 		
 		data: function() {
