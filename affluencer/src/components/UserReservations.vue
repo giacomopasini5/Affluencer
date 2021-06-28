@@ -9,7 +9,8 @@
 							<v-icon color="primary">mdi-notebook</v-icon>
 						</v-list-item-avatar>
 						<v-list-item-content>
-							<v-list-item-title>{{ reservation.date | date }}</v-list-item-title>
+							<v-list-item-title>{{ reservation.date | moment('DD/MM/YYYY HH:mm') }}</v-list-item-title>
+							<v-list-item-subtitle>Persone: {{ reservation.people }}</v-list-item-subtitle>
 						</v-list-item-content>
 						<v-list-item-action v-if="$store.state.config.settings">
 							<v-btn @click="removeReservation(reservation.shop_id)" icon>

@@ -25,7 +25,7 @@
 			</v-list-group>
 			<v-card v-if="latestReview" outlined class="mt-2">
 				<v-card-title>{{ latestReview.title }}</v-card-title>
-				<v-card-subtitle>{{ latestReview.timestamp | date }} - Più recente</v-card-subtitle>
+				<v-card-subtitle>{{ latestReview.timestamp | moment('DD/MM/YYYY HH:mm') }} - Più recente</v-card-subtitle>
 				<v-card-text>{{ latestReview.text }}</v-card-text>
 				<v-card-actions>
 					<v-rating :value="latestReview.score" readonly color="yellow"/>
@@ -56,7 +56,7 @@
 				</template>
 				<v-card v-for="review in otherReviews" :key="review._id" outlined class="mt-2">
 					<v-card-title>{{ review.title }}</v-card-title>
-					<v-card-subtitle>{{ review.timestamp | date }}</v-card-subtitle>
+					<v-card-subtitle>{{ review.timestamp | moment('DD/MM/YYYY HH:mm') }}</v-card-subtitle>
 					<v-card-text>{{ review.text }}</v-card-text>
 					<v-card-actions>
 						<v-rating :value="review.score" readonly color="yellow"/>

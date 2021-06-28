@@ -21,7 +21,7 @@
 			</v-list-group>
 			<v-card v-if="latestPost" outlined class="mt-2">
 				<v-card-title>{{ latestPost.title }}</v-card-title>
-				<v-card-subtitle>{{ latestPost.timestamp | date }} - Più recente</v-card-subtitle>
+				<v-card-subtitle>{{ latestPost.timestamp | moment('DD/MM/YYYY HH:mm') }} - Più recente</v-card-subtitle>
 				<v-card-text>{{ latestPost.text }}</v-card-text>
 				<v-card-actions v-if="$store.state.config.settings">
 					<v-spacer></v-spacer>
@@ -36,7 +36,7 @@
 				</template>
 				<v-card v-for="post in otherPosts" :key="post._id" outlined class="mt-2">
 					<v-card-title>{{ post.title }}</v-card-title>
-					<v-card-subtitle>{{ post.timestamp | date }}</v-card-subtitle>
+					<v-card-subtitle>{{ post.timestamp | moment('DD/MM/YYYY HH:mm') }}</v-card-subtitle>
 					<v-card-text>{{ post.text }}</v-card-text>
 					<v-card-actions v-if="$store.state.config.settings">
 						<v-spacer></v-spacer>
