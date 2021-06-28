@@ -54,7 +54,10 @@
 							<span class="text-body-1">Capienza: {{ storeData.capacity }}</span>
 						</v-col>
 						<v-col cols="12" class="pa-1">
-							<span class="text-body-1">Affluenza: {{ storeData.influx }}</span>
+							<span class="text-body-1">Affluenza: {{ lastSensorData.people_inside }}</span>
+						</v-col>
+						<v-col cols="12" class="pa-1">
+							<span class="text-subtitle-2 font-italic">(Aggiornato al {{ lastSensorData.timestamp | moment('DD/MM/YYYY HH:mm') }})</span>
 						</v-col>
 					</v-row>
 				</v-col>
@@ -99,13 +102,15 @@
 				},
 				customersInside: '',
 				customersQueue: '',
-				customersSignaled: false
+				customersSignaled: false,
+				lastSensorData: ''
 			}
 		},
 		
 		created: function() {
 			this.$store.watch((state) => {return this.$store.state.config.settings},
 			() => {this.syncSettings(this.storeSettings, this.storeData)});
+			this.getLastSensorData();
 		},
 		
 		methods: {
@@ -151,6 +156,16 @@
 				var openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), ot[0], ot[1]);
 				var closeTime= new Date(now.getFullYear(), now.getMonth(), now.getDate(), ct[0], ct[1]);
 				return (now > openTime && now < closeTime);
+			},
+			
+			getLastSensorData: async function() {
+				try {
+					var res = await this.axios.get('/sensors/last', { params: { shop_id: this.$route.params.id } });
+					this.lastSensorData = res.data;
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
+				}
 			}
 		},
 		
