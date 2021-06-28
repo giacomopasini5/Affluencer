@@ -1,16 +1,33 @@
 <template>
-	
+	<v-row justify="center" class="pa-5">
+		<v-col cols="12">
+			<weekHistogram :chart-data="this.weekHistogramData"/>
+		</v-col>
+		<v-col cols="12">
+			
+		</v-col>
+	</v-row>
 </template>
 
 <script>
+	import weekHistogram from '@/components/WeekHistogram.vue'
+	
 	export default {
 		name: 'storeStats',
 		
+		components: {
+			weekHistogram
+		},
+		
 		data: function() {
 			return {
+				weekHistogramData: {
+					labels: [],
+					datasets: []
+				},
+				reservationsData: '',
 				sensorData: '',
-				signaledData: '',
-				reservationsData: ''
+				signaledData: ''
 			}
 		},
 		
