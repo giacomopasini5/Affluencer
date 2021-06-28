@@ -1,7 +1,7 @@
 <template>
-	<v-row justify="center" class="pa-5">
+	<v-row v-if="hasChartData" justify="center" class="pa-5">
 		<v-col cols="12">
-			<weekHistogram :chart-data="this.weekHistogramData"/>
+			<weekHistogram :chart-data="weekHistogramData"/>
 		</v-col>
 		<v-col cols="12">
 			
@@ -23,11 +23,24 @@
 			return {
 				weekHistogramData: {
 					labels: [],
-					datasets: []
+					datasets: [
+						{
+							label: 'Persone all\'interno',
+							backgroundColor: '',
+							data: []
+						},
+						
+						{
+							label: 'Persone all\'esterno',
+							backgroundColor: '',
+							data: []
+						}
+					]
 				},
 				reservationsData: '',
 				sensorData: '',
-				signaledData: ''
+				signaledData: '',
+				hasChartData: false
 			}
 		},
 		
@@ -40,6 +53,7 @@
 				this.initializeSensorData();
 				this.initializeSignaledData();
 				this.initializeReservationsData();
+				this.hasChartData = true;
 			},
 			
 			initializeSensorData: async function() {
