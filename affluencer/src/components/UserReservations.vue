@@ -13,7 +13,7 @@
 							<v-list-item-subtitle>Persone: {{ reservation.people }}</v-list-item-subtitle>
 						</v-list-item-content>
 						<v-list-item-action v-if="$store.state.config.settings">
-							<v-btn @click="removeReservation(reservation.shop_id)" icon>
+							<v-btn @click="removeReservation(reservation._id)" icon>
 								<v-icon color="red">mdi-delete</v-icon>
 							</v-btn>
 						</v-list-item-action>
