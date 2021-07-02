@@ -47,22 +47,28 @@
           <span>Centra posizione</span>
         </v-tooltip>
 
-        <!--<v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-badge
-              bordered
-              color="red"
-              content="10"
-              overlap
-              style="z-index: 9999;"
-            >
-              <v-btn icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-bell</v-icon>
-              </v-btn>
-            </v-badge>
+        <v-dialog v-model="dialog" scrollable max-width="500px">
+          <template v-slot:activator="{ on: dialog, attrs }">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on: tooltip }">
+                <v-badge
+                  color="red"
+                  :content="notificationsNumber"
+                  :value="notificationsNumber"
+                  overlap
+                  offset-x="25"
+                  offset-y="20"
+                >
+                  <v-btn icon v-bind="attrs" v-on="{ ...tooltip, ...dialog }">
+                    <v-icon>mdi-bell</v-icon>
+                  </v-btn>
+                </v-badge>
+              </template>
+              <span>Notifiche</span>
+            </v-tooltip>
           </template>
-          <span>Notifiche</span>
-        </v-tooltip>-->
+          <clientNotificationsDialog />
+        </v-dialog>
 
         <!-- Menu categories filter TODO-->
         <v-menu :close-on-content-click="false" offset-x>
@@ -172,6 +178,7 @@ import { latLng, icon } from "leaflet";
 
 import storePopupCard from "@/components/StorePopupCard.vue";
 import categoryMarkerData from "@/assets/category_marker_icons.json";
+import clientNotificationsDialog from "@/components/ClientNotificationsDialog.vue";
 
 export default {
   name: "home",
@@ -183,6 +190,7 @@ export default {
     LTooltip,
     LIcon,
     storePopupCard,
+    clientNotificationsDialog,
   },
 
   data: function() {
@@ -199,10 +207,14 @@ export default {
       storePopup: "",
       selected: "",
       mCategoryData: categoryMarkerData,
+      notificationsNumber: 0,
+      dialog: false,
     };
   },
 
   mounted: function() {
+    this.getNotificationsNumber();
+    //this.testGenerateOneNotification();
     this.getUserPosition();
     this.initCategories();
     this.addMarkers(false);
@@ -211,8 +223,9 @@ export default {
       function() {
         this.getUserPosition();
         this.addMarkers(true);
+        this.getNotificationsNumber();
       }.bind(this),
-      60000
+      10000
     );
   },
 
@@ -326,6 +339,35 @@ export default {
       for (var category of categoryMarkerData) {
         this.selectedCategories.push(category.id);
       }
+    },
+
+    getNotificationsNumber: async function() {
+      this.notificationsNumber = 0;
+      try {
+        var res = await this.axios.get("/notifications/", {
+          params: { user_id: $cookies.get("userid") },
+        });
+
+        for (var notification of res.data) {
+          if (!notification.read) {
+            this.notificationsNumber++;
+          }
+        }
+
+        console.log(this.notificationsNumber);
+      } catch (error) {
+        console.log("failure");
+        console.log(error);
+      }
+    },
+
+    testGenerateOneNotification: async function() {
+      var res = await this.axios.post("/notifications/", {
+        user_id: $cookies.get("userid"),
+        text: "Nuova notifica 2",
+        url: "ciao",
+        read: false,
+      });
     },
   },
 };
