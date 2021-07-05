@@ -1,42 +1,87 @@
 <template>
-	<nav>
-		<div id="name" @click="closeMobileNav()">
-			<router-link to="/">Affluencer</router-link>
-		</div>
-		<ul id="nav-links">
-			<li v-for="item in navLinks" @click="closeMobileNav()">
-				<router-link v-if="item.name == 'Esci'" @click.native="logout" :to="item.link">{{ item.name }}</router-link>
-				<router-link v-else :to="item.link">{{ item.name }}</router-link>
-			</li>
-		</ul>
-		<div id="burger" @click="openMobileNav()">
-			<div id="line1"></div>
-			<div id="line2"></div>
-			<div id="line3"></div>
-		</div>
-	</nav>
+  <nav>
+    <v-toolbar color="primary" style="max-height:60px;">
+      <v-toolbar-title>
+        <v-btn style="font-size: 1.2em;" text to="/"> Affluencer </v-btn>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-list-item v-for="item in navLinks" :key="item.name">
+          <v-btn
+            v-if="item.name == 'Esci'"
+            @click.native="logout"
+            :to="item.link"
+            text
+            style="font-size: 1.2em;"
+          >
+            {{ item.name }}
+          </v-btn>
+          <v-btn v-else :to="item.link" text style="font-size: 1.2em;">
+            {{ item.name }}
+          </v-btn>
+        </v-list-item>
+      </v-toolbar-items>
+
+      <v-app-bar-nav-icon
+        class="hidden-md-and-up mx-2"
+        @click="drawer = true"
+      ></v-app-bar-nav-icon>
+    </v-toolbar>
+
+    <v-navigation-drawer
+      right
+      v-model="drawer"
+      absolute
+      temporary
+      color="primary"
+      style="z-index: 9999;"
+    >
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="text-h6">
+            Menu
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list nav>
+        <v-list-item v-for="item in navLinks" :key="item.name" :to="item.link">
+          <v-list-item-content
+            v-if="item.name == 'Esci'"
+            @click.native="logout"
+            :to="item.link"
+            style="font-size: 1.2em;"
+          >
+            {{ item.name }}
+          </v-list-item-content>
+          <v-list-item-content
+            v-else
+            :to="item.link"
+            text
+            style="font-size: 1.2em;"
+          >
+            {{ item.name }}
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+  </nav>
 </template>
 
 <script>
-	export default {
-		name: 'navbar',
-		
-		props: ['navLinks'],
-		
-		methods: {
-			openMobileNav: function() {
-				document.getElementById('nav-links').classList.toggle('nav-active');
-				document.getElementById('burger').classList.toggle('toggle');
-			},
-			
-			closeMobileNav: function() {
-				document.getElementById('nav-links').classList.remove('nav-active');
-				document.getElementById('burger').classList.remove('toggle');
-			}
-		}
-	}
-</script>
+export default {
+  name: "navbar",
 
-<style>
-	@import "../styles/navbar.css";
-</style>
+  props: ["navLinks"],
+
+  data: function() {
+    return {
+      drawer: false,
+    };
+  },
+
+  methods: {},
+};
+</script>
