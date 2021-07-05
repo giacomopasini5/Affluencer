@@ -1,6 +1,7 @@
 <template>
   <div id="home">
     <l-map
+      class="pa-4"
       :center="userLocation"
       :zoom="zoom"
       ref="myMap"
@@ -13,14 +14,7 @@
       />
 
       <!-- top left toolbar with search -->
-      <v-toolbar
-        floating
-        dark
-        color="primary"
-        style="z-index: 9999;"
-        class="ma-7"
-        rounded
-      >
+      <v-toolbar floating dark color="primary" style="z-index: 8888;" rounded>
         <v-autocomplete
           :items="markers"
           v-model="selected"
@@ -213,7 +207,7 @@ export default {
   },
 
   mounted: function() {
-    this.getNotificationsNumber();
+    //this.getNotificationsNumber();
     //this.testGenerateOneNotification();
     this.getUserPosition();
     this.initCategories();
@@ -223,7 +217,7 @@ export default {
       function() {
         this.getUserPosition();
         this.addMarkers(true);
-        this.getNotificationsNumber();
+        //this.getNotificationsNumber();
       }.bind(this),
       10000
     );
@@ -265,7 +259,7 @@ export default {
       var map = this.$refs.myMap.mapObject;
       var px = map.project(latLng); // find the pixel location on the map where the popup anchor is
       if (popup) {
-        px.y -= 600 / 2; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+        px.y -= 500 / 2; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
       }
       if (zoom != false) {
         map.setView(map.unproject(px), zoom, { animate: true }); // set view and zoom to new center

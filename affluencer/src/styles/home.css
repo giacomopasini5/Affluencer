@@ -1,5 +1,5 @@
 #home {
-  height: calc(100vh - 8vh);
+  height: 100vh; /*calc(100vh - 8vh);*/
   width: 100vw;
 }
 

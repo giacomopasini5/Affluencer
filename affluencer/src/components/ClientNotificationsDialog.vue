@@ -31,12 +31,14 @@ export default {
       notifications: [],
     };
   },
-  
-  created() {
-    setInterval(function() {
 
+  created() {
+    setInterval(
+      function() {
         this.initializeNotifications();
-    }.bind(this), 30000);
+      }.bind(this),
+      30000
+    );
   },
 
   mounted: function() {
