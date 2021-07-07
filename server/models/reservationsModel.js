@@ -5,6 +5,7 @@ module.exports = function(mongoose) {
         client_id: mongoose.Types.ObjectId,
         date: Date,
         people: Number,
+        timestamp: Date
     });
 
     return mongoose.model('reservationmodel', ResSchema, 'Reservations');

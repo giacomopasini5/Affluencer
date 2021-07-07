@@ -31,5 +31,8 @@ server.use((req, res) => {
 
 console.log(`Affluencer server started on port ${port}`);
 
+//const filler = require('./filler.js');
+//filler(App);
+
 const generator = require('./sensorGenerator.js');
 generator(App);

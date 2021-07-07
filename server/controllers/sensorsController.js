@@ -14,7 +14,7 @@ module.exports = function(App) {
             (err, sensors) => {
                 if (err || sensors == null)
                     return res.send(err);
-                utils.addTimestampField(sensors);
+                //utils.addTimestampField(sensors);
                 res.json(sensors);
             }
         );    
@@ -28,6 +28,7 @@ module.exports = function(App) {
             return res.status(400).send("Missing shop id");
         }
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
+        body.timestamp = new Date();
 
         (new Sensor(body)).save((err, sensor) => {
             if (err)
@@ -44,7 +45,7 @@ module.exports = function(App) {
         Sensor.findById(id, (err, sensor) => {
             if (err)
                 return res.json(err);
-            utils.addTimestampField(sensor);
+            //utils.addTimestampField(sensor);
             res.json(sensor);
         });
     };
@@ -60,7 +61,7 @@ module.exports = function(App) {
         .then(sensor => {
             if (sensor == null)
                 return res.send("Sensor error");
-            utils.addTimestampField(sensor[0]);
+            //utils.addTimestampField(sensor[0]);
             res.json(sensor[0]);
         });
     };
@@ -77,7 +78,7 @@ module.exports = function(App) {
             (err, sensor) => {
                 if (err)
                     return res.json(err);
-                utils.addTimestampField(sensor);
+                //utils.addTimestampField(sensor);
                 res.json(sensor);
             }
         );

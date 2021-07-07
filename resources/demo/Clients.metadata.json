@@ -1,1 +1,1 @@
-{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"affluencer.Clients"}],"uuid":"b23e8b3b5a1d449a9cc72327d6bce4e8"}
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"affluencer.Clients"}],"uuid":"4823521ef32448f7b9f93051fca1a310"}

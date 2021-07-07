@@ -4,7 +4,8 @@ module.exports = function(mongoose) {
         shop_id: mongoose.Types.ObjectId,
         client_id: mongoose.Types.ObjectId,
         people_inside: Number,
-        people_queue: Number
+        people_queue: Number,
+        timestamp: Date
     });
 
     return mongoose.model('communicationmodel', CommSchema, 'Communications');

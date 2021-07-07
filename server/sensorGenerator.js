@@ -23,8 +23,8 @@ module.exports = function(App) {
                 if (moment().isBetween(openTime, closeTime)) {
                     var sensor = new Sensor({
                         shop_id: shop._id,
-                        datetime: new Date(),
-                        people_inside: getRandomInt(shop.capacity)
+                        people_inside: getRandomInt(shop.capacity),
+                        timestamp: new Date()
                     });
                     sensor.save();
                     updated++;
@@ -34,5 +34,6 @@ module.exports = function(App) {
         });
     }
 
+    generate();
     setInterval(generate, 60000); // every 60 seconds
 }

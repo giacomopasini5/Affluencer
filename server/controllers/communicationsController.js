@@ -22,7 +22,7 @@ module.exports = function(App) {
         Communication.find(obj, (err, com) => {
             if (err)
                 return res.status(404).send(err);
-            utils.addTimestampField(com);
+            //utils.addTimestampField(com);
             res.json(com);
         });
     };
@@ -33,11 +33,12 @@ module.exports = function(App) {
         var body = req.body;
         body.client_id = mongoose.Types.ObjectId(body.client_id);
         body.shop_id = mongoose.Types.ObjectId(body.shop_id);
+        body.timestamp = new Date();
 
         (new Communication(body)).save((err, com) => {
             if (err)
                 return res.status(400).send(err);
-            utils.addTimestampField(com);
+            //utils.addTimestampField(com);
             res.send(com);
         });
     };
@@ -50,7 +51,7 @@ module.exports = function(App) {
         Communication.findById(id, (err, com) => {
             if (err || com == null)
                 return res.status(404).send("Communication not found: "+err);
-            utils.addTimestampField(com);
+            //utils.addTimestampField(com);
             res.json(com);
         });
     };
@@ -69,7 +70,7 @@ module.exports = function(App) {
             (err, com) => {
                 if (err)
                     return res.send(err)
-                utils.addTimestampField(com);                    
+                //utils.addTimestampField(com);                    
                 res.json(com);
             }
         );
