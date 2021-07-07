@@ -131,11 +131,8 @@ export default {
     this.getShopData();
     this.getReviews();
 
-    if (
-      $cookies.get("usertype") == "client" ||
-      $cookies.get("usertype") == "store"
-    ) {
-      if ($cookies.get("usertype") == "client") {
+    if (this.isClient() || this.isStore()) {
+      if (this.isClient()) {
         this.initializeFavorite();
       }
 
@@ -143,7 +140,7 @@ export default {
         function() {
           this.getSensorData();
           this.getReviews();
-          if ($cookies.get("usertype") == "client") {
+          if (this.isClient()) {
             this.initializeFavorite();
           }
         }.bind(this),
@@ -179,6 +176,7 @@ export default {
         this.closeTime = sensor.data.closeTime;
         this.capacity = sensor.data.capacity;
         this.peopleInside = sensor.data.lastSensorActivity[0].people_inside;
+        
       } catch (error) {
         console.log("failure");
         console.log(error);

@@ -2,21 +2,30 @@
   <nav>
     <v-toolbar color="primary" style="max-height:60px;">
       <v-toolbar-title>
-        <v-btn style="font-size: 1.2em;" text to="/"> Affluencer </v-btn>
+        <v-btn id="no-background-hover-title" v-ripple="false" text to="/">
+          <strong>Affluencer</strong>
+        </v-btn>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-list-item v-for="item in navLinks" :key="item.name">
           <v-btn
+            id="no-background-hover"
             v-if="item.name == 'Esci'"
             @click.native="logout"
             :to="item.link"
             text
-            style="font-size: 1.2em;"
+            v-ripple="false"
           >
             {{ item.name }}
           </v-btn>
-          <v-btn v-else :to="item.link" text style="font-size: 1.2em;">
+          <v-btn
+            id="no-background-hover"
+            v-else
+            :to="item.link"
+            text
+            v-ripple="false"
+          >
             {{ item.name }}
           </v-btn>
         </v-list-item>
@@ -46,24 +55,27 @@
 
       <v-divider></v-divider>
 
-      <v-list nav>
-        <v-list-item v-for="item in navLinks" :key="item.name" :to="item.link">
-          <v-list-item-content
+      <v-list>
+        <v-list-item v-for="item in navLinks" :key="item.name">
+          <v-btn
+            id="no-background-hover"
             v-if="item.name == 'Esci'"
             @click.native="logout"
             :to="item.link"
-            style="font-size: 1.2em;"
+            text
+            v-ripple="false"
           >
             {{ item.name }}
-          </v-list-item-content>
-          <v-list-item-content
+          </v-btn>
+          <v-btn
+            id="no-background-hover"
             v-else
             :to="item.link"
             text
-            style="font-size: 1.2em;"
+            v-ripple="false"
           >
             {{ item.name }}
-          </v-list-item-content>
+          </v-btn>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -85,3 +97,21 @@ export default {
   methods: {},
 };
 </script>
+
+<style>
+#no-background-hover::before {
+  background-color: transparent;
+}
+
+#no-background-hover {
+  font-size: 1.2em;
+}
+
+#no-background-hover-title::before {
+  background-color: transparent;
+}
+
+#no-background-hover-title {
+  font-size: 1.7em;
+}
+</style>
