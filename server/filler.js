@@ -14,10 +14,10 @@ module.exports = async function(App) {
         return Math.floor(Math.random() * max);
     }
 
-    var query = Client.find({});
+    var query = Client.find({}, "_id name");
     var clients = await query.exec();
     
-    Shop.find({}, "_id openTime closeTime capacity").exec()
+    Shop.find({}, "_id name openTime closeTime capacity").exec()
     .then(shops => {
         console.log('Generating data...');
         for (var curDate = moment(startDate); curDate.isBefore(endDate, 'm'); curDate.add(5, 'm')) {
@@ -56,9 +56,10 @@ module.exports = async function(App) {
                     sensor.save();
 
                     if (getRandomInt(100) <= 10) {
+                        var idx = getRandomInt(clients.length-1);
                         var comm = new Comm({
                             shop_id: shop._id,
-                            client_id: clients[getRandomInt(clients.length-1)]._id,
+                            client_id: clients[idx]._id,
                             people_inside: curPeople,
                             people_queue: getRandomInt(10),
                             timestamp: new Date(adjustedDate.valueOf())
@@ -66,9 +67,12 @@ module.exports = async function(App) {
                         comm.save();
 
                         var d = curDate.clone();
+                        idx = getRandomInt(clients.length-1);
                         var reserv = new Reserv({
                             shop_id: shop._id,
-                            client_id: clients[getRandomInt(clients.length-1)]._id,
+                            shop_name: shop.name,
+                            client_id: clients[idx]._id,
+                            client_name: clients[idx].name,
                             date: d.add(7, 'd').toDate(),
                             people: 1 + getRandomInt(9),
                             timestamp: new Date(adjustedDate.valueOf())

@@ -1,5 +1,6 @@
 module.exports = function(App) {
     const Client = App.models.Client;
+    const Shop = App.models.Shop;
     const utils = App.utils;
     const mongoose = App.db;
     const bcrypt = require('bcrypt');
@@ -79,20 +80,19 @@ module.exports = function(App) {
         });
     };
 
-    ctrl.add_client_favorite_shop = function(req, res) {
+    ctrl.add_client_favorite_shop = async function(req, res) {
         var id = req.params.id;
         if (utils.emptyField(id))
             return res.status(400).send("Missing client id");
         var shop_id2 = req.body.shop_id
         if (utils.emptyField(shop_id2))
             return res.status(400).send("Missing shop id");
-        var shop_name2 = req.body.shop_name
-        if (utils.emptyField(shop_name2))
-            return res.status(400).send("Missing shop name");
+        
+        var shop = await Shop.findById(shop_id2, "name").exec();
 
         Client.findByIdAndUpdate(
             id,
-            { $push: { favorite_shops: { shop_id:mongoose.Types.ObjectId(shop_id2), shop_name:shop_name2 }}},
+            { $push: { favorite_shops: { shop_id:mongoose.Types.ObjectId(shop_id2), shop_name:shop.name }}},
             { new: true },
             (err, client) => {
                 if (err)

@@ -1,5 +1,7 @@
 module.exports = function(App) {
     const Reservation = App.models.Reservation;
+    const Client = App.models.Client;
+    const Shop = App.models.Shop;
     const utils = App.utils;
     const mongoose = App.db;
     var ctrl = {};
@@ -42,7 +44,7 @@ module.exports = function(App) {
     };
     */
 
-    ctrl.create_reservation = function(req, res) {
+    ctrl.create_reservation = async function(req, res) {
         if (req.body == null)
             return res.status(400).send("Empty body");
         var body = req.body;
@@ -56,6 +58,11 @@ module.exports = function(App) {
         body.client_id = mongoose.Types.ObjectId(body.client_id);
         body.date = new Date(body.date);
         body.timestamp = new Date();
+
+        var client = await Client.findById(body.client_id, "name").exec();
+        body.client_name = client.name;
+        var shop = await Shop.findById(body.shop_id, "name").exec();
+        body.shop_name = shop.name;
 
         (new Reservation(body)).save((err, reservation) => {
             if (err)
