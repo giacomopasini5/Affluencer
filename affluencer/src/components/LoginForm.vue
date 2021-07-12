@@ -1,5 +1,5 @@
 <template>
-	<v-card :loading="loginLoading "elevation="5">
+	<v-card :loading="loginLoading" elevation="5">
 		<v-row justify="center" class="text-center pa-5">
 			<v-col cols="10">
 				<span class="text-h4">Accedi</span>
@@ -34,6 +34,7 @@
 					</v-row>
 				</form>
 			</v-col>
+			<v-snackbar v-model="snackbar" :timeout="5000">{{ loginMessage }}</v-snackbar>
 		</v-row>
 	</v-card>
 </template>
@@ -51,7 +52,9 @@
 					password: '',
 					usertype: ''
 				},
-				loginLoading: false
+				loginLoading: false,
+				loginMessage: '',
+				snackbar: false,
       		}
     	},
 		
@@ -74,8 +77,11 @@
             		this.login(res.data.id, res.data.username, res.data.usertype);
           		})
           		.catch((error) => {
-            		console.log('failure');
-            		console.log(error);
+					if (error.response) {
+						this.loginMessage = error.response.data;
+						this.snackbar = true;
+					}
+					this.loginLoading = false;
          		});
       		}
     	}
