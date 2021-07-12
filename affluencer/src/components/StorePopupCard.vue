@@ -175,7 +175,7 @@ export default {
         this.openTime = sensor.data.openTime;
         this.closeTime = sensor.data.closeTime;
         this.capacity = sensor.data.capacity;
-        this.peopleInside = sensor.data.lastSensorActivity[0].people_inside;
+        this.peopleInside = sensor.data.lastSensorActivity.length != 0 ? sensor.data.lastSensorActivity[0].people_inside : "?";
         
       } catch (error) {
         console.log("failure");
@@ -188,7 +188,7 @@ export default {
         var req = await this.axios.get("/sensors/last", {
           params: { shop_id: this.storePopup.id },
         });
-        this.peopleInside = req.data.people_inside;
+        this.peopleInside = req.data.people_inside || "?";
       } catch (error) {
         console.log("failure");
         console.log(error);
@@ -196,7 +196,8 @@ export default {
     },
 
     getPercentage: function(affluence, capacity) {
-      return (affluence * 100) / capacity;
+      if (affluence == "?") return 0;
+      else return (affluence * 100) / capacity;
     },
 
     getColor: function(affluence, capacity) {

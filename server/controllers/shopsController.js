@@ -8,7 +8,7 @@ module.exports = function(App) {
     var ctrl = {};
 
     ctrl.list_shops = function(req, res) {
-        Shop.find({}, (err, shops) => {
+        Shop.find({}).sort('name').exec((err, shops) => {
             if (err)
                 return res.send(err);
             res.json(shops);
@@ -73,7 +73,8 @@ module.exports = function(App) {
             .then(sensor => {
                 if (sensor == null)
                     return res.send("Sensor error");
-                utils.addTimestampField(sensor);
+                //utils.addTimestampField(sensor);
+                console.log(sensor);
                 json.lastSensorActivity = sensor;
                 res.json(json);
             });
