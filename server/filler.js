@@ -34,7 +34,7 @@ module.exports = async function(App) {
                 
                 if (curDate.isBetween(openTime, closeTime)) {
                     var duration = moment.duration(closeTime.diff(openTime)).asMinutes();
-                    var progress = moment.duration(curDate.diff(openTime)).minutes();
+                    var progress = moment.duration(curDate.diff(openTime)).asMinutes();
                     var firstPart = Math.ceil(duration * 0.1);
                     var lastPart = Math.ceil(duration * 0.9);
                     var curPeople = 0;
@@ -74,7 +74,7 @@ module.exports = async function(App) {
                             client_id: clients[idx]._id,
                             client_name: clients[idx].name,
                             date: d.add(7, 'd').toDate(),
-                            people: 1 + getRandomInt(9),
+                            people: 1 + getRandomInt(4),
                             timestamp: new Date(adjustedDate.valueOf())
                         });
                         reserv.save();

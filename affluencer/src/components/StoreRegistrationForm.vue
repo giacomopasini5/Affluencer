@@ -19,6 +19,12 @@
 							<v-text-field v-model="store.city" v-on:blur="searchCoordinates()" label="Città" hide-details="auto" outlined dense :error="$v.store.city.$error"
 							:rules="!$v.store.city.$error ? [] : [$v.store.city.required || 'La città è obbligatoria']"></v-text-field>
 						</v-col>
+						<v-col cols="10">
+							<v-select v-model="store.category" label="Categoria" hide-details="auto" outlined dense :error="$v.store.category.$error"
+							:rules="!$v.store.category.$error ? [] : [$v.store.category.required || 'La categoria è obbligatoria']"
+							:items="categoryItems" item-text="catName" item-value="catValue">
+							</v-select>
+						</v-col>
 						<v-col cols="5">
 							<v-text-field type="time" v-model="store.openTime" label="Apertura" hide-details="auto" outlined dense :error="$v.store.openTime.$error"
 							:rules="!$v.store.openTime.$error ? [] : [$v.store.openTime.required || 'L\'orario di apertura è obbligatorio']"></v-text-field>
@@ -65,6 +71,7 @@
 					name: '',
 					address: '',
 					city: '',
+					category: '',
 					openTime: '',
 					closeTime: '',
 					capacity: '',
@@ -73,7 +80,14 @@
 					confirmPassword: '',
 					coordinates: null
 				},
-				registerStoreLoading: false
+				registerStoreLoading: false,
+				categoryItems: [
+					{ catName: 'Pub & Bar', catValue: 'pub'},
+					{ catName: 'Farmacia', catValue: 'farmacia'},
+					{ catName: 'Biblioteca', catValue: 'biblioteca'},
+					{ catName: 'Ristorante', catValue: 'ristorante'},
+					{ catName: 'Supermercato', catValue: 'supermercato'},
+				]
 			}
 		},
 		
@@ -82,6 +96,7 @@
 				name: {required},
 				address: {required},
 				city: {required},
+				category: {required},
 				openTime: {required},
 				closeTime: {required},
 				capacity: {required, minValue: minValue(1)},
