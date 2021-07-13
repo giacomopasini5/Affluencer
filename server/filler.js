@@ -83,7 +83,7 @@ module.exports = function(App) {
 
                         if (getRandomInt(1000) < 5) {
                             var d = curDate.clone();
-                            idx = getRandomInt(clients.length-1);
+                            var idx = getRandomInt(clients.length-1);
                             var reserv = new Reserv({
                                 shop_id: shop._id,
                                 shop_name: shop.name,
@@ -91,6 +91,7 @@ module.exports = function(App) {
                                 client_name: clients[idx].name,
                                 date: d.add(7, 'd').toDate(),
                                 people: 1 + getRandomInt(4),
+                                notified: false,
                                 timestamp: curDate.toDate()
                             });
                             reserv.save();

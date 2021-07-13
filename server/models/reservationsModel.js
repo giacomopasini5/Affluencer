@@ -7,6 +7,7 @@ module.exports = function(mongoose) {
         client_name: String,
         date: Date,
         people: Number,
+        notified: Boolean,
         timestamp: Date
     });
 

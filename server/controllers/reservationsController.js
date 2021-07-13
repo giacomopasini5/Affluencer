@@ -58,6 +58,7 @@ module.exports = function(App) {
         body.client_id = mongoose.Types.ObjectId(body.client_id);
         body.date = new Date(body.date);
         body.timestamp = new Date();
+        body.notified = false;
 
         var client = await Client.findById(body.client_id, "name").exec();
         body.client_name = client.name;
