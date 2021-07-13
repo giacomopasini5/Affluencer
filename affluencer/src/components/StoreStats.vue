@@ -107,23 +107,51 @@
 			},
 			
 			initializeDayHistogramData: function() {
-				var dayData = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],
+				var dayDataInside = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],
 					[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],
 					[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]];
-				var startOfDay = this.$moment().startOf('day');
-				for(var sd of this.sensorData) {
-					var date = this.$moment(sd.timestamp);
+				var dayDataOutside = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],
+					[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],
+					[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]];
+				var now = this.$moment();
+				var nextHour = this.$moment().add(1, 'h');
+				var endOfDay = this.$moment().endOf('d');
+				
+				for(var sensor of this.sensorData) {
+					var date = this.$moment(sensor.timestamp);
 					var index = date.hours();
-					if(date.isAfter(startOfDay)) {
-						dayData[index] = [dayData[index][0] + sd.people_inside, dayData[index][1] + 1];
+					if(date.isSame(now, 'd'))
+						dayDataInside[index] = [dayDataInside[index][0] + sensor.people_inside, dayDataInside[index][1] + 1];
+				}
+				
+				for(var signal of this.signaledData) {
+					var date = this.$moment(signal.timestamp);
+					var index = date.hours();
+					if(date.isSame(now, 'd')) {
+						dayDataInside[index] = [dayDataInside[index][0] + signal.people_inside, dayDataInside[index][1] + 1];
+						dayDataOutside[index] = [dayDataOutside[index][0] + signal.people_queue, dayDataOutside[index][1] + 1];
 					}
 				}
-				for(var i = 0; i < dayData.length; i++)
-					if(dayData[i][1] != 0) {
-						var avg = Math.floor(dayData[i][0] / dayData[i][1]);
+				
+				for(var reservation of this.reservationsData) {
+					var date = this.$moment(reservation.date);
+					var index = date.hours();
+					if(date.isBetween(nextHour, endOfDay)){
+						dayDataInside[index][0] = dayDataInside[index][0] + reservation.people;
+					}
+				}
+				
+				for(var i = 0; i < dayDataInside.length; i++)
+					if(dayDataInside[i][1] != 0) {
+						var avg = Math.floor(dayDataInside[i][0] / dayDataInside[i][1]);
 						this.dayHistogramData.datasets[0].data[i] = avg;
 					}
-				console.log(this.dayHistogramData.datasets[0].data);
+					
+				for(var n = 0; n < dayDataOutside.length; n++)
+					if(dayDataOutside[n][1] != 0) {
+						var avg = Math.floor(dayDataOutside[n][0] / dayDataOutside[n][1]);
+						this.dayHistogramData.datasets[1].data[n] = avg;
+					}
 			},
 			
 			initializeWeekHistogramData: function() {
