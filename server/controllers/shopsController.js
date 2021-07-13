@@ -73,8 +73,6 @@ module.exports = function(App) {
             .then(sensor => {
                 if (sensor == null)
                     return res.send("Sensor error");
-                //utils.addTimestampField(sensor);
-                console.log(sensor);
                 json.lastSensorActivity = sensor;
                 res.json(json);
             });

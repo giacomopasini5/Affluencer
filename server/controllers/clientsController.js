@@ -9,7 +9,7 @@ module.exports = function(App) {
     var ctrl = {};
 
     ctrl.list_clients = function(req, res) {
-        Client.find({}, function(err, clients) {
+        Client.find({}).sort('name').exec((err, clients) => {
             if (err)
                 return res.send(err);
             res.json(clients);

@@ -29,7 +29,7 @@ server.use((req, res) => {
     res.status(404).send({ url: `${req.originalUrl} not found` });
 });
 
-console.log(`Affluencer server started on port ${port}`);
+console.log(`Affluencer server started on port ${port}\n`);
 
 //const filler = require('./filler.js');
 //filler(App);
