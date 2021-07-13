@@ -14,6 +14,9 @@
 							<v-btn v-if="$store.state.config.settings" @click="removeReview(review._id)" icon>
 								<v-icon color="red">mdi-delete</v-icon>
 							</v-btn>
+							<v-btn v-else :to="/store/ + review.shop_id" icon>
+								<v-icon color="primary">mdi-arrow-right</v-icon>
+							</v-btn>
 						</v-card-actions>
 						<v-card v-if="review.comment" flat class="text-right">
 							<v-card-title class="justify-end">Il titolare ha risposto</v-card-title>

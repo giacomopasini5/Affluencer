@@ -2,7 +2,7 @@
 	<v-row v-if="hasUserData" justify="center" class="text-center pa-10">
 		<v-col cols="10" md="8" lg="6">
 			<v-card elevation="5">
-				<v-btn fab fixed top right @click="$store.commit('toggleSettings')" color="primary" class="mt-12">
+				<v-btn fab fixed top right @click="$store.commit('toggleSettings')" color="primary" class="mt-16">
 					<v-icon>mdi-cog</v-icon>
 				</v-btn>
 				<userInfo :userData="userData"/>
