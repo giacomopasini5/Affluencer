@@ -150,12 +150,10 @@
 			},
 			
 			checkTime: function() {
-				var now = new Date();
-				var ot = this.storeData.openTime.split(':');
-				var ct = this.storeData.closeTime.split(':');
-				var openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), ot[0], ot[1]);
-				var closeTime= new Date(now.getFullYear(), now.getMonth(), now.getDate(), ct[0], ct[1]);
-				return (now > openTime && now < closeTime);
+				var now = this.$moment();
+				var openTime = this.$moment(this.storeData.openTime, 'hh:mm');
+				var closeTime = this.$moment(this.storeData.closeTime, 'hh:mm');
+				return this.$moment().isBetween(openTime, closeTime);
 			},
 			
 			getLastSensorData: async function() {

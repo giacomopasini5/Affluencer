@@ -24,7 +24,7 @@
 		data: function() {
 			return {
 				dayHistogramData: {
-					labels: [],
+					labels: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
 					datasets: [
 						{
 							label: 'Persone all\'interno',
@@ -40,7 +40,7 @@
 					]
 				},
 				weekHistogramData: {
-					labels: [],
+					labels: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
 					datasets: [
 						{
 							label: 'Affluenza',
@@ -52,7 +52,6 @@
 				sensorData: '',
 				signaledData: '',
 				reservationsData: '',
-				
 				hasChartData: false
 			}
 		},
@@ -66,7 +65,8 @@
 				this.initializeSensorData();
 				this.initializeSignaledData();
 				this.initializeReservationsData();
-				this.initializeStoreHours();
+				this.initializeDayHistogramData();
+				this.initializeWeekHistogramData();
 				this.hasChartData = true;
 			},
 			
@@ -100,14 +100,17 @@
 				}
 			},
 			
-			initializeStoreHours: async function() {
-				try {
-					var res = await this.axios.get('/shops/' + this.$route.params.id + '/info');
-					
-				} catch(error) {
-					console.log('failure');
-					console.log(error);
+			initializeDayHistogramData: function() {
+				var dayData = [];
+				var startOfDay = this.$moment().startOf('day');
+				for(var sd of this.sensorData) {
+					console.log(sd.timestamp)
+					if(this.$moment(sd.timestamp).isAfter(startOfDay))
+						console.log("c")
 				}
+			},
+			
+			initializeWeekHistogramData: function() {
 				
 			},
 			
