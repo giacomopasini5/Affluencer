@@ -110,7 +110,10 @@
 					console.log('failure');
 					console.log(error);
 				}
-			}
+			},
+
+			
+
 		},
 		
 		validations: {

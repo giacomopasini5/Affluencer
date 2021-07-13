@@ -138,12 +138,14 @@
 						text: this.storeReview.text,
 						score: this.storeReview.score
 					});
+					this.generateNotification(this.$route.params.id, this.storeReview.title, this.$route.params.id, this.storeReview.score)
 					this.initializeReviews();
 					this.storeReview.title = '';
 					this.storeReview.text = '';
 					this.storeReview.score = 0;
 					this.reviewPosted = false;
 					this.$v.$reset();
+
 				} catch(error) {
 					console.log('failure');
 					console.log(error);
@@ -168,7 +170,23 @@
 					console.log('failure');
 					console.log(error);
 				}
-			}
+			},
+
+			generateNotification: async function(id, text, shop_id, score) {
+      			try {
+        			var res = await this.axios.post("/notifications/", {
+          				user_id: id,
+          				text: "Nuova review: " + text + " | Score: " + score,
+          				url: "/store/"+ shop_id,
+          				read: false,
+        			});
+
+        			console.log("creata notifica");
+      			} catch (error) {
+        			console.log("failure");
+        			console.log(error);
+      			}
+    		},
 		},
 		
 		validations: {

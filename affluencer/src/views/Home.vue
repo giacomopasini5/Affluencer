@@ -6,6 +6,7 @@
       :zoom="zoom"
       ref="myMap"
       :options="{ zoomControl: false }"
+      style="z-index: 0;"
     >
       <l-tile-layer
         :url="url"
@@ -14,17 +15,24 @@
       />
 
       <!-- top left toolbar with search -->
-      <v-toolbar floating dark color="primary" style="z-index: 8888;" rounded>
+      <v-toolbar
+        v-if="!isStore()"
+        floating
+        dark
+        color="primary"
+        style="z-index: 8888;"
+        rounded
+      >
         <v-autocomplete
           :items="markers"
           v-model="selected"
           class="mx-4"
-          flat
+          dense
           hide-no-data
           hide-details
           label="Seleziona..."
           solo-inverted
-          @change="centerMarker(selected, 16, false)"
+          @change="centerMarker(selected, 18, false)"
         ></v-autocomplete>
 
         <v-tooltip bottom>
@@ -40,29 +48,6 @@
           </template>
           <span>Centra posizione</span>
         </v-tooltip>
-
-        <v-dialog v-model="dialog" scrollable max-width="500px">
-          <template v-slot:activator="{ on: dialog, attrs }">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on: tooltip }">
-                <v-badge
-                  color="red"
-                  :content="notificationsNumber"
-                  :value="notificationsNumber"
-                  overlap
-                  offset-x="25"
-                  offset-y="20"
-                >
-                  <v-btn icon v-bind="attrs" v-on="{ ...tooltip, ...dialog }">
-                    <v-icon>mdi-bell</v-icon>
-                  </v-btn>
-                </v-badge>
-              </template>
-              <span>Notifiche</span>
-            </v-tooltip>
-          </template>
-          <clientNotificationsDialog />
-        </v-dialog>
 
         <!-- Menu categories filter TODO-->
         <v-menu :close-on-content-click="false" offset-x>
@@ -86,7 +71,7 @@
                 :value="checkbox.id"
                 :color="'#' + checkbox.color"
                 class="mx-4 my-n2"
-                @change="addMarkers(true)"
+                @change="addAllMarkers(true)"
               ></v-checkbox>
             </v-list>
           </v-card>
@@ -97,6 +82,7 @@
       <l-marker
         v-for="item in markers"
         :key="item.id"
+        ref="item"
         :lat-lng="item.value"
         @click="centerMarker(item.value, false, true)"
       >
@@ -111,12 +97,13 @@
         <l-tooltip>{{ item.text }}</l-tooltip>
 
         <l-popup :options="{ autoPan: false }">
-          <storePopupCard :storePopup="item" />
+          <storePopupCard :storePopup="item" :userLocation="userLocation" />
         </l-popup>
       </l-marker>
 
       <!-- user location marker -->
       <l-marker
+        v-if="!isStore()"
         :lat-lng="userLocation"
         @click="centerMarker(userLocation, false, false)"
       >
@@ -129,33 +116,6 @@
         <l-tooltip>Tu sei qui</l-tooltip>
       </l-marker>
     </l-map>
-
-    <!-- fab notifications -->
-    <!--<v-btn
-      fab
-      fixed
-      bottom
-      right
-      x-large
-      color="primary"
-      style="z-index: 9999; margin-bottom:150px"
-    >
-      <v-icon large>mdi-bell</v-icon>
-    </v-btn>-->
-
-    <!-- fab favourite 
-    <v-btn
-      fab
-      fixed
-      bottom
-      right
-      x-large
-      color="primary"
-      class= "ma-5"
-      style="z-index: 9999;"
-    >
-      <v-icon large>mdi-star</v-icon>
-    </v-btn>-->
   </div>
 </template>
 
@@ -170,9 +130,17 @@ import {
 } from "vue2-leaflet";
 import { latLng, icon } from "leaflet";
 
+import geometryutil from "leaflet-geometryutil";
+
 import storePopupCard from "@/components/StorePopupCard.vue";
 import categoryMarkerData from "@/assets/category_marker_icons.json";
-import clientNotificationsDialog from "@/components/ClientNotificationsDialog.vue";
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+});
 
 export default {
   name: "home",
@@ -184,7 +152,7 @@ export default {
     LTooltip,
     LIcon,
     storePopupCard,
-    clientNotificationsDialog,
+    geometryutil,
   },
 
   data: function() {
@@ -195,32 +163,31 @@ export default {
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       userLocation: latLng(44.422452145133896, 12.20347570657797),
       markers: [],
-      markersSearch: [],
       selectedCategories: [],
       storeDialog: false,
       storePopup: "",
       selected: "",
       mCategoryData: categoryMarkerData,
-      notificationsNumber: 0,
-      dialog: false,
     };
   },
 
   mounted: function() {
-    //this.getNotificationsNumber();
-    //this.testGenerateOneNotification();
-    this.getUserPosition();
     this.initCategories();
-    this.addMarkers(false);
 
-    setInterval(
-      function() {
-        this.getUserPosition();
-        this.addMarkers(true);
-        //this.getNotificationsNumber();
-      }.bind(this),
-      10000
-    );
+    if (this.isStore()) {
+      this.addShopMarker();
+    } else {
+      this.getUserPosition();
+      this.addAllMarkers(false);
+
+      setInterval(
+        function() {
+          this.getUserPosition();
+          this.addAllMarkers(true);
+        }.bind(this),
+        10000
+      );
+    }
   },
 
   methods: {
@@ -255,11 +222,10 @@ export default {
 
     // center marker
     centerMarker: function(latLng, zoom, popup) {
-      //this.$refs.myMap.mapObject.panTo(latLng);
       var map = this.$refs.myMap.mapObject;
       var px = map.project(latLng); // find the pixel location on the map where the popup anchor is
       if (popup) {
-        px.y -= 500 / 2; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+        px.y -= 250;
       }
       if (zoom != false) {
         map.setView(map.unproject(px), zoom, { animate: true }); // set view and zoom to new center
@@ -269,13 +235,12 @@ export default {
     },
 
     // Add markers to map
-    addMarkers: async function(clear) {
+    addAllMarkers: async function(clear) {
       try {
         var storeList = await this.axios.get("/shops");
 
         if (clear) {
           this.markers = [];
-          //this.markersSearch = [];
         }
 
         for (var store of storeList.data) {
@@ -287,11 +252,6 @@ export default {
                 value: latLng(store.location.coordinates),
                 category: store.category,
               });
-
-              /*this.markersSearch.push({
-                text: store.name,
-                value: latLng(store.location.coordinates),
-              });*/
             }
           }
         }
@@ -301,20 +261,23 @@ export default {
       }
     },
 
-    // get data from one sensor
-    getSensorData: async function(storeId) {
+    addShopMarker: async function() {
       try {
-        var sensorData = await this.axios.get("/shops/" + storeId + "/info");
+        var res = await this.axios.get(
+          "/shops/" + $cookies.get("userid") + "/info"
+        );
+        this.userLocation = res.data.location.coordinates;
 
-        console.log(sensorData.data);
-
-        for (var sensor in sensorData.data) {
-        }
+        this.markers.push({
+          id: res.data._id,
+          text: res.data.name,
+          value: latLng(res.data.location.coordinates),
+          category: res.data.category,
+        });
       } catch (error) {
         console.log("failure");
         console.log(error);
       }
-      return sensorData;
     },
 
     // Get user location if available
@@ -333,35 +296,6 @@ export default {
       for (var category of categoryMarkerData) {
         this.selectedCategories.push(category.id);
       }
-    },
-
-    getNotificationsNumber: async function() {
-      this.notificationsNumber = 0;
-      try {
-        var res = await this.axios.get("/notifications/", {
-          params: { user_id: $cookies.get("userid") },
-        });
-
-        for (var notification of res.data) {
-          if (!notification.read) {
-            this.notificationsNumber++;
-          }
-        }
-
-        console.log(this.notificationsNumber);
-      } catch (error) {
-        console.log("failure");
-        console.log(error);
-      }
-    },
-
-    testGenerateOneNotification: async function() {
-      var res = await this.axios.post("/notifications/", {
-        user_id: $cookies.get("userid"),
-        text: "Nuova notifica 2",
-        url: "ciao",
-        read: false,
-      });
     },
   },
 };
