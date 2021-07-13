@@ -25,7 +25,7 @@
 				</v-row>
 				<v-row justify="center">
 					<v-col cols="10">
-						
+						<storeStats/>
 					</v-col>
 				</v-row>
 			</v-card>
