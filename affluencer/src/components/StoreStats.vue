@@ -61,10 +61,10 @@
 		},
 		
 		methods: {
-			initializeData: function() {
-				this.initializeSensorData();
-				this.initializeSignaledData();
-				this.initializeReservationsData();
+			initializeData: async function() {
+				await this.initializeSensorData();
+				await this.initializeSignaledData();
+				await this.initializeReservationsData();
 				this.initializeDayHistogramData();
 				this.initializeWeekHistogramData();
 				this.hasChartData = true;
@@ -104,9 +104,9 @@
 				var dayData = [];
 				var startOfDay = this.$moment().startOf('day');
 				for(var sd of this.sensorData) {
-					console.log(sd.timestamp)
-					if(this.$moment(sd.timestamp).isAfter(startOfDay))
-						console.log("c")
+					console.log(sd.timestamp);
+					//if(this.$moment(sd.timestamp).isAfter(startOfDay))
+						
 				}
 			},
 			
