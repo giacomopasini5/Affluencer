@@ -24,18 +24,24 @@
 		data: function() {
 			return {
 				dayHistogramData: {
-					labels: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
+					labels: ['00', '01', '02', '03', '04', '05', '06', '07',
+						'08', '09', '10', '11', '12', '13', '14', '15',
+						'16', '17', '18', '19', '20', '21', '22', '23'],
 					datasets: [
 						{
 							label: 'Persone all\'interno',
 							backgroundColor: 'red',
-							data: []
+							data: [0, 0, 0, 0, 0, 0, 0, 0,
+								0, 0, 0, 0, 0, 0, 0, 0,
+								0, 0, 0, 0, 0, 0, 0, 0]
 						},
 						
 						{
 							label: 'Persone all\'esterno',
 							backgroundColor: 'blue',
-							data: []
+							data: [0, 0, 0, 0, 0, 0, 0, 0,
+								0, 0, 0, 0, 0, 0, 0, 0,
+								0, 0, 0, 0, 0, 0, 0, 0]
 						}
 					]
 				},
@@ -101,13 +107,23 @@
 			},
 			
 			initializeDayHistogramData: function() {
-				var dayData = [];
+				var dayData = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],
+					[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],
+					[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]];
 				var startOfDay = this.$moment().startOf('day');
 				for(var sd of this.sensorData) {
-					console.log(sd.timestamp);
-					//if(this.$moment(sd.timestamp).isAfter(startOfDay))
-						
+					var date = this.$moment(sd.timestamp);
+					var index = date.hours();
+					if(date.isAfter(startOfDay)) {
+						dayData[index] = [dayData[index][0] + sd.people_inside, dayData[index][1] + 1];
+					}
 				}
+				for(var i = 0; i < dayData.length; i++)
+					if(dayData[i][1] != 0) {
+						var avg = Math.floor(dayData[i][0] / dayData[i][1]);
+						this.dayHistogramData.datasets[0].data[i] = avg;
+					}
+				console.log(this.dayHistogramData.datasets[0].data);
 			},
 			
 			initializeWeekHistogramData: function() {
