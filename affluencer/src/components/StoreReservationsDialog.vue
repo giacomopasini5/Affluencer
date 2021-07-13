@@ -127,7 +127,8 @@ export default {
       actualTime: "",
     };
   },
-  created() {
+
+  mounted: function() {
     this.getNow();
     this.getRightTime();
 
@@ -139,8 +140,6 @@ export default {
       30000
     );
   },
-
-  mounted: function() {},
 
   methods: {
     getNow: function() {
@@ -191,6 +190,28 @@ export default {
       return false;
     },*/
 
+    generateNotification: async function(date, time) {
+      try {
+        var res = await this.axios.post("/notifications/", {
+          user_id: this.storeRes.id,
+          text:
+            "Nuova prenotazione: " +
+            $cookies.get("username") +
+            " | " +
+            date +
+            " " +
+            time,
+          url: "/",
+          read: false,
+        });
+
+        console.log("creata notifica");
+      } catch (error) {
+        console.log("failure");
+        console.log(error);
+      }
+    },
+
     postReservation: async function() {
       var res = await this.axios.get("/reservations", {
         params: {
@@ -238,6 +259,8 @@ export default {
           console.log(error);
         }
         console.log("prenotato!");
+
+        this.generateNotification(this.date, this.time);
       }
 
       this.$emit("close-dialog");

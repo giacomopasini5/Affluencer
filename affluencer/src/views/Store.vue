@@ -21,6 +21,7 @@
 					<v-col cols="10" md="8">
 						<storeAnnouncements/>
 						<storeReviews/>
+						<userReservations v-if="isStore && isOwner" />
 					</v-col>
 				</v-row>
 				<v-row justify="center">
@@ -38,6 +39,8 @@
 	import storeAnnouncements from '@/components/StoreAnnouncements.vue'
 	import storeReviews from '@/components/StoreReviews.vue'
 	import storeStats from '@/components/StoreStats.vue'
+	import userReservations from "@/components/UserReservations.vue";
+
 	
 	export default {
 		name: 'store',
@@ -46,7 +49,9 @@
 			storeInfo,
 			storeAnnouncements,
 			storeReviews,
-			storeStats
+			storeStats,
+			userReservations,
+
 		},
 		
 		data: function() {

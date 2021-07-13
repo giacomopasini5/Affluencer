@@ -61,7 +61,7 @@
 						</v-col>
 					</v-row>
 				</v-col>
-				<v-col v-if="isClient()" cols="6" md="10">
+				<!--<v-col v-if="isClient()" cols="6" md="10">
 					<v-card outlined>
 						<v-card-title>Segnala affluenza</v-card-title>
 						<v-text-field type="number" v-model="customersInside" label="Interno" hide-details="auto" outlined dense class="ma-5" :error="$v.customersInside.$error"
@@ -75,7 +75,7 @@
 							</v-btn>
 						</v-card-actions>
 					</v-card>
-				</v-col>
+				</v-col>-->
 			</v-row>
 		</v-col>
 	</v-row>
@@ -100,9 +100,9 @@
 					closeTime: this.storeData.closeTime,
 					capacity: this.storeData.capacity
 				},
-				customersInside: '',
+				/*customersInside: '',
 				customersQueue: '',
-				customersSignaled: false,
+				customersSignaled: false,*/
 				lastSensorData: ''
 			}
 		},
@@ -129,7 +129,7 @@
 				}
 			},
 			
-			signalCustomers: async function() {
+			/*signalCustomers: async function() {
 				this.$v.$touch();
 				if(this.$v.$invalid || (this.customersInside == '' && this.customersQueue == '')) return;
 				
@@ -147,7 +147,7 @@
 					console.log('failure');
 					console.log(error);
 				}
-			},
+			},*/
 			
 			checkTime: function() {
 				var now = this.$moment();
@@ -172,8 +172,8 @@
 				email: {email},
 				capacity: {minValue: minValue(1)}
 			},
-			customersInside: {minValue: minValue(0)},
-			customersQueue: {minValue: minValue(0)}
+			/*customersInside: {minValue: minValue(0)},
+			customersQueue: {minValue: minValue(0)}*/
 		}
 	}
 </script>

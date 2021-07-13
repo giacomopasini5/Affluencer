@@ -2,7 +2,25 @@
   <div>
     <v-card-title class="justify-center">
       <strong>{{ storeName }}</strong>
+
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-if="isClient()"
+            icon
+            large
+            v-bind="attrs"
+            v-on="on"
+            @click="setFavorite()"
+          >
+            <v-icon v-if="isFavorite" color="orange">mdi-star</v-icon>
+            <v-icon v-else color="grey">mdi-star</v-icon>
+          </v-btn>
+        </template>
+        <span>Preferiti</span>
+      </v-tooltip>
     </v-card-title>
+
     <v-card-subtitle class="text-center">
       {{ address }}, {{ city }}
     </v-card-subtitle>
@@ -52,25 +70,31 @@
           <span>Pagina negozio</span>
         </v-tooltip>
 
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              v-if="isClient()"
-              icon
-              x-large
-              v-bind="attrs"
-              v-on="on"
-              @click="setFavorite()"
-            >
-              <v-icon v-if="isFavorite" color="orange">mdi-star</v-icon>
-              <v-icon v-else color="grey">mdi-star</v-icon>
-            </v-btn>
+        <v-dialog v-model="dialogSign" max-width="400px">
+          <template v-slot:activator="{ on: dialogSign, attrs }">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on: tooltip }">
+                <v-btn
+                  v-if="isClient() && isShopNear()"
+                  icon
+                  x-large
+                  v-bind="attrs"
+                  v-on="{ ...tooltip, ...dialogSign }"
+                >
+                  <v-icon color="red">mdi-sticker-alert</v-icon>
+                </v-btn>
+              </template>
+              <span>Segnala</span>
+            </v-tooltip>
           </template>
-          <span>Preferiti</span>
-        </v-tooltip>
+          <storeSignalDialog
+            v-on:close-dialog="closeDialog()"
+            :storeSign="storeShortInfo"
+          />
+        </v-dialog>
 
-        <v-dialog v-model="dialog" max-width="400px">
-          <template v-slot:activator="{ on: dialog, attrs }">
+        <v-dialog v-model="dialogRes" max-width="400px">
+          <template v-slot:activator="{ on: dialogRes, attrs }">
             <v-tooltip bottom>
               <template v-slot:activator="{ on: tooltip }">
                 <v-btn
@@ -78,9 +102,9 @@
                   icon
                   x-large
                   v-bind="attrs"
-                  v-on="{ ...tooltip, ...dialog }"
+                  v-on="{ ...tooltip, ...dialogRes }"
                 >
-                  <v-icon color="primary">mdi-notebook-plus</v-icon>
+                  <v-icon color="blue">mdi-notebook-plus</v-icon>
                 </v-btn>
               </template>
               <span>Prenota</span>
@@ -98,13 +122,17 @@
 
 <script>
 import storeReservationsDialog from "@/components/StoreReservationsDialog.vue";
+import storeSignalDialog from "@/components/StoreSignalDialog.vue";
+import geometryutil from "leaflet-geometryutil";
 
 export default {
   name: "storePopupCard",
-  props: ["storePopup"],
+  props: ["storePopup", "userLocation"],
 
   components: {
     storeReservationsDialog,
+    storeSignalDialog,
+    geometryutil,
   },
 
   data: function() {
@@ -123,13 +151,14 @@ export default {
       averageScore: 0,
       storeRes: "",
 
-      dialog: false,
+      dialogRes: false,
+      dialogSign: false,
     };
   },
 
   mounted: function() {
     this.getShopData();
-    this.getReviews();
+    this.getReviewsAvg();
 
     if (this.isClient() || this.isStore()) {
       if (this.isClient()) {
@@ -139,7 +168,7 @@ export default {
       setInterval(
         function() {
           this.getSensorData();
-          this.getReviews();
+          this.getReviewsAvg();
           if (this.isClient()) {
             this.initializeFavorite();
           }
@@ -151,7 +180,18 @@ export default {
 
   methods: {
     closeDialog: function() {
-      this.dialog = false;
+      this.dialogSign = false;
+      this.dialogRes = false;
+    },
+
+    isShopNear: function() {
+      var length = geometryutil.length([
+        this.userLocation,
+        this.storePopup.value,
+      ]);
+      //console.log(this.storePopup.text + " | distanza: " + length);
+
+      return length < 150; // 150 metri
     },
 
     getShopData: async function() {
@@ -175,8 +215,10 @@ export default {
         this.openTime = sensor.data.openTime;
         this.closeTime = sensor.data.closeTime;
         this.capacity = sensor.data.capacity;
-        this.peopleInside = sensor.data.lastSensorActivity.length != 0 ? sensor.data.lastSensorActivity[0].people_inside : "?";
-        
+        this.peopleInside =
+          sensor.data.lastSensorActivity.length != 0
+            ? sensor.data.lastSensorActivity[0].people_inside
+            : "?";
       } catch (error) {
         console.log("failure");
         console.log(error);
@@ -259,7 +301,7 @@ export default {
       }
     },
 
-    getReviews: async function() {
+    getReviewsAvg: async function() {
       var tmp = 0;
       try {
         var reviews = await this.axios.get("/reviews", {
@@ -281,7 +323,3 @@ export default {
   },
 };
 </script>
-
-<style>
-@import "../styles/home.css";
-</style>
