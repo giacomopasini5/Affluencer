@@ -20,7 +20,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="date"
+              v-model="dateString"
               label="Data"
               prepend-icon="mdi-calendar"
               readonly
@@ -29,8 +29,8 @@
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="date"
-            :min="actualDate"
+            v-model="actualDate"
+            :min="dateString"
             no-title
             scrollable
             locale="it-IT"
@@ -72,7 +72,7 @@
             full-width
             format="24hr"
             :min="minTime"
-            :max="storeRes.closeTime"
+            :max="realClosingTime"
             @click:minute="$refs.menuTime.save(time)"
           ></v-time-picker>
         </v-menu>
@@ -114,30 +114,33 @@ export default {
       menuTime: false,
       people: "",
 
-      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      dateString: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10),
+
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000),
 
       timestamp: "",
 
-      actualDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
+      actualDate: "",
 
       actualTime: "",
+
+      realClosingTime: "",
     };
   },
 
-  mounted: function() {
+  created: function() {
+    this.setClosingTime();
     this.getNow();
+    this.getRightDate();
     this.getRightTime();
 
     setInterval(
       function() {
         this.getNow();
-        this.getRightTime();
       }.bind(this),
-      30000
+      1000
     );
   },
 
@@ -152,6 +155,7 @@ export default {
           : today.getMonth() + 1) +
         "-" +
         today.getDate();
+
       this.actualTime = today.getHours() + ":" + today.getMinutes();
 
       var dateTime = this.actualDate + " " + this.actualTime;
@@ -266,16 +270,57 @@ export default {
       this.$emit("close-dialog");
     },
 
+    setClosingTime: function() {
+      var time = new Date();
+      time.setHours(this.storeRes.closeTime.substring(0, 2));
+      time.setMinutes(this.storeRes.closeTime.substring(3, 5));
+      console.log(this.storeRes.closeTime.substring(0, 2));
+      console.log(this.storeRes.closeTime.substring(3, 5));
+
+      var MS_PER_MINUTE = 60000;
+      var newTime = new Date(time.getTime() - 30 * MS_PER_MINUTE);
+
+      console.log(newTime);
+      this.realClosingTime = newTime.getHours() + ":" + newTime.getMinutes();
+    },
+
+    getRightDate: function() {
+      if (this.realClosingTime <= this.actualTime) {
+        this.date.setDate(this.date.getDate() + 1);
+        this.actualDate = this.date.toISOString().substr(0, 10);
+        this.dateString = this.date.toISOString().substr(0, 10);
+        /*console.log(this.date);
+        console.log(this.dateString);
+        console.log(this.actualDate);*/
+      }
+    },
+
     getRightTime: function() {
       //console.log(this.storeRes.openTime);
       //console.log(this.actualTime);
-      if (this.storeRes.openTime >= this.actualTime) {
+
+      if (this.isSameDay()) {
+        if (this.storeRes.openTime >= this.actualTime) {
+          this.minTime = this.storeRes.openTime;
+          this.time = this.storeRes.openTime;
+        } else {
+          this.minTime = this.actualTime;
+          this.time = this.actualTime;
+        }
+      } else {
         this.minTime = this.storeRes.openTime;
         this.time = this.storeRes.openTime;
-      } else {
-        this.minTime = this.actualTime;
-        this.time = this.actualTime;
       }
+    },
+
+    isSameDay: function() {
+      var now = new Date();
+      var temp = new Date(this.dateString);
+      return (
+        now.getFullYear() == temp.getFullYear() &&
+        now.getMonth() == temp.getMonth() &&
+        now.getDate() == temp.getDate()
+      );
     },
   },
 };
