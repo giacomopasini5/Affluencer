@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card-title class="justify-center">
-      <strong>{{ storeName }}</strong>
+      <strong>{{ storeInfo.name }}</strong>
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -22,7 +22,7 @@
     </v-card-title>
 
     <v-card-subtitle class="text-center">
-      {{ address }}, {{ city }}
+      {{ storeInfo.address }}, {{ storeInfo.city }}
     </v-card-subtitle>
 
     <v-card-text class="text-center">
@@ -36,17 +36,17 @@
       ></v-rating>
 
       <div class="my-4 text-subtitle-1">
-        Apertura: {{ openTime }} <br />
-        Chiusura: {{ closeTime }} <br />
+        Apertura: {{ storeInfo.openTime }} <br />
+        Chiusura: {{ storeInfo.closeTime }} <br />
       </div>
 
       <v-progress-linear
         rounded
-        :color="getColor(peopleInside, capacity)"
+        :color="getColor(storeInfo.peopleInside, storeInfo.capacity)"
         height="25"
-        :value="getPercentage(peopleInside, capacity)"
+        :value="getPercentage(storeInfo.peopleInside, storeInfo.capacity)"
       >
-        <strong>Affluenza: {{ peopleInside }}</strong>
+        <strong>Affluenza: {{ storeInfo.peopleInside }}</strong>
       </v-progress-linear>
 
       <template v-slot:label="item" class="font-weight-medium">
@@ -62,7 +62,7 @@
               large
               v-bind="attrs"
               v-on="on"
-              :to="storeRoute"
+              :to="storeInfo.storeRoute"
             >
               PAGINA
             </v-btn>
@@ -89,7 +89,7 @@
           </template>
           <storeSignalDialog
             v-on:close-dialog="closeDialog()"
-            :storeSign="storeShortInfo"
+            :storeSign="storeInfo"
           />
         </v-dialog>
 
@@ -112,7 +112,7 @@
           </template>
           <storeReservationsDialog
             v-on:close-dialog="closeDialog()"
-            :storeRes="storeShortInfo"
+            :storeRes="storeInfo"
           />
         </v-dialog>
       </v-card-actions>
@@ -137,16 +137,7 @@ export default {
 
   data: function() {
     return {
-      storeShortInfo: "",
-
-      storeName: "",
-      address: "",
-      city: "",
-      openTime: "",
-      closeTime: "",
-      capacity: 0,
-      peopleInside: 0,
-      storeRoute: "",
+      storeInfo: "",
       isFavorite: false,
       averageScore: 0,
       storeRes: "",
@@ -199,30 +190,25 @@ export default {
         var sensor = await this.axios.get(
           "/shops/" + this.storePopup.id + "/info"
         );
-
-        this.storeShortInfo = new Object({
-          id: sensor.data._id,
-          name: sensor.data.name,
-          openTime: sensor.data.openTime,
-          closeTime: sensor.data.closeTime,
-          capacity: sensor.data.capacity,
-        });
-
-        this.storeRoute = "/store/" + sensor.data._id;
-        this.storeName = sensor.data.name;
-        this.address = sensor.data.address;
-        this.city = sensor.data.city;
-        this.openTime = sensor.data.openTime;
-        this.closeTime = sensor.data.closeTime;
-        this.capacity = sensor.data.capacity;
-        this.peopleInside =
-          sensor.data.lastSensorActivity.length != 0
-            ? sensor.data.lastSensorActivity[0].people_inside
-            : "?";
       } catch (error) {
-        console.log("failure");
+        console.log("failure: GET Shops");
         console.log(error);
       }
+
+      this.storeInfo = new Object({
+        id: sensor.data._id,
+        name: sensor.data.name,
+        openTime: sensor.data.openTime,
+        closeTime: sensor.data.closeTime,
+        capacity: sensor.data.capacity,
+        storeRoute: "/store/" + sensor.data._id,
+        address: sensor.data.address,
+        city: sensor.data.city,
+        peopleInside:
+          sensor.data.lastSensorActivity.length != 0
+            ? sensor.data.lastSensorActivity[0].people_inside
+            : "?",
+      });
     },
 
     getSensorData: async function() {
@@ -230,11 +216,12 @@ export default {
         var req = await this.axios.get("/sensors/last", {
           params: { shop_id: this.storePopup.id },
         });
-        this.peopleInside = req.data.people_inside || "?";
       } catch (error) {
-        console.log("failure");
+        console.log("failure: GET Last Sensor");
         console.log(error);
       }
+
+      this.storeInfo.peopleInside = req.data.people_inside || "?";
     },
 
     getPercentage: function(affluence, capacity) {
@@ -261,12 +248,13 @@ export default {
         );
 
         //console.log(favorites);
-
-        for (var store of favorites.data)
-          if (store.shop_id == this.storePopup.id) this.isFavorite = true;
       } catch (error) {
-        console.log("failure");
+        console.log("failure: GET Clients");
         console.log(error);
+      }
+
+      for (var store of favorites.data) {
+        if (store.shop_id == this.storePopup.id) this.isFavorite = true;
       }
     },
 
@@ -282,7 +270,7 @@ export default {
           );
           this.isFavorite = true;
         } catch (error) {
-          console.log("failure");
+          console.log("failure: GET Favorite");
           console.log(error);
         }
       } else {
@@ -295,7 +283,7 @@ export default {
           );
           this.isFavorite = false;
         } catch (error) {
-          console.log("failure");
+          console.log("failure: DELETE Favorite");
           console.log(error);
         }
       }
@@ -309,16 +297,15 @@ export default {
         });
 
         //console.log(reviews);
-
-        for (var review of reviews.data) {
-          tmp += review.score;
-        }
-        this.averageScore = tmp / reviews.data.length;
-        //console.log(averageScore);
       } catch (error) {
-        console.log("failure: no data");
+        console.log("failure: GET Reviews");
         console.log(error);
       }
+      for (var review of reviews.data) {
+        tmp += review.score;
+      }
+      this.averageScore = tmp / reviews.data.length;
+      //console.log(averageScore);
     },
   },
 };

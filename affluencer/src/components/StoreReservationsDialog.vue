@@ -101,7 +101,7 @@
         </v-card-actions>
       </v-card-text>
     </div>
-    <v-snackbar v-model="snackbar" :timeout="5000" :color="snackbarColor">{{
+    <v-snackbar v-model="snackbar" :timeout="2500" :color="snackbarColor">{{
       snackbarMessage
     }}</v-snackbar>
   </v-card>
@@ -231,12 +231,17 @@ export default {
     },
 
     postReservation: async function() {
-      var res = await this.axios.get("/reservations", {
-        params: {
-          client_id: $cookies.get("userid"),
-          shop_id: this.storeRes.id,
-        },
-      });
+      try {
+        var res = await this.axios.get("/reservations", {
+          params: {
+            client_id: $cookies.get("userid"),
+            shop_id: this.storeRes.id,
+          },
+        });
+      } catch (error) {
+        console.log("failure: GET Reservations");
+        console.log(error);
+      }
 
       var alreadyExist = false;
 
@@ -288,7 +293,7 @@ export default {
         res = await this.axios.post("/notifications/", {
           user_id: this.storeRes.id,
           text: "Nuova prenotazione di " + userName + " " + date,
-          url: "/store/" + this.storeRes.id,
+          url: this.storeRes.storeRoute,
           read: false,
         });
 

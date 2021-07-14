@@ -11,7 +11,7 @@
           v-model="customersInside"
           class="my-8 mx-2"
           min="0"
-          max="50"
+          :max="storeSign.capacity"
           thumb-label="always"
           tick-size="4"
           width="10"
@@ -21,7 +21,7 @@
           v-model="customersQueue"
           class="my-8 mx-2"
           min="0"
-          max="50"
+          :max="storeSign.capacity"
           thumb-label="always"
           tick-size="4"
           width="10"
@@ -37,6 +37,9 @@
         </v-card-actions>
       </v-card-text>
     </div>
+    <v-snackbar v-model="snackbar" :timeout="2500" :color="snackbarColor">{{
+      snackbarMessage
+    }}</v-snackbar>
   </v-card>
 </template>
 
@@ -51,40 +54,82 @@ export default {
       time: "",
       customersInside: "",
       customersQueue: "",
+      snackbar: "",
+      snackbarColor: "",
+      snackbarMessage: "",
     };
   },
-  created() {
-    setInterval(function() {}.bind(this), 30000);
-  },
+  created() {},
 
   mounted: function() {},
 
   methods: {
     signalCustomers: async function() {
       try {
-        var res = await this.axios.post("/communications/", {
-          shop_id: this.storeSign.id,
-          client_id: $cookies.get("userid"),
-          people_inside: this.customersInside,
-          people_queue: this.customersQueue,
+        var res = await this.axios.get("/communications", {
+          params: { shop_id: this.storeSign.id },
         });
-        this.generateNotification(
-          this.storeSign.id,
-          this.customersInside,
-          this.customersQueue
-        );
-
-        this.customersInside = "";
-        this.customersQueue = "";
-
-        this.$emit("close-dialog");
+        //console.log(res.data[1].timestamp);
       } catch (error) {
-        console.log("failure");
+        console.log("failure: GET Communications");
         console.log(error);
+      }
+
+      var alreadySignaledToday = false;
+
+      for (var communication of res.data) {
+        if (
+          this.$moment(communication.timestamp).format("YYYY-MM-DD") ==
+            this.$moment().format("YYYY-MM-DD") &&
+          communication.shop_id == this.storeSign.id &&
+          communication.client_id == $cookies.get("userid")
+        ) {
+          alreadySignaledToday = true;
+        }
+      }
+
+      if (!this.checkTime()) {
+        this.snackbarColor = "red";
+        this.snackbarMessage = "Il negozio è chiuso!";
+        this.snackbar = true;
+      } else {
+        if (!alreadySignaledToday) {
+          try {
+            var res = await this.axios.post("/communications/", {
+              shop_id: this.storeSign.id,
+              client_id: $cookies.get("userid"),
+              people_inside: this.customersInside,
+              people_queue: this.customersQueue,
+            });
+          } catch (error) {
+            console.log("failure: POST Communications");
+            console.log(error);
+          }
+
+          this.postNotification(
+            this.storeSign.id,
+            this.customersInside,
+            this.customersQueue
+          );
+
+          this.customersInside = "";
+          this.customersQueue = "";
+          this.$emit("close-dialog");
+        } else {
+          this.snackbarColor = "red";
+          this.snackbarMessage = "Oggi hai già segnalato questo negozio!";
+          this.snackbar = true;
+        }
       }
     },
 
-    generateNotification: async function(id, inside, queue) {
+    checkTime: function() {
+      var openTime = this.$moment(this.storeSign.openTime, "HH:mm");
+      var closeTime = this.$moment(this.storeSign.closeTime, "HH:mm");
+      return this.$moment().isBetween(openTime, closeTime);
+    },
+
+    postNotification: async function(id, inside, queue) {
       try {
         var res = await this.axios.post("/notifications/", {
           user_id: id,
@@ -99,7 +144,7 @@ export default {
 
         //console.log("creata notifica");
       } catch (error) {
-        console.log("failure");
+        console.log("failure: POST Notification");
         console.log(error);
       }
     },
