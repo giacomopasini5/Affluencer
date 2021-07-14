@@ -31,6 +31,9 @@ module.exports = function(App, server) {
         .get(ctrl.clients.list_clients)
         .post(ctrl.clients.create_client);
 
+    server.route('/api/clients/favorite_shop/:shop_id')
+        .get(ctrl.clients.list_clients_by_favorite_shop);
+
     server.route('/api/clients/:id')
         .get(ctrl.clients.get_client)
         .put(ctrl.clients.update_client)

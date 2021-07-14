@@ -80,6 +80,22 @@ module.exports = function(App) {
         });
     };
 
+    ctrl.list_clients_by_favorite_shop = function(req, res) {
+        var shop_id = req.params.shop_id;
+        if (utils.emptyField(shop_id))
+            return res.status(400).send("Missing shop id");
+
+        Client.find(
+            {"favorite_shops.shop_id": mongoose.Types.ObjectId(shop_id)},
+            "_id name",
+            (err, clients) => {
+                if (err)
+                    return res.send(err);
+                res.json(clients);
+            }
+        );
+    };
+
     ctrl.add_client_favorite_shop = async function(req, res) {
         var id = req.params.id;
         if (utils.emptyField(id))
