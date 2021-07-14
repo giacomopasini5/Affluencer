@@ -1,1 +1,1 @@
-{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"affluencer.Clients"}],"uuid":"fa02588da8484a45aae0706ebe4172d6"}
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"688ac569cf42431280dbee6d02625f9b","collectionName":"Clients"}
