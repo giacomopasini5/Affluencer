@@ -1,1 +1,1 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"a5ff6787c5ff4e9b980da0a245a8f382","collectionName":"Shops"}
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"affluencer.Shops"}],"uuid":"1605d30e8dcc4de582f0a6addbe5e99e"}

@@ -1,1 +1,1 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"08e28941948746308fd5e4c568274d3a","collectionName":"Reviews"}
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"affluencer.Reviews"}],"uuid":"a4d19d683c50496483c37ae3ac2f5eab"}
