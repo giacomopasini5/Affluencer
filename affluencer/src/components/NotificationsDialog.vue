@@ -6,23 +6,25 @@
     <v-card-title v-else>
       <span class="text-h5">Nessuna notifica da leggere</span>
     </v-card-title>
+    <v-card>
+      <v-list>
+        <v-list-item
+          v-for="notification in notifications"
+          :key="notification._id"
+          :to="notification.url"
+          @click="setAsRead(notification._id)"
+        >
+          <v-list-item-avatar>
+            <v-icon color="primary">mdi-bell</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>{{ notification.text }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-card>
 
-    <v-list>
-      <v-list-item
-        v-for="notification in notifications"
-        :key="notification._id"
-        :to="notification.url"
-        @click="setAsRead(notification._id)"
-      >
-        <v-list-item-avatar>
-          <v-icon color="primary">mdi-bell</v-icon>
-        </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title>{{ notification.text }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-    <v-btn v-if="notifications != ''" text @click="setAsRead()">
+    <v-btn v-if="notifications != ''" text @click="setAsRead()" color="green">
       LETTO
     </v-btn>
   </v-card>

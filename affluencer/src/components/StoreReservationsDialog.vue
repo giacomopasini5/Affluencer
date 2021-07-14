@@ -13,14 +13,14 @@
           ref="menuDate"
           v-model="menuDate"
           :close-on-content-click="false"
-          :return-value.sync="date"
+          :return-value.sync="datePicker"
           transition="scale-transition"
           offset-y
           min-width="auto"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="dateString"
+              v-model="datePicker"
               label="Data"
               prepend-icon="mdi-calendar"
               readonly
@@ -29,18 +29,20 @@
             ></v-text-field>
           </template>
           <v-date-picker
-            v-model="actualDate"
-            :min="dateString"
+            v-model="datePicker"
+            :min="minDate"
             no-title
             scrollable
             locale="it-IT"
           >
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menuDate = false">
-              Cancel
-            </v-btn>
-            <v-btn text color="primary" @click="$refs.menuDate.save(date)">
+
+            <v-btn text color="green darken-1" @click="setDate()">
               OK
+            </v-btn>
+
+            <v-btn text color="red darken-1" @click="menuDate = false">
+              ANNULLA
             </v-btn>
           </v-date-picker>
         </v-menu>
@@ -50,7 +52,7 @@
           v-model="menuTime"
           :close-on-content-click="false"
           :nudge-right="40"
-          :return-value.sync="time"
+          :return-value.sync="timePicker"
           transition="scale-transition"
           offset-y
           max-width="290px"
@@ -58,7 +60,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="time"
+              v-model="timePicker"
               label="Ora"
               prepend-icon="mdi-clock-time-four-outline"
               readonly
@@ -68,12 +70,13 @@
           </template>
           <v-time-picker
             v-if="menuTime"
-            v-model="time"
+            v-model="timePicker"
             full-width
+            locale="it-IT"
             format="24hr"
             :min="minTime"
-            :max="realClosingTime"
-            @click:minute="$refs.menuTime.save(time)"
+            :max="maxTime"
+            @click:minute="$refs.menuTime.save(timePicker)"
           ></v-time-picker>
         </v-menu>
 
@@ -98,6 +101,9 @@
         </v-card-actions>
       </v-card-text>
     </div>
+    <v-snackbar v-model="snackbar" :timeout="5000" :color="snackbarColor">{{
+      snackbarMessage
+    }}</v-snackbar>
   </v-card>
 </template>
 
@@ -108,29 +114,29 @@ export default {
 
   data: function() {
     return {
-      minTime: "",
-      time: "",
       menuDate: false,
       menuTime: false,
-      people: "",
 
-      dateString: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
-
-      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000),
-
-      timestamp: "",
-
-      actualDate: "",
-
+      timePicker: "",
+      minTime: "",
+      maxTime: "",
       actualTime: "",
 
-      realClosingTime: "",
+      datePicker: "",
+      minDate: "",
+      maxDate: "",
+      actualDate: "",
+
+      people: "",
+
+      snackbar: false,
+      snackbarMessage: "",
+      snackbarColor: "",
     };
   },
 
   created: function() {
+    // Init
     this.setClosingTime();
     this.getNow();
     this.getRightDate();
@@ -138,82 +144,90 @@ export default {
 
     setInterval(
       function() {
-        this.getNow();
+        this.refreshTime();
       }.bind(this),
       1000
     );
   },
 
   methods: {
-    getNow: function() {
-      var today = new Date();
-      this.actualDate =
-        today.getFullYear() +
-        "-" +
-        (today.getMonth() + 1 < 10
-          ? "0" + (today.getMonth() + 1)
-          : today.getMonth() + 1) +
-        "-" +
-        today.getDate();
-
-      this.actualTime = today.getHours() + ":" + today.getMinutes();
-
-      var dateTime = this.actualDate + " " + this.actualTime;
-      this.timestamp = dateTime;
-      //console.log(this.actualDate);
+    setDate: function() {
+      this.$refs.menuDate.save(this.datePicker);
+      this.getRightTime();
+      this.menuDate = false;
     },
 
-    /*checkAlreadyReserved: async function() {
-      var res = await this.axios.get("/reservations", {
-        params: {
-          client_id: $cookies.get("userid"),
-          shop_id: this.storeRes.id,
-        },
-      });
-      var resDate = new Date(res.data.date);
+    setClosingTime: function() {
+      var time = new Date();
+      time.setHours(this.storeRes.closeTime.substring(0, 2));
+      time.setMinutes(this.storeRes.closeTime.substring(3, 5));
+      time.setSeconds(0);
 
-      console.log(res.data);
+      this.maxTime = this.$moment(time)
+        .subtract(30, "minutes")
+        .format("HH:mm");
+      //console.log(this.maxTime);
+    },
 
-      var date =
-        resDate.getFullYear() +
-        "-" +
-        (resDate.getMonth() + 1 < 10
-          ? "0" + (today.getMonth() + 1)
-          : resDate.getMonth() + 1) +
-        "-" +
-        resDate.getDate();
+    getNow: function() {
+      this.actualDate = this.$moment().format("YYYY-MM-DD");
+      this.datePicker = this.actualDate;
+      this.actualTime = this.$moment().format("HH:mm");
+      this.timePicker = this.actualTime;
 
-      console.log(date);
-      console.log(this.date);
+      /*console.log(this.actualDate);
+      console.log(this.actualTime);
+      console.log(this.timestamp);*/
+    },
 
-      if (date == this.date) {
-        return true;
+    getRightDate: function() {
+      if (this.actualTime > this.maxTime) {
+        this.date.setDate(this.date.getDate() + 1);
+        this.datePicker = this.$moment(this.date).format("YYYY-MM-DD");
+
+        /*console.log(this.date);
+        console.log(this.dateString);
+        console.log(this.actualDate);*/
       }
-      // console.log(res.data);
+      this.minDate = this.datePicker;
+    },
 
-      return false;
-    },*/
+    getRightTime: function() {
+      /*console.log(this.storeRes.openTime);
+      console.log(this.actualTime);
+      console.log(this.isSameDay());*/
 
-    generateNotification: async function(date, time) {
-      try {
-        var res = await this.axios.post("/notifications/", {
-          user_id: this.storeRes.id,
-          text:
-            "Nuova prenotazione: " +
-            $cookies.get("username") +
-            " | " +
-            date +
-            " " +
-            time,
-          url: "/",
-          read: false,
-        });
-
-        console.log("creata notifica");
-      } catch (error) {
-        console.log("failure");
-        console.log(error);
+      if (this.isSameDay()) {
+        if (this.actualTime <= this.storeRes.openTime) {
+          this.minTime = this.storeRes.openTime;
+          this.timePicker = this.storeRes.openTime;
+        } else {
+          this.minTime = this.actualTime;
+          this.timePicker = this.actualTime;
+        }
+      } else {
+        this.minTime = this.storeRes.openTime;
+        this.timePicker = this.storeRes.openTime;
       }
+    },
+
+    refreshTime: function() {
+      if (this.isSameDay()) {
+        if (this.timePicker < this.$moment().format("HH:mm")) {
+          this.minTime = this.$moment().format("HH:mm");
+          this.timePicker = this.$moment().format("HH:mm");
+        }
+      }
+    },
+
+    isSameDay: function() {
+      var now = new Date();
+      var temp = new Date(this.datePicker);
+      return (
+        now.getFullYear() == temp.getFullYear() &&
+        now.getMonth() == temp.getMonth() &&
+        now.getDate() == temp.getDate()
+      );
     },
 
     postReservation: async function() {
@@ -228,99 +242,61 @@ export default {
 
       for (var response of res.data) {
         var resDate = new Date(response.date);
+        var date = this.$moment(response.date).format("YYYY-MM-DD");
 
-        console.log(response.date);
+        //console.log(date);
 
-        var date =
-          resDate.getFullYear() +
-          "-" +
-          (resDate.getMonth() + 1 < 10
-            ? "0" + (resDate.getMonth() + 1)
-            : resDate.getMonth() + 1) +
-          "-" +
-          resDate.getDate();
-
-        console.log(date);
-        console.log(this.date);
-
-        if (date == this.date) {
+        if (date == this.datePicker) {
           alreadyExist = true;
         }
       }
 
       if (!alreadyExist) {
+        var timestamp = new Date(this.datePicker + " " + this.timePicker);
         try {
-          var res = await this.axios.post("/reservations", {
+          var res = await this.axios.post("/reservations/", {
             shop_id: this.storeRes.id,
             client_id: $cookies.get("userid"),
-            date: this.date + " " + this.time,
+            date: timestamp.toString(),
             people: this.people,
           });
 
-          //console.log(this.timestamp);
+          //console.log(timestamp.toString());
         } catch (error) {
-          console.log("failure");
+          console.log("failure: POST Reservations");
           console.log(error);
         }
-        console.log("prenotato!");
-
-        this.generateNotification(this.date, this.time);
-      }
-
-      this.$emit("close-dialog");
-    },
-
-    setClosingTime: function() {
-      var time = new Date();
-      time.setHours(this.storeRes.closeTime.substring(0, 2));
-      time.setMinutes(this.storeRes.closeTime.substring(3, 5));
-      console.log(this.storeRes.closeTime.substring(0, 2));
-      console.log(this.storeRes.closeTime.substring(3, 5));
-
-      var MS_PER_MINUTE = 60000;
-      var newTime = new Date(time.getTime() - 30 * MS_PER_MINUTE);
-
-      console.log(newTime);
-      this.realClosingTime = newTime.getHours() + ":" + newTime.getMinutes();
-    },
-
-    getRightDate: function() {
-      if (this.realClosingTime <= this.actualTime) {
-        this.date.setDate(this.date.getDate() + 1);
-        this.actualDate = this.date.toISOString().substr(0, 10);
-        this.dateString = this.date.toISOString().substr(0, 10);
-        /*console.log(this.date);
-        console.log(this.dateString);
-        console.log(this.actualDate);*/
-      }
-    },
-
-    getRightTime: function() {
-      //console.log(this.storeRes.openTime);
-      //console.log(this.actualTime);
-
-      if (this.isSameDay()) {
-        if (this.storeRes.openTime >= this.actualTime) {
-          this.minTime = this.storeRes.openTime;
-          this.time = this.storeRes.openTime;
-        } else {
-          this.minTime = this.actualTime;
-          this.time = this.actualTime;
-        }
+        //console.log("prenotato!");
+        this.$emit("close-dialog");
+        this.postNotification(this.datePicker, this.timePicker);
       } else {
-        this.minTime = this.storeRes.openTime;
-        this.time = this.storeRes.openTime;
+        this.snackbarColor = "red";
+        this.snackbarMessage = "Hai già una prenotazione oggi!";
+        this.snackbar = true;
+        //console.log("Hai già una prenotazione oggi!");
       }
     },
 
-    isSameDay: function() {
-      var now = new Date();
-      var temp = new Date(this.dateString);
-      return (
-        now.getFullYear() == temp.getFullYear() &&
-        now.getMonth() == temp.getMonth() &&
-        now.getDate() == temp.getDate()
-      );
+    postNotification: async function(date, time) {
+      try {
+        var res = await this.axios.get("/clients/" + $cookies.get("userid"));
+
+        console.log(res.data.name);
+
+        var userName = res.data.name;
+
+        res = await this.axios.post("/notifications/", {
+          user_id: this.storeRes.id,
+          text: "Nuova prenotazione di " + userName + " " + date,
+          url: "/store/" + this.storeRes.id,
+          read: false,
+        });
+
+        //console.log("creata notifica");
+      } catch (error) {
+        console.log("failure: POST Notification");
+        console.log(error);
+      }
     },
   },
 };
