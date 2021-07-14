@@ -26,7 +26,7 @@
 							},
 							ticks: {
 								beginAtZero: true
-							}
+							} 
 						}]
 					}
 				}
