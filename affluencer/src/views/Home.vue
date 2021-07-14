@@ -2,7 +2,7 @@
   <div id="home">
     <l-map
       class="pa-4"
-      :center="userLocation"
+      
       :zoom="zoom"
       ref="myMap"
       :options="{ zoomControl: false }"
@@ -161,7 +161,8 @@ export default {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      userLocation: latLng(44.422452145133896, 12.20347570657797),
+      userLocation: latLng(44.4168751,12.2032479),
+      defaultLocation: latLng(44.4168751,12.2032479),
       markers: [],
       selectedCategories: [],
       storeDialog: false,
@@ -173,6 +174,7 @@ export default {
 
   mounted: function() {
     this.initCategories();
+    this.centerMarker(this.defaultLocation, 14, false)
 
     if (this.isStore()) {
       this.addShopMarker();
@@ -256,7 +258,7 @@ export default {
           }
         }
       } catch (error) {
-        console.log("failure");
+        console.log("failure: GET Shops");
         console.log(error);
       }
     },
@@ -275,7 +277,7 @@ export default {
           category: res.data.category,
         });
       } catch (error) {
-        console.log("failure");
+        console.log("failure: GET Shop Info");
         console.log(error);
       }
     },
