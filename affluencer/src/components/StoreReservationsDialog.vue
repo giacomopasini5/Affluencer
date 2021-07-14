@@ -37,11 +37,11 @@
           >
             <v-spacer></v-spacer>
 
-            <v-btn text color="green darken-1" @click="setDate()">
+            <v-btn text class="green--text" @click="setDate()">
               OK
             </v-btn>
 
-            <v-btn text color="red darken-1" @click="menuDate = false">
+            <v-btn text class="red--text" @click="menuDate = false">
               ANNULLA
             </v-btn>
           </v-date-picker>
@@ -92,10 +92,10 @@
         ></v-slider>
 
         <v-card-actions class="justify-space-between mt-2">
-          <v-btn @click="postReservation()" color="green darken-1" text>
+          <v-btn @click="postReservation()" class="green--text" text>
             Prenota
           </v-btn>
-          <v-btn v-on:click="$emit('close-dialog')" color="red darken-1" text>
+          <v-btn v-on:click="$emit('close-dialog')" class="red--text" text>
             Annulla
           </v-btn>
         </v-card-actions>
@@ -275,7 +275,7 @@ export default {
         this.$emit("close-dialog");
         this.postNotification(this.datePicker, this.timePicker);
       } else {
-        this.snackbarColor = "red";
+        this.snackbarColor = "error";
         this.snackbarMessage = "Hai già una prenotazione oggi!";
         this.snackbar = true;
         //console.log("Hai già una prenotazione oggi!");

@@ -2,7 +2,6 @@
   <div id="home">
     <l-map
       class="pa-4"
-      
       :zoom="zoom"
       ref="myMap"
       :options="{ zoomControl: false }"
@@ -161,8 +160,8 @@ export default {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      userLocation: latLng(44.4168751,12.2032479),
-      defaultLocation: latLng(44.4168751,12.2032479),
+      userLocation: latLng(44.415184453889836, 12.2021695153397),
+      defaultLocation: latLng(44.415184453889836, 12.2021695153397),
       markers: [],
       selectedCategories: [],
       storeDialog: false,
@@ -174,25 +173,26 @@ export default {
 
   mounted: function() {
     this.initCategories();
-    this.centerMarker(this.defaultLocation, 14, false)
+    this.centerMarker(this.defaultLocation, 14, false);
 
     if (this.isStore()) {
       this.addShopMarker();
     } else {
-      this.getUserPosition();
+      //this.getUserPosition(); //DEMO CON GPS
       this.addAllMarkers(false);
 
       setInterval(
         function() {
-          this.getUserPosition();
+          //this.getUserPosition(); // DEMO CON GPS
           this.addAllMarkers(true);
         }.bind(this),
-        10000
+        1000
       );
     }
   },
 
   methods: {
+  
     // get icon from name
     getCategoriesMarkerIcon: function(iconName) {
       var symbol = "ff6565";

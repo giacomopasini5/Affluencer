@@ -1,8 +1,9 @@
 <template>
   <div>
-    <v-card-title class="justify-center">
+    <v-card-title class="my-2">
       <strong>{{ storeInfo.name }}</strong>
 
+      <v-spacer></v-spacer>
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -32,21 +33,27 @@
         dense
         half-increments
         readonly
-        size="30"
+        size="35"
       ></v-rating>
 
       <div class="my-4 text-subtitle-1">
-        Apertura: {{ storeInfo.openTime }} <br />
-        Chiusura: {{ storeInfo.closeTime }} <br />
+        <span v-if="checkTime()" class="text-body-3 green--text">Aperto</span>
+        <span v-else class="text-body-3 red--text">Chiuso</span>
+        <br />
+        <span class="text-body-2">
+          Apertura: {{ storeInfo.openTime }} - Chiusura:
+          {{ storeInfo.closeTime }}
+        </span>
       </div>
 
       <v-progress-linear
+        v-if="checkTime()"
         rounded
         :color="getColor(storeInfo.peopleInside, storeInfo.capacity)"
         height="25"
         :value="getPercentage(storeInfo.peopleInside, storeInfo.capacity)"
       >
-        <strong>Affluenza: {{ storeInfo.peopleInside }}</strong>
+        <p style="color: black;">Affluenza: {{ storeInfo.peopleInside }}</p>
       </v-progress-linear>
 
       <template v-slot:label="item" class="font-weight-medium">
@@ -158,13 +165,14 @@ export default {
 
       setInterval(
         function() {
+          this.getShopData();
           this.getSensorData();
           this.getReviewsAvg();
           if (this.isClient()) {
             this.initializeFavorite();
           }
         }.bind(this),
-        30000
+        1000
       );
     }
   },
@@ -182,12 +190,12 @@ export default {
       ]);
       //console.log(this.storePopup.text + " | distanza: " + length);
 
-      return length < 150; // 150 metri
+      return length < 250; // 250 metri
     },
 
     getShopData: async function() {
       try {
-        var sensor = await this.axios.get(
+        var res = await this.axios.get(
           "/shops/" + this.storePopup.id + "/info"
         );
       } catch (error) {
@@ -196,17 +204,17 @@ export default {
       }
 
       this.storeInfo = new Object({
-        id: sensor.data._id,
-        name: sensor.data.name,
-        openTime: sensor.data.openTime,
-        closeTime: sensor.data.closeTime,
-        capacity: sensor.data.capacity,
-        storeRoute: "/store/" + sensor.data._id,
-        address: sensor.data.address,
-        city: sensor.data.city,
+        id: res.data._id,
+        name: res.data.name,
+        openTime: res.data.openTime,
+        closeTime: res.data.closeTime,
+        capacity: res.data.capacity,
+        storeRoute: "/store/" + res.data._id,
+        address: res.data.address,
+        city: res.data.city,
         peopleInside:
-          sensor.data.lastSensorActivity.length != 0
-            ? sensor.data.lastSensorActivity[0].people_inside
+          res.data.lastSensorActivity.length != 0
+            ? res.data.lastSensorActivity[0].people_inside
             : "?",
       });
     },
@@ -306,6 +314,22 @@ export default {
       }
       this.averageScore = tmp / reviews.data.length;
       //console.log(averageScore);
+    },
+
+    checkTime: function() {
+      var openTime = this.$moment(this.storeInfo.openTime, "HH:mm");
+      var closeTime = this.$moment(this.storeInfo.closeTime, "HH:mm");
+
+      /*console.log(
+        this.storeInfo.name +
+          " " +
+          this.storeInfo.openTime +
+          " |" +
+          this.storeInfo.closeTime
+      );*/
+
+      //console.log(this.$moment(this.$moment()).isBetween(openTime, closeTime));
+      return this.$moment(this.$moment()).isBetween(openTime, closeTime);
     },
   },
 };

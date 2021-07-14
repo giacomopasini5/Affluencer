@@ -1,42 +1,36 @@
 <template>
-  <v-row v-if="reservations.length" justify="center" class="text-left pa-5">
-    <v-col cols="10">
-      <v-card flat>
-        <v-card-title>Prenotazioni</v-card-title>
-        <v-list outlined class="pa-0">
-          <v-list-item
-            v-for="reservation in reservations"
-            :key="reservation._id"
-            router
-            :to="
-              $store.state.config.settings ? '' : /store/ + reservation.shop_id
-            "
-          >
-            <v-list-item-avatar>
-              <v-icon color="primary">mdi-notebook</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title v-if="isClient()">
-                {{ reservation.shop_name }}
-              </v-list-item-title>
-              <v-list-item-title v-if="isStore()">
-                {{ reservation.client_name }}
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                {{ reservation.date | moment("DD/MM/YYYY HH:mm") }} - Persone:
-                {{ reservation.people }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-            <v-list-item-action v-if="$store.state.config.settings">
-              <v-btn @click="removeReservation(reservation)" icon>
-                <v-icon color="red">mdi-delete</v-icon>
-              </v-btn>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list>
-      </v-card>
-    </v-col>
-  </v-row>
+  <v-card flat class="text-left mr-md-10 pa-10">
+    <v-card-title>Prenotazioni</v-card-title>
+    <v-list outlined class="pa-0">
+      <v-list-item
+        v-for="reservation in reservations"
+        :key="reservation._id"
+        router
+        :to="$store.state.config.settings ? '' : /store/ + reservation.shop_id"
+      >
+        <v-list-item-avatar>
+          <v-icon color="primary">mdi-notebook</v-icon>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title v-if="isClient()">
+            {{ reservation.shop_name }}
+          </v-list-item-title>
+          <v-list-item-title v-if="isStore()">
+            {{ reservation.client_name }}
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            {{ reservation.date | moment("DD/MM/YYYY HH:mm") }} - Persone:
+            {{ reservation.people }}
+          </v-list-item-subtitle>
+        </v-list-item-content>
+        <v-list-item-action v-if="$store.state.config.settings">
+          <v-btn @click="removeReservation(reservation)" icon>
+            <v-icon color="red">mdi-delete</v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+    </v-list>
+  </v-card>
 </template>
 
 <script>

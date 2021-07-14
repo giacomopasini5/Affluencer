@@ -1,5 +1,5 @@
 #home {
-  height: /*100vh;*/ calc(100vh - 8vh);
+  height: calc(100vh - 7vh);
   width: 100vw;
 }
 
@@ -10,6 +10,7 @@
 
 .leaflet-popup-content {
   min-width: 250px;
+  max-width: 300px;
   max-height: fit-content;
 }
 

@@ -24,7 +24,12 @@
       </v-list>
     </v-card>
 
-    <v-btn v-if="notifications != ''" text @click="setAsRead()" color="green">
+    <v-btn
+      v-if="notifications != ''"
+      text
+      @click="setAsRead()"
+      class="green--text"
+    >
       LETTO
     </v-btn>
   </v-card>

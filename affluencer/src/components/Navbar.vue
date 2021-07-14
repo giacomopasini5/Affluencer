@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-toolbar dark color="primary" style="max-height:60px;">
+    <v-toolbar dark color="primary" style="max-height:700px;">
       <v-toolbar-title>
         <v-btn id="no-background-hover-title" v-ripple="false" text to="/">
           <strong>Affluencer</strong>

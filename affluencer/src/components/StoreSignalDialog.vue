@@ -89,7 +89,7 @@ export default {
       }
 
       if (!this.checkTime()) {
-        this.snackbarColor = "red";
+        this.snackbarColor = "error";
         this.snackbarMessage = "Il negozio è chiuso!";
         this.snackbar = true;
       } else {
@@ -116,7 +116,7 @@ export default {
           this.customersQueue = "";
           this.$emit("close-dialog");
         } else {
-          this.snackbarColor = "red";
+          this.snackbarColor = "error";
           this.snackbarMessage = "Oggi hai già segnalato questo negozio!";
           this.snackbar = true;
         }
