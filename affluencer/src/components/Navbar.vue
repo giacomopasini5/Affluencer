@@ -41,7 +41,7 @@
                 <span> {{ item.name }} </span>
               </v-tooltip>
             </template>
-            <userNotificationsDialog />
+            <notificationsDialog />
           </v-dialog>
 
           <v-tooltip bottom>
@@ -136,7 +136,7 @@
               </v-badge>
             </template>
 
-            <userNotificationsDialog v-on:close-dialog="closeDialog()" />
+            <notificationsDialog v-on:close-dialog="closeDialog()" />
           </v-dialog>
 
           <v-btn
@@ -165,7 +165,7 @@
 </template>
 
 <script>
-import userNotificationsDialog from "@/components/UserNotificationsDialog.vue";
+import notificationsDialog from "@/components/NotificationsDialog.vue";
 
 export default {
   name: "navbar",
@@ -173,7 +173,7 @@ export default {
   props: ["navLinks"],
 
   components: {
-    userNotificationsDialog,
+    notificationsDialog,
   },
 
   data: function() {

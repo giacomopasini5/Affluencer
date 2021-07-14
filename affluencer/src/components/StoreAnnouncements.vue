@@ -92,6 +92,9 @@
 				try {
 					var res = await this.axios.post('/shops/' + this.$route.params.id + '/posts', this.storePost);
 					this.initializeAnnouncements();
+
+					this.generateNotification(this.storePost.title);
+
 					this.storePost.title = '';
 					this.storePost.text = '';
 					this.announcementPosted = false;
@@ -112,8 +115,26 @@
 				}
 			},
 
-			
+			generateNotification: async function(title) {
+				try {
+					
+					var res = await this.axios.get('/clients/favorite_shop/' + this.$route.params.id);
+					console.log(res.data);
 
+					for(var client of res.data){
+						var res = await this.axios.post("/notifications/", {
+							  user_id: client._id,
+							  text: "Annuncio: " + title,
+							  url: "/store/" + this.$route.params.id,
+							  read: false,
+						});
+					}
+				} catch(error) {
+					console.log('failure');
+					console.log(error);
+				}
+
+			},
 		},
 		
 		validations: {
