@@ -22,8 +22,10 @@ axios.defaults.baseURL = 'http://localhost:3000/api';
 Vue.use(VueAxios, axios);
 
 Vue.mixin(globalMixin);
-Vue.use(require('vue-moment'));
 
+const moment = require('moment');
+require('moment/locale/it');
+Vue.use(require('vue-moment'), { moment });
 
 new Vue({
 	router,
